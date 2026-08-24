@@ -14,6 +14,8 @@ aggregate_runner="${repo_root}/scripts/aggregate_rcbr.py"
 gpu_text="${EVOINSPECT_GPU_IDS:-0 1 2 3 4 5 6 7}"
 max_memory_mb="${EVOINSPECT_MAX_IDLE_MEMORY_MB:-256}"
 max_utilization="${EVOINSPECT_MAX_IDLE_UTILIZATION:-5}"
+gpu_wait_attempts="${EVOINSPECT_GPU_WAIT_ATTEMPTS:-6}"
+gpu_wait_seconds="${EVOINSPECT_GPU_WAIT_SECONDS:-5}"
 task_timeout="${EVOINSPECT_TASK_TIMEOUT:-8h}"
 dry_run="${EVOINSPECT_DRY_RUN:-0}"
 batch_stamp="${EVOINSPECT_BATCH_STAMP:-$(date -u +%Y%m%dT%H%M%SZ)-$$}"
@@ -37,6 +39,18 @@ gpu_is_idle() {
   processes="$(gpu_processes "${gpu}")"
   [[ -z "${processes}" ]] && (( memory <= max_memory_mb && utilization <= max_utilization ))
 }
+wait_for_gpu_idle() {
+  local gpu="$1" attempt
+  for ((attempt = 1; attempt <= gpu_wait_attempts; attempt++)); do
+    if gpu_is_idle "${gpu}"; then return 0; fi
+    if (( attempt < gpu_wait_attempts )); then
+      printf 'WAIT GPU %s cleanup/busy snapshot attempt %s/%s\n' \
+        "${gpu}" "${attempt}" "${gpu_wait_attempts}" >&2
+      sleep "${gpu_wait_seconds}"
+    fi
+  done
+  return 1
+}
 describe_gpu() {
   nvidia-smi -i "$1" --query-gpu=index,name,uuid,memory.used,utilization.gpu \
     --format=csv,noheader,nounits 2>/dev/null || true
@@ -48,6 +62,8 @@ case "${mode}" in
 esac
 [[ -x "${main_python}" ]] || die "main Python missing: ${main_python}"
 [[ -f "${manifest}" && -f "${baseline_config}" && -f "${rcbr_config}" ]] || die "input/config missing"
+is_uint "${gpu_wait_attempts}" && (( gpu_wait_attempts > 0 )) || die "invalid GPU wait attempts"
+is_uint "${gpu_wait_seconds}" || die "invalid GPU wait seconds"
 if [[ "${dry_run}" != "1" ]]; then
   [[ -x "${efficient_python}" ]] || die "run scripts/setup_efficientad_env.sh first"
 fi
@@ -88,7 +104,7 @@ if [[ "${dry_run}" != "1" && ! -f "${patchcore_reference}" ]]; then
 fi
 
 run_task() {
-  local gpu="$1" category="$2" seed="$3"
+  local gpu="$1" category="$2" seed="$3" attempt_dir
   local run_id="rcbr-${category}-s${seed}-${batch_stamp}"
   local run_dir="${batch_root}/runs/${run_id}"
   local log_file="${run_dir}/run.log"
@@ -97,19 +113,31 @@ run_task() {
     return 0
   fi
   mkdir -p "${run_dir}"
+  if [[ -d "${run_dir}/result" ]]; then
+    attempt_dir="${run_dir}/failed_attempts/result-$(date -u +%Y%m%dT%H%M%SZ)"
+    mkdir -p "$(dirname "${attempt_dir}")"
+    mv "${run_dir}/result" "${attempt_dir}"
+    printf 'PRESERVE incomplete result %s\n' "${attempt_dir}" >>"${log_file}"
+  fi
   printf 'run_id=%s physical_gpu=%s category=%s seed=%s started=%s\n' \
-    "${run_id}" "${gpu}" "${category}" "${seed}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >"${log_file}"
-  if ! gpu_is_idle "${gpu}"; then
-    printf 'GPU became busy before task; refusing to start\n' >>"${log_file}"
+    "${run_id}" "${gpu}" "${category}" "${seed}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >>"${log_file}"
+  if ! wait_for_gpu_idle "${gpu}"; then
+    printf 'GPU remained busy before task; refusing to start\n' >>"${log_file}"
     return 90
   fi
-  if timeout --signal=TERM --kill-after=60s "${task_timeout}" \
+  if [[ -f "${run_dir}/adaptation.csv" && -f "${run_dir}/test_inputs.csv" \
+      && -f "${run_dir}/test_truth.csv" && -f "${run_dir}/split.json" ]]; then
+    printf 'REUSE prepared split inputs\n' >>"${log_file}"
+  elif ! timeout --signal=TERM --kill-after=60s "${task_timeout}" \
       env CUDA_VISIBLE_DEVICES="${gpu}" EVOINSPECT_PHYSICAL_GPU="${gpu}" \
       PYTHONPATH="${repo_root}/src:${repo_root}/third_party/anomalib-2.3.0/src" \
       "${main_python}" "${prepare_runner}" prepare \
       --manifest "${manifest}" --output-dir "${run_dir}" --seed "${seed}" --category "${category}" \
-      >>"${log_file}" 2>&1 \
-    && cd "${repo_root}" \
+      >>"${log_file}" 2>&1; then
+    printf 'FAIL prepare gpu=%s %s log=%s\n' "${gpu}" "${run_id}" "${log_file}" >&2
+    return 1
+  fi
+  if cd "${repo_root}" \
     && timeout --signal=TERM --kill-after=60s "${task_timeout}" \
       env CUDA_VISIBLE_DEVICES="${gpu}" EVOINSPECT_PHYSICAL_GPU="${gpu}" \
       PYTHONPATH="${repo_root}/src:${repo_root}/third_party/anomalib-2.3.0/src" \
