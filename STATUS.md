@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T04:47:30+08:00
+updated_at: 2026-08-25T05:01:40+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -67,7 +67,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
   smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）。剩余
   transistor-s131/132 与 hazelnut-s131/132 四个 worker 仍存活，均已写出训练
-  checkpoint，但尚未生成 `metrics.json`；因此尚无 `smoke-gate.json` 或正式聚合结论。
+  checkpoint；截至 05:01 CST 最近观测到 transistor-s131/132 checkpoint 更新，
+  但尚未生成 `metrics.json`，因此尚无 `smoke-gate.json` 或正式聚合结论。
   GPU 0--3 由其他用户占用，GPU 4--7 仅有本批次进程；watchdog 只检查 GPU 4--7，
   未触碰外部任务。
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
