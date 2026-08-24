@@ -1,8 +1,14 @@
 # Latest experiment
 
-Latest completed experiment: evaluator-v2 localization reevaluation of 75 saved masks from the
-pinned upstream PatchCore P1 runs. This was CPU-only and did not open confirmation seeds
-138--142.
+Updated 2026-08-24 17:31 CST. The latest completed evidence consists of a CPU localization
+reevaluation and an RTX 3090 engineering latency benchmark; the formal revised RCBR smoke is
+still running and has not produced performance metrics or a gate.
+
+## Completed evidence: localization reevaluation
+
+The evaluator was rerun against the pinned upstream PatchCore P1 source aggregate to verify the
+earlier `f1_fixed_threshold` loading failure. It completed 75/75 runs with an empty failures file;
+no confirmation seeds 138--142 were opened.
 
 - Source: 15 MVTec AD categories × seeds 133--137, 75/75 runs, no failures.
 - Integrity: recomputed full-pixel AUROC and AP matched every stored run within `1e-12`.
@@ -25,12 +31,28 @@ Main evidence:
 
 - `reports/experiments/upstream-patchcore-localization-report-20260824.md`
 - `reports/experiments/upstream-patchcore-localization-reeval-v2-20260824T101000/aggregate.json`
+- `reports/experiments/upstream-patchcore-localization-reeval-20260824T172300-keycheck/aggregate.json`
 - `reports/experiments/upstream-patchcore-localization-reeval-v2-20260824T101000/failures.json`
 - `reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json`
 
-RCBR code and isolated EfficientAD environment preparation are now complete; see
-`reports/experiments/rcbr-code-readiness-report-20260824.md`. This is not a completed model
-experiment and therefore does not replace the verified metrics above.
+## Completed evidence: preliminary latency
 
-Next primary action: run the gated RCBR development suite on seeds 130--132 and return its batch
-path for review. Confirmation seeds 138--142 remain sealed.
+Using the existing 5000-step wood checkpoint, the repaired benchmark completed 100 warmup and
+1,000 measured iterations on physical GPU 3 (RTX 3090), batch size 1, synthetic 2500×2500 input:
+
+- End-to-end p50/p95/max: 687.479 / 844.530 / 1007.035 ms.
+- This is an RTX 3090 synthetic-resolution engineering measurement, not native-resolution
+  accuracy, GTX 2060 evidence, or a final-model result.
+- Evidence: `reports/experiments/rcbr-latency-20260824T170800Z-rtx3090-preliminary/latency-2500-rtx3090-gpu3.json`.
+
+## Active RCBR smoke
+
+- Batch: `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`.
+- Four seed-130 EfficientAD-S tasks are running on GPUs 4--7; latest periodic checkpoint is
+  `epoch=119, global_step=9600`, with 0 metrics and 0 smoke gates so far.
+- The 5000-step RCBR pilot failed its pre-registered gate; the current 70k raw-score fusion
+  rerun is the single authorized mechanism revision and cannot be called a gain until its gate.
+
+Next primary action: monitor the active smoke until `smoke-gate.json` appears. Only a passed gate
+unlocks the remaining 11 categories × 3 development seeds; confirmation seeds 138--142 remain
+sealed.
