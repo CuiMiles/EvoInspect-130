@@ -65,8 +65,9 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
 - Seed-130 wood/capsule/transistor/hazelnut completed 4/4 `metrics.json`; the smoke-s131-132 stage
   has 8 tasks total, with 4 completed metrics (wood-s131/132, capsule-s131/132). At 07:20 CST the
   remaining transistor-s131/132 and hazelnut-s131/132 workers were still alive and writing training
-  checkpoints; the latest inspected checkpoints were global_step 59,200 for all four workers, with
-  a 70,000-step target. None had yet produced its `metrics.json` file. `smoke-gate.json` is not
+  checkpoints; the latest inspected progress was global_step 60,800 for transistor-s131/132 and
+  59,200 for hazelnut-s131/132, with a 70,000-step target. None had yet produced its `metrics.json`
+  file. `smoke-gate.json` is not
   present yet, so no formal smoke conclusion is available.
   GPUs 0--3 are currently occupied by another user and were not touched.
 - The 5000-step RCBR pilot failed its pre-registered gate; the current 70k raw-score fusion
