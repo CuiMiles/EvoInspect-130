@@ -168,7 +168,9 @@ def train_efficientad(
         precision=str(training["precision"]),
         default_root_dir=output_dir / "training",
         enable_progress_bar=True,
-        enable_checkpointing=False,
+        # Anomalib 2.3.0 always installs its ModelCheckpoint callback. Lightning
+        # rejects that callback when checkpointing is explicitly disabled.
+        enable_checkpointing=True,
         deterministic=True,
     )
     started = time.perf_counter()
