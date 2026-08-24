@@ -58,7 +58,7 @@ def reference_row(reference: dict[str, Any], category: str) -> dict[str, float |
             else None
         ),
         "overall_f1": float(row["overall_f1"]),
-        "unseen_f1": float(row["unseen_f1"]),
+        "unseen_f1": float(row["unseen_f1"]) if row["unseen_f1"] is not None else None,
         "image_auroc": float(row["image_auroc"]),
         "mean_roi_area_fraction": 0.0,
         "p95_roi_area_fraction": 0.0,

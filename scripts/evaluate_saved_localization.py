@@ -152,6 +152,20 @@ def mean_metric(rows: list[dict[str, Any]], path: tuple[str, ...]) -> float:
     return statistics.mean(values)
 
 
+def mean_optional_metric(rows: list[dict[str, Any]], path: tuple[str, ...]) -> float | None:
+    values: list[float] = []
+    for row in rows:
+        value: Any = row
+        for key in path:
+            if not isinstance(value, dict) or key not in value:
+                break
+            value = value[key]
+        else:
+            if value is not None:
+                values.append(float(value))
+    return statistics.mean(values) if values else None
+
+
 def _fixed_slice_mean(
     rows: list[dict[str, Any]], slice_name: str, metric_name: str
 ) -> float | None:
@@ -221,7 +235,7 @@ def aggregate(results: list[dict[str, Any]], source_aggregate: Path) -> dict[str
             "overall_f1": mean_metric(
                 rows, ("source_image_metrics", "overall", "f1_fixed_threshold")
             ),
-            "unseen_f1": mean_metric(
+            "unseen_f1": mean_optional_metric(
                 rows, ("source_image_metrics", "unseen", "f1_fixed_threshold")
             ),
             "image_auroc": mean_metric(rows, ("source_image_metrics", "overall", "auroc")),
@@ -295,14 +309,32 @@ def main() -> int:
     run_dirs = [str(path) for path in source["runs"]]
     if len(run_dirs) != args.expected_runs:
         raise RuntimeError(f"expected {args.expected_runs} source runs, got {len(run_dirs)}")
-    if args.output_dir.exists():
-        raise RuntimeError(f"output directory exists: {args.output_dir}")
-    args.output_dir.mkdir(parents=True)
+    source_by_run_id = {Path(path).name: path for path in run_dirs}
+    if len(source_by_run_id) != len(run_dirs):
+        raise RuntimeError("duplicate source run IDs")
+    if (args.output_dir / "aggregate.json").exists():
+        raise RuntimeError(f"completed output directory exists: {args.output_dir}")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     started_at = now()
     results: list[dict[str, Any]] = []
     failures: list[dict[str, str]] = []
+    for path in sorted((args.output_dir / "runs").glob("*.json")):
+        result = json.loads(path.read_text(encoding="utf-8"))
+        run_id = str(result.get("run_id", ""))
+        if path.stem != run_id or run_id not in source_by_run_id:
+            raise RuntimeError(f"unexpected partial result: {path}")
+        source_masks = Path(source_by_run_id[run_id]) / "predictions.masks.npz"
+        if result.get("source_masks_sha256") != file_sha256(source_masks):
+            raise RuntimeError(f"stale partial result: {path}")
+        if result.get("evaluator_config_hash") != canonical_hash(EVALUATOR_CONFIG):
+            raise RuntimeError(f"incompatible partial evaluator result: {path}")
+        results.append(result)
+    completed_ids = {str(result["run_id"]) for result in results}
+    if completed_ids:
+        print(f"REUSE {len(completed_ids)}/{len(run_dirs)} validated partial results", flush=True)
+    pending_run_dirs = [path for path in run_dirs if Path(path).name not in completed_ids]
     with ProcessPoolExecutor(max_workers=args.workers) as executor:
-        future_to_run = {executor.submit(evaluate_run, path): path for path in run_dirs}
+        future_to_run = {executor.submit(evaluate_run, path): path for path in pending_run_dirs}
         for future in as_completed(future_to_run):
             run_dir = future_to_run[future]
             try:
