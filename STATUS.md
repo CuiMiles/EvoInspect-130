@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T00:43:27+08:00
+updated_at: 2026-08-25T00:46:41+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -95,7 +95,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（4 个 seed-130 checkpoint，0 个指标）；
+- 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（seed-130 四类已生成 4 个指标，补充
+  seeds 131--132 当前 4 个训练、4 个排队）；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
   5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
