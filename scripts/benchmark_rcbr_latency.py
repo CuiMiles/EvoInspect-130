@@ -7,7 +7,7 @@ import json
 import platform
 import subprocess
 import time
-from pathlib import Path
+from pathlib import Path, PosixPath
 from typing import Any
 
 import numpy as np
@@ -57,6 +57,9 @@ def benchmark(args: argparse.Namespace) -> None:
     config: dict[str, Any] = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     baseline: dict[str, Any] = yaml.safe_load(args.baseline_config.read_text(encoding="utf-8"))
     input_shape = tuple(int(value) for value in baseline["input_resolution"])
+    # Our Lightning checkpoints contain pathlib paths in hyperparameters. PyTorch 2.6
+    # defaults to weights-only loading, so allowlist this trusted standard-library type.
+    torch.serialization.add_safe_globals([PosixPath])
     model = EfficientAd.load_from_checkpoint(args.checkpoint, map_location="cuda")
     model.cuda().eval()
     with np.load(args.router_state) as state:
