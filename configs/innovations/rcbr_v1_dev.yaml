@@ -1,0 +1,68 @@
+schema_version: 1
+method_id: evoinspect-rcbr-v1
+baseline_config: configs/baselines/efficientad_s_100_30.yaml
+strategies:
+  - uniform_downsample
+  - full_grid
+  - fixed_topk
+  - uncertainty_only
+  - risk_calibrated
+  - full_rcbr
+router:
+  candidate_window_fractions: [0.125, 0.25]
+  candidate_stride_fraction: 0.5
+  candidates_per_scale: 8
+  fixed_topk: 4
+  max_rois: 4
+  max_average_roi_area_fraction: 0.15
+  max_p95_roi_area_fraction: 0.25
+  max_single_image_roi_area_fraction: 0.35
+  latency_budget_ms: 25.0
+  nms_iou: 0.35
+  minimum_refinement_evidence: 0.55
+  utility_cross_fitting_folds: 5
+  utility_positive_min_gt_coverage: 0.10
+full_grid:
+  rows: 4
+  columns: 4
+development:
+  seeds: [130, 131, 132]
+  smoke_categories: [wood, capsule, transistor, hazelnut]
+  full_categories:
+    - bottle
+    - cable
+    - capsule
+    - carpet
+    - grid
+    - hazelnut
+    - leather
+    - metal_nut
+    - pill
+    - screw
+    - tile
+    - toothbrush
+    - transistor
+    - wood
+    - zipper
+confirmation:
+  seeds: [138, 139, 140, 141, 142]
+  requires_explicit_unlock: true
+gates:
+  smoke:
+    mean_delta_aupro_0_05_min: 0.025
+    categories_non_decreasing_min: 3
+    worst_category_delta_aupro_0_05_min: -0.015
+    delta_overall_f1_min: -0.005
+    delta_unseen_f1_min: -0.010
+  full_development:
+    mean_delta_aupro_0_05_min: 0.015
+    mean_delta_pro_at_fpr_0_01_min: 0.020
+    mean_delta_fixed_small_aupro_min: 0.010
+    delta_overall_f1_min: -0.003
+    delta_unseen_f1_min: -0.005
+    delta_image_auroc_min: -0.002
+    mean_roi_area_fraction_max: 0.15
+    p95_roi_area_fraction_max: 0.25
+  bootstrap:
+    draws: 10000
+    seed: 130

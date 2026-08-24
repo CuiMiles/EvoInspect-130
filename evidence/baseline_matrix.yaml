@@ -1,0 +1,88 @@
+schema_version: 1
+policy: "No baseline is marked reproduced until public-data metrics, hashes, upstream commit and license are recorded."
+baselines:
+  - name: fixture-stat-v1
+    family: deterministic_statistical_fixture
+    status: engineering_test_only
+    gpu: none
+    purpose: validate_pipeline_not_algorithm
+  - name: EfficientAD
+    status: queued
+    preferred_gpu: 0
+    upstream_commit: pending
+    license: pending
+    budget_hours: 8
+    early_stop: smoke_or_protocol_failure
+  - name: PatchCore
+    status: completed_p0_and_official_style_p1
+    preferred_gpu: 1
+    upstream_commit: fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+    upstream_repository: https://github.com/amazon-science/patchcore-inspection
+    license: Apache-2.0
+    budget_hours: 8
+    actual_gpu: "8 independent RTX 3090 workers; no DDP"
+    protocol:
+      - mvtec_standard_15category_seed0
+      - mvtec_15category_official_style_up_to_100_30_seeds_133_137
+    config:
+      - configs/baselines/patchcore_upstream_standard_mvtec.yaml
+      - configs/baselines/patchcore_upstream_100_30.yaml
+    evidence:
+      - reports/experiments/upstream-patchcore-standard-mvtec15-s0-8gpu-20260823T234806Z-22135/aggregate.json
+      - reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json
+      - reports/experiments/upstream-patchcore-baselines-report-20260824.md
+    limitation: "Pinned upstream core is unchanged, but the 100+30 protocol uses a repository adapter and CPU FAISS; no AUPRO, 2500x2500, GTX 2060, or end-to-end deployment latency yet."
+  - name: patchcore-lite-wrn50-random-coreset+logreg
+    family: patch_memory_plus_supervised_linear_probe
+    status: completed_direct_archive_15category_5seeds_but_superseded_by_upstream
+    preferred_gpu: 1
+    upstream_commit: torchvision-0.21.0
+    license: "repository implementation; torchvision code BSD-3-Clause; pretrained weight redistribution review pending"
+    budget_hours: 1
+    actual_gpu: "independent RTX 3090 workers"
+    protocol: mvtec_15category_official_style_up_to_100_30_seeds_133_137
+    config: configs/baselines/patchcore_lite_bottle.yaml
+    evidence: reports/experiments/guarded-fusion-v2-final15-5seed-20260824.json
+    limitation: "Not official PatchCore and materially weaker than the pinned upstream baseline; retained only as an ablation and implementation precursor."
+  - name: AnomalyDINO
+    status: queued
+    preferred_gpu: 1
+    upstream_commit: pending
+    license: pending
+    budget_hours: 8
+    early_stop: smoke_or_protocol_failure
+  - name: AHL_or_DRA
+    status: queued
+    preferred_gpu: 2
+    upstream_commit: pending
+    license: pending
+    budget_hours: 12
+    early_stop: smoke_or_protocol_failure
+  - name: RealNet_or_GLASS
+    status: queued
+    preferred_gpu: 3
+    upstream_commit: pending
+    license: pending
+    budget_hours: 12
+    early_stop: smoke_or_protocol_failure
+explorations:
+  - name: GuardedFusion_v3_upstream
+    status: eliminated_development_gate
+    config: configs/innovations/guarded_fusion_v3_upstream_dev.yaml
+    protocol: mvtec_15category_official_style_development_seeds_130_132
+    evidence: reports/experiments/guarded-fusion-v3-v4-development-report-20260824.md
+    result: "45/45 complete; macro delta F1 -0.0008; task wins/ties/losses 0/44/1."
+  - name: MaskedPrototype_v4_upstream
+    status: eliminated_development_gate
+    config: configs/innovations/masked_prototype_v4_upstream_dev.yaml
+    protocol: mvtec_15category_official_style_development_seeds_130_132
+    evidence: reports/experiments/guarded-fusion-v3-v4-development-report-20260824.md
+    result: "45/45 complete; all gates exact PatchCore fallback; task wins/ties/losses 0/45/0."
+gpu_launch_gate:
+  required:
+    - successful_nvidia_smi_inventory
+    - selected_gpu_has_sufficient_free_memory
+    - no_unrelated_compute_process_on_selected_gpu
+    - explicit_cuda_visible_devices
+    - checkpoint_and_wall_time_budget
+  current_status: passed_for_8_independent_gpus_at_2026-08-24T08:05:33+08:00_then_all_idle

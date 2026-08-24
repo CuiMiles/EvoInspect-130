@@ -1,0 +1,28 @@
+schema_version: 1
+model_id: guarded-fusion-v2-safe-wrn50-random-coreset
+backbone: torchvision.wide_resnet50_2
+weights: IMAGENET1K_V2
+input_resolution: [224, 224]
+patch_layer: layer3
+train_batch_size: 16
+coreset_size: 2048
+coreset_strategy: seeded_random_patch_subset
+logistic_regression:
+  c: 1.0
+  max_iter: 1000
+inference:
+  batch_size: 1
+  warmup_iterations: 10
+  precision: fp32
+threshold_selection: development_f1
+guarded_fusion:
+  enabled: true
+  min_development_f1_gain: 0.02
+  min_development_anomalies: 6
+protocol:
+  normal_support_target: 100
+  anomaly_support_target: 30
+  development_normal_target: 20
+  development_anomaly_target: 6
+  insufficient_data_policy: reduce_support_to_preserve_development_and_final_test
+  unseen_defect_policy: lexicographically_last_defect_type

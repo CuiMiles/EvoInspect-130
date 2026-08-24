@@ -1,0 +1,103 @@
+schema_version: 1
+datasets:
+  - name: generated_smoke_fixture
+    version: "1"
+    role: engineering_test_only
+    source_url: null
+    paper_url: null
+    license: repository_test_code
+    redistribution_allowed: true
+    commercial_use_allowed: true
+    downloaded_at: null
+    archive_hash: generated_per_run
+    local_path: /tmp/evoinspect-fixture
+    citation_text: null
+    restrictions: "Synthetic grayscale patterns; never report as model evidence."
+    reviewer: null
+  - name: MVTec_AD
+    version: direct_mydrive_archive_sha256_cf4313b1
+    role: required_public_benchmark
+    source_url: https://www.mvtec.com/research-teaching/datasets/mvtec-ad
+    paper_url: https://doi.org/10.1109/CVPR.2019.00982
+    license: CC-BY-NC-SA-4.0
+    redistribution_allowed: share_alike_with_attribution_noncommercial_only
+    commercial_use_allowed: false
+    downloaded_at: "2026-08-23T22:40:26+08:00"
+    archive_hash: cf4313b13603bec67abb49ca959488f7eedce2a9f7795ec54446c649ac98cd3d
+    archive_bytes: 5264982680
+    local_path: /home/CuiMinghao/data/mvtec_ad_official/raw
+    manifest_path: /home/CuiMinghao/data/mvtec_ad_official/manifests/mvtec_ad_manifest.csv
+    manifest_hash: 6069c761f5ad36c25f9cbd461d11eb1805686a3020a8bd9f494e25570b9cbcd9
+    sample_count: 5354
+    category_count: 15
+    citation_text: "Bergmann et al., MVTec AD, CVPR 2019."
+    restrictions: "Non-commercial only; attribution and ShareAlike apply. Direct MyDrive archive passed hash, path/link and 15-category manifest checks; raw files are read-only. Source identity and competition eligibility still require human signoff."
+    license_reviewed_at: "2026-08-23"
+    license_evidence_url: https://www.mvtec.com/research-teaching/datasets/mvtec-ad
+    reviewer: Codex_source_review_pending_human_signoff
+  - name: MVTec_AD_bottle_Voxel51_mirror
+    version: 30a183a3b96e3aef953f230784b123b719b09d97
+    role: preliminary_single_category_baseline
+    source_url: https://huggingface.co/datasets/Voxel51/mvtec-ad
+    paper_url: https://doi.org/10.1109/CVPR.2019.00982
+    license: CC-BY-NC-SA-4.0
+    redistribution_allowed: share_alike_with_attribution_noncommercial_only
+    commercial_use_allowed: false
+    downloaded_at: "2026-08-23T20:31:26+08:00"
+    archive_hash: null
+    local_path: /home/CuiMinghao/data/mvtec_ad_voxel51_30a183a
+    manifest_hash: dc0cb96c23d9f0eb3abef6ffcf581c1d750708d6c81ff7868ddc3f3b38700f8d
+    sample_count: 292
+    downloaded_bytes: 156325385
+    citation_text: "Bergmann et al., MVTec AD, CVPR 2019. Files obtained from the Voxel51 community mirror."
+    restrictions: "Community mirror, not official archive checksum reproduction; bottle only; every image verified against the pinned mirror LFS SHA-256; raw files are read-only. Human license signoff remains required."
+    license_evidence_url: https://www.mvtec.com/research-teaching/datasets/mvtec-ad
+    reviewer: Codex_source_review_pending_human_signoff
+  - name: DAGM_2007
+    version: official_current_page_2026-08-23
+    role: required_public_benchmark
+    source_url: https://hci.iwr.uni-heidelberg.de/content/weakly-supervised-learning-industrial-optical-inspection
+    paper_url: null
+    license: CC-BY-4.0
+    redistribution_allowed: true_with_attribution
+    commercial_use_allowed: true
+    downloaded_at: null
+    archive_hash: null
+    local_path: null
+    citation_text: "Wieler, Hahn, Hamprecht (2007), Weakly supervised learning for industrial optical inspection."
+    restrictions: "Attribution required; official download link is delivered after an email form."
+    license_reviewed_at: "2026-08-23"
+    license_evidence_url: https://hci.iwr.uni-heidelberg.de/content/weakly-supervised-learning-industrial-optical-inspection
+    reviewer: Codex_source_review_pending_human_signoff
+  - name: MVTec_LOCO_AD
+    version: official_current_page_2026-08-23
+    role: required_logic_benchmark
+    source_url: https://www.mvtec.com/research-teaching/datasets/mvtec-loco-ad
+    paper_url: https://doi.org/10.1007/s11263-022-01578-9
+    license: CC-BY-NC-SA-4.0
+    redistribution_allowed: share_alike_with_attribution_noncommercial_only
+    commercial_use_allowed: false
+    downloaded_at: null
+    archive_hash: null
+    local_path: null
+    citation_text: "Bergmann et al., Beyond Dents and Scratches, IJCV 2022."
+    restrictions: "Non-commercial only; attribution and ShareAlike apply; official page uses a download form."
+    license_reviewed_at: "2026-08-23"
+    license_evidence_url: https://www.mvtec.com/research-teaching/datasets/mvtec-loco-ad
+    reviewer: Codex_source_review_pending_human_signoff
+  - name: MVTec_AD_2
+    version: official_current_page_2026-08-23
+    role: required_high_resolution_shift_benchmark
+    source_url: https://www.mvtec.com/research-teaching/datasets/mvtec-ad-2
+    paper_url: https://doi.org/10.1007/s11263-026-02743-0
+    license: CC-BY-NC-SA-4.0
+    redistribution_allowed: share_alike_with_attribution_noncommercial_only
+    commercial_use_allowed: false
+    downloaded_at: null
+    archive_hash: null
+    local_path: null
+    citation_text: "Heckler-Kram et al., MVTec AD 2, IJCV 2026."
+    restrictions: "Non-commercial only; private test labels remain on the official evaluation server."
+    license_reviewed_at: "2026-08-23"
+    license_evidence_url: https://www.mvtec.com/research-teaching/datasets/mvtec-ad-2
+    reviewer: Codex_source_review_pending_human_signoff

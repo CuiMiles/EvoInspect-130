@@ -1,0 +1,20 @@
+name: evoinspect-130
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - numpy==2.2.6
+      - pillow==11.1.0
+      - pyarrow==19.0.1
+      - pytest==8.3.5
+      - PyYAML==6.0.2
+      - requests==2.32.3
+      - ruff==0.11.0
+      - mypy==1.15.0
+      - scikit-learn==1.6.1
+      - scipy==1.15.2
+      - torch==2.6.0
+      - torchvision==0.21.0
+      - -e .[dev,images,yaml]

@@ -1,0 +1,32 @@
+schema_version: 1
+verified_from_local_official_files_at: "2026-08-23"
+deadline_local_file: "2026-09-01T23:59:00+08:00"
+artifacts:
+  - id: entry_summary
+    format: pdf
+    max_chinese_characters: 300
+    template_required: false
+    filename_pattern: "{team}_{project}_参赛作品简介.pdf"
+    status: not_started
+  - id: project_document
+    format: pdf
+    template_required: true
+    filename_pattern: "{team}_{project}_项目文档.pdf"
+    status: not_started
+  - id: project_video
+    format: mp4
+    max_duration_seconds: 300
+    max_size_bytes: 209715200
+    filename_pattern: "{team}_{project}_项目视频.mp4"
+    status: not_started
+  - id: auxiliary_material
+    format: zip
+    max_size_bytes: 209715200
+    filename_pattern: "{team}_{project}_其他.zip"
+    status: not_started
+unknowns:
+  - upload_total_size_limit
+  - anonymity_requirement
+  - model_weight_and_dependency_policy
+  - evaluator_command_and_output_api
+

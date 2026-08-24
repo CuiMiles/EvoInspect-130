@@ -1,0 +1,132 @@
+schema_version: 1
+models:
+  - model_id: efficientad-s-anomalib-2.3.0-rcbr-v1
+    status: code_ready_untrained
+    upstream: open-edge-platform/anomalib@091ca6aca92c8d0e416394f79e52f5a3cea3db73
+    license: Apache-2.0
+    online_graph_role: candidate_global_and_shared_roi_model
+    artifact_path: null
+    model_hash: null
+    config_path: configs/baselines/efficientad_s_100_30.yaml
+    method_config_path: configs/innovations/rcbr_v1_dev.yaml
+    restrictions: "No training result exists yet; no accuracy, latency, novelty, or deployment claim is allowed until gated experiments finish."
+  - model_id: fixture-stat-v1
+    status: engineering_test_only
+    upstream: null
+    license: repository_code
+    online_graph_role: test_baseline
+    artifact_path: generated_per_smoke_run
+    model_hash: generated_per_smoke_run
+    restrictions: "Not a research baseline; forbidden in performance or novelty claims."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-s130
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-s130-20260823T123000Z/model.pt
+    model_hash: 143d1c4c93a702c222380cfb00941e08c3ecc2a97fd16129ded748f23f1d04ff
+    artifact_bytes: 8451282
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: 15a62a4b71993de2e239ae1568cb0945e99efe65bc006027a310a770971afce7
+    restrictions: "Bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-s131
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-s131-20260823T123000Z/model.pt
+    model_hash: 5a91512151778f6cec596c1e043b3685c3d67eae6de6e7459045fd6a2fe4c1f5
+    artifact_bytes: 8451282
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: 3c604288e0773166f576c71a790facb58d5bbd8c4c5dd07674843028291724a2
+    restrictions: "Bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-s132
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-s132-20260823T123000Z/model.pt
+    model_hash: e7ecf23e3bcd835c753e464e4a4143af777abcca8ff8e26689e240a627c7ec23
+    artifact_bytes: 8451282
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: 27abe5eb53555fb1e3d5d1210eac84797dc5835354ec27a810d70d78c7124a79
+    restrictions: "Bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-official-s130
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-official-s130-20260823T144354Z/model.pt
+    model_hash: 0cc86875e346c3097e88753ef15f14d0cd800ed57f1291ac3e1bb299d7f4d4c5
+    artifact_bytes: 8452626
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: f25898486f80435cb7800f9dfd88b27c871ee9c2ea57a0884df3412668535921
+    config_hash: 416de329c2f738f070eea47f48b524592dd1e4c1e2abbc1280fb7ec87e0769bd
+    restrictions: "Direct-archive bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-official-s131
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-official-s131-20260823T144354Z/model.pt
+    model_hash: b2777c850e021a588d77ec711d90e502d841000a2bf58b39bd4f550cd163000b
+    artifact_bytes: 8452626
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: b208d154a89776d4962b65e3d4a4f87ab1dfdcc0d0ea5fc73802e2ed95e3f130
+    config_hash: 416de329c2f738f070eea47f48b524592dd1e4c1e2abbc1280fb7ec87e0769bd
+    restrictions: "Direct-archive bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: patchcore-lite-wrn50-random-coreset+logreg-official-s132
+    status: preliminary_research_baseline
+    upstream: torchvision-0.21.0-wide_resnet50_2-IMAGENET1K_V2
+    license: "repository implementation; torchvision BSD-3-Clause; pretrained weight redistribution review pending"
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/pc-lite-bottle-official-s132-20260823T144354Z/model.pt
+    model_hash: be1456b4856aef11d70b0e9c9126fc66ca1f67a84810a74f49dd57b4a795c657
+    artifact_bytes: 8452626
+    backbone_weight_hash: 9ba9bcbebc349d733a72eb7608143fd754e4689ac8d8ce2916ca0bdff6443950
+    backbone_weight_bytes: 275905729
+    split_hash: c33a78cf10dd19d4a3adf69941f4479520ab1fc64eb90f1718e5fd8c8e00ee73
+    config_hash: 416de329c2f738f070eea47f48b524592dd1e4c1e2abbc1280fb7ec87e0769bd
+    restrictions: "Direct-archive bottle-only preliminary baseline; backbone weights are external to model.pt."
+  - model_id: upstream-patchcore-fcaa92f-mvtec15-seeds133-137
+    status: strong_research_baseline_family
+    upstream: amazon-science/patchcore-inspection@fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+    license: Apache-2.0
+    online_graph_role: research_baseline_only
+    artifact_path: reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/runs
+    model_hash: "per-run SHA-256 recorded in each metrics.json; 75 immutable model directories"
+    config_hash: 3f3e3dae7213b8c0e808a235e1c794ff96ebeb981ef4091a93287591f8a5416a
+    source_manifest_sha256: 6069c761f5ad36c25f9cbd461d11eb1805686a3020a8bd9f494e25570b9cbcd9
+    backbone_weight_hash: 95faca4d11227dddf8633dbb5ff6c8a9003c1aa5b8945c73834b8007b10950b8
+    representative_model:
+      run_id: upstream-pc-100-30-bottle-s133-20260823T235656Z-29160
+      artifact_path: reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/runs/upstream-pc-100-30-bottle-s133-20260823T235656Z-29160/model
+      model_hash: e3813a8859b8973b875679b09cfb278e5cdcf1608fd6e16dafe83e7e91fced60
+      artifact_bytes: 32112915
+      split_hash: b21b262fcd3093dac28fd2b8248f6167aeb3d862fb3440b5f65bc168d0e0416b
+    restrictions: "Public MVTec research baseline only; CPU FAISS; not deployment-qualified and not validated at 2500x2500 or GTX 2060."
+  - model_id: guarded-fusion-v3-upstream-development-seeds130-132
+    status: eliminated_negative_exploration_family
+    upstream: amazon-science/patchcore-inspection@fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+    license: Apache-2.0
+    online_graph_role: forbidden_eliminated_exploration
+    artifact_path: reports/experiments/guarded-fusion-v3-upstream-dev15-3seed-8gpu-20260824T002208Z-4073/runs
+    model_hash: "per-run combined upstream and supervised-head SHA-256 in model/meta.json"
+    config_hash: db33a28983522b8cd00fc0a2a0e70b5f7ab229fc9fd02516913e2c17a970540b
+    representative_smoke_hash: 189abd52ce917048fd1660fb5034fd2efedc40928b5e7dd9fca65742a7e29d01
+    restrictions: "Eliminated after 0/44/1 task wins/ties/losses; never use as a retained innovation or run on confirmation seeds 138-142."
+  - model_id: masked-prototype-v4-upstream-development-seeds130-132
+    status: eliminated_negative_exploration_family
+    upstream: amazon-science/patchcore-inspection@fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+    license: Apache-2.0
+    online_graph_role: forbidden_eliminated_exploration
+    artifact_path: reports/experiments/masked-prototype-v4-upstream-dev15-3seed-8gpu-20260824T003300Z-26470/runs
+    model_hash: "per-run combined upstream and masked-prototype SHA-256 in model/meta.json"
+    config_hash: dbfe5dec2b99ba4e385c9e8eb02799aaed8ed02ffcb4dae3ca1ba074ef5dee8f
+    representative_smoke_hash: 9206e57aca6c5aff0e4b55c4f2e267769e490fe0dbcd6fc0c54544e75b6a4631
+    restrictions: "Eliminated after all 45 gates fell back exactly; equality to baseline is not innovation benefit and confirmation seeds 138-142 remain untouched."

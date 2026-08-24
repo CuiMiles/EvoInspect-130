@@ -1,0 +1,6 @@
+[submodule "third_party/patchcore-inspection-fcaa92f"]
+	path = third_party/patchcore-inspection-fcaa92f
+	url = https://github.com/amazon-science/patchcore-inspection.git
+[submodule "third_party/anomalib-2.3.0"]
+	path = third_party/anomalib-2.3.0
+	url = https://github.com/open-edge-platform/anomalib.git

@@ -1,0 +1,32 @@
+schema_version: 1
+model_id: upstream-patchcore-wrn50-l2-l3-p01-official-style
+protocol: official_style_up_to_100_normal_30_seen_anomaly
+upstream:
+  repository: https://github.com/amazon-science/patchcore-inspection.git
+  commit: fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+  license: Apache-2.0
+backbone: wideresnet50
+weights: torchvision_Wide_ResNet50_2_Weights_IMAGENET1K_V1
+layers: [layer2, layer3]
+input:
+  resize: 256
+  crop: 224
+  train_batch_size: 2
+  inference_batch_size: 1
+  num_workers: 4
+patchcore:
+  pretrain_embed_dimension: 1024
+  target_embed_dimension: 1024
+  patch_size: 3
+  anomaly_scorer_num_nn: 1
+  sampler: approx_greedy_coreset
+  coreset_fraction: 0.1
+  faiss_on_gpu: false
+threshold_selection: development_f1
+protocol_support:
+  normal_target: 100
+  anomaly_target: 30
+  note: "PatchCore memory uses support normals only; support defects remain available to supervised competitors."
+claims:
+  kind: formal_upstream_official_style_baseline
+  limitation: "Adapter changes only data loading, split isolation, threshold calibration and evidence output; upstream PatchCore core remains unmodified."

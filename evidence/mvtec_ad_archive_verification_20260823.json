@@ -1,0 +1,30 @@
+{
+  "archive": {
+    "bytes": 5264982680,
+    "format": "tar.xz",
+    "member_count": 6880,
+    "mode": "0400",
+    "sha256": "cf4313b13603bec67abb49ca959488f7eedce2a9f7795ec54446c649ac98cd3d",
+    "status": "verified_not_extracted_then_read_only_extracted",
+    "uncompressed_bytes": 5271247124
+  },
+  "bottle_cross_check": {
+    "direct_archive_images": 292,
+    "exact_content_hash_set_match": true,
+    "intersection": 292,
+    "mirror_commit": "30a183a3b96e3aef953f230784b123b719b09d97",
+    "mirror_images": 292
+  },
+  "checked_at": "2026-08-23T22:46:32+08:00",
+  "dataset_manifest": {
+    "anomaly_images": 1258,
+    "categories": 15,
+    "content_duplicates": 0,
+    "normal_images": 4096,
+    "samples": 5354,
+    "sha256": "6069c761f5ad36c25f9cbd461d11eb1805686a3020a8bd9f494e25570b9cbcd9"
+  },
+  "raw_writable_files": 0,
+  "schema_version": 1,
+  "warning": "Direct archive identity and license eligibility still require human source review."
+}

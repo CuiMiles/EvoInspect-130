@@ -1,0 +1,16 @@
+schema_version: 1
+model_id: patchcore-lite-wrn50-random-coreset+logreg
+backbone: torchvision.wide_resnet50_2
+weights: IMAGENET1K_V2
+input_resolution: [224, 224]
+train_batch_size: 16
+coreset_size: 2048
+coreset_strategy: seeded_random_patch_subset
+logistic_regression:
+  c: 1.0
+  max_iter: 1000
+inference:
+  batch_size: 1
+  warmup_iterations: 10
+  precision: fp32
+threshold_selection: development_f1

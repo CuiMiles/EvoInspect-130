@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "feature_grid": 4,
+  "split": {
+    "seed": 130,
+    "normal_support": 4,
+    "anomaly_support": 2,
+    "development_normal": 2,
+    "development_anomaly": 2,
+    "unseen_defect_types": ["dent"]
+  }
+}
+

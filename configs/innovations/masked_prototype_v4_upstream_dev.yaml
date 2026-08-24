@@ -1,0 +1,43 @@
+schema_version: 1
+model_id: masked-prototype-v4-upstream-patchcore-development
+protocol: official_style_up_to_100_normal_30_seen_anomaly
+upstream:
+  repository: https://github.com/amazon-science/patchcore-inspection.git
+  commit: fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+  license: Apache-2.0
+backbone: wideresnet50
+weights: torchvision_Wide_ResNet50_2_Weights_IMAGENET1K_V1
+layers: [layer2, layer3]
+input:
+  resize: 256
+  crop: 224
+  train_batch_size: 2
+  inference_batch_size: 1
+  num_workers: 4
+patchcore:
+  pretrain_embed_dimension: 1024
+  target_embed_dimension: 1024
+  patch_size: 3
+  anomaly_scorer_num_nn: 1
+  sampler: approx_greedy_coreset
+  coreset_fraction: 0.1
+  faiss_on_gpu: false
+threshold_selection: development_f1
+masked_prototype_v4:
+  enabled: true
+  support_patch_selection: ground_truth_mask_adaptive_max_pool
+  prototype_score: reciprocal_nearest_euclidean_distance
+  max_prototypes: 2048
+  min_patch_ratio_candidates: [0.50, 0.65, 0.80]
+  min_development_f1_gain: 0.02
+  max_development_precision_drop: 0.0
+  min_development_anomalies: 6
+  selection_scope: development_only
+  fallback: exact_upstream_patchcore_decision
+protocol_support:
+  normal_target: 100
+  anomaly_target: 30
+  note: "Support anomaly masks select local defect prototypes; prototypes never enter PatchCore normal memory."
+claims:
+  kind: development_exploration
+  limitation: "Not a retained innovation until frozen and successful on untouched seeds 138-142."

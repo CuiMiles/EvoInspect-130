@@ -1,0 +1,31 @@
+schema_version: 1
+model_id: upstream-patchcore-wrn50-l2-l3-p01
+protocol: mvtec_ad_standard_public_benchmark
+upstream:
+  repository: https://github.com/amazon-science/patchcore-inspection.git
+  commit: fcaa92f124fb1ad74a7acf56726decd4b27cbcad
+  license: Apache-2.0
+backbone: wideresnet50
+weights: torchvision_Wide_ResNet50_2_Weights_IMAGENET1K_V1
+layers: [layer2, layer3]
+input:
+  resize: 256
+  crop: 224
+  batch_size: 2
+  num_workers: 4
+patchcore:
+  pretrain_embed_dimension: 1024
+  target_embed_dimension: 1024
+  patch_size: 3
+  anomaly_scorer_num_nn: 1
+  sampler: approx_greedy_coreset
+  coreset_fraction: 0.1
+nearest_neighbour:
+  implementation: faiss-cpu
+  note: "Upstream algorithm and exact index; CPU FAISS is used because the isolated environment does not install faiss-gpu."
+runtime:
+  task_timeout: 60m
+  save_model: true
+claims:
+  kind: formal_upstream_standard_baseline
+  limitation: "Standard MVTec protocol only; not the official-style 100 normal + 30 defect protocol."

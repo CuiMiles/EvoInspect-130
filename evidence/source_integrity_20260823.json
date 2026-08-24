@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-08-23",
+  "status": "one_preexisting_mismatch",
+  "checksum_manifest": "CHECKSUMS.sha256",
+  "files_checked": 21,
+  "files_matching": 20,
+  "mismatch": {
+    "path": "prompts/P1_MASTER_RESEARCH_BUILD.md",
+    "expected_sha256": "83732d10b6141aa953f5b9c6143435b08d165f33db9f6c368d73ee03348d7c",
+    "actual_sha256": "b2bf34ea8d8e1b10568e40b6bcacdc1d172e67212f8be9b90837863cace1ebba",
+    "mtime_before_session_read": "2026-08-23T17:41:19+08:00"
+  },
+  "action": "Preserved both files; owner review required before changing either."
+}
