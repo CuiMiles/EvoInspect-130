@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T05:01:40+08:00
+updated_at: 2026-08-25T05:09:00+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -65,10 +65,11 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
-  smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）。剩余
-  transistor-s131/132 与 hazelnut-s131/132 四个 worker 仍存活，均已写出训练
-  checkpoint；截至 05:01 CST 最近观测到 transistor-s131/132 checkpoint 更新，
-  但尚未生成 `metrics.json`，因此尚无 `smoke-gate.json` 或正式聚合结论。
+  smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）。截至
+  05:08 CST，剩余 transistor-s131/132 与 hazelnut-s131/132 四个 worker 仍存活并持续写出
+  checkpoint：transistor 两个最近约为 epoch 379 / global_step 30,400，hazelnut 两个最近约为
+  epoch 359 / global_step 28,800。四个任务尚未生成 `metrics.json`，因此尚无
+  `smoke-gate.json` 或正式聚合结论。
   GPU 0--3 由其他用户占用，GPU 4--7 仅有本批次进程；watchdog 只检查 GPU 4--7，
   未触碰外部任务。
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
@@ -98,7 +99,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 ## Not run or not yet accepted
 
 - 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（seed-130 四类已生成 4 个指标，补充
-  seeds 131--132 已生成 4 个指标，剩余 4 个 worker 仍在完成训练后评估）；
+  seeds 131--132 已生成 4 个指标；截至 05:08 CST 剩余 4 个 worker 仍在训练，最近
+  checkpoint 约为 28,800--30,400 global steps）；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
   5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
