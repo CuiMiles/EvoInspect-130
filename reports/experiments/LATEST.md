@@ -1,6 +1,6 @@
 # Latest experiment
 
-Updated 2026-08-25 05:24 CST. The latest completed evidence consists of a CPU localization
+Updated 2026-08-25 05:26 CST. The latest completed evidence consists of a CPU localization
 reevaluation and an RTX 3090 engineering latency benchmark; the formal revised RCBR smoke is
 still running and has not produced performance metrics or a gate.
 
@@ -51,8 +51,8 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
 - Seed-130 wood/capsule/transistor/hazelnut completed 4/4 `metrics.json`; the smoke-s131-132 stage
   has 8 tasks total, with 4 completed metrics (wood-s131/132, capsule-s131/132). At 05:15 CST the
   remaining transistor-s131/132 and hazelnut-s131/132 workers were still alive and writing training
-  checkpoints; transistor-s131/132 reached global step 33,600 and hazelnut-s131/132 remained at
-  32,000, and none had yet produced its
+  checkpoints; transistor-s131/132 and hazelnut-s131 reached global step 33,600 while
+  hazelnut-s132 remained at 32,000, and none had yet produced its
   `metrics.json` file.
   `smoke-gate.json`
   is not present yet,
