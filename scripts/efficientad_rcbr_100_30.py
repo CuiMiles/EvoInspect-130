@@ -163,6 +163,12 @@ def train_efficientad(
     engine = Engine(
         max_steps=int(training["max_steps"]),
         max_epochs=int(training["max_epochs"]),
+        # EfficientAD's validation loop only refreshes map-normalization
+        # quantiles; it is not part of the optimization loss. Refreshing less
+        # often avoids thousands of redundant passes over the held-out support
+        # set during long runs. We recompute once after fit below so inference
+        # always uses quantiles from the final weights.
+        check_val_every_n_epoch=int(training.get("validation_every_n_epochs", 1)),
         accelerator="gpu",
         devices=1,
         precision=str(training["precision"]),
@@ -185,6 +191,8 @@ def train_efficientad(
     model.eval()
     if model.device.type != "cuda":
         raise RuntimeError("EfficientAD model was not restored to CUDA after training")
+    final_quantiles = model.map_norm_quantiles(datamodule.val_dataloader())
+    model.model.quantiles.update(final_quantiles)
     return model, {
         "training_seconds": elapsed,
         "checkpoint": str(checkpoint),

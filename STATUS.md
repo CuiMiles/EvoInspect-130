@@ -1,15 +1,17 @@
 # STATUS
 
-updated_at: 2026-08-24T14:42:16+08:00
-current_phase: G1_RCBR_FORMAL_SMOKE_REVISION_RUNNING
-overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
+updated_at: 2026-08-24T16:00:00+08:00
+current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_SCHEDULE_OPTIMIZED
+overall_status: FORMAL_RCBR_SMOKE_RESTART_PENDING
 
 ## One-sentence truth
 
 固定上游 PatchCore 强基线与既有负结果保持不变；RCBR 已完成 12 个 5000-step 工程 pilot，
 自动 smoke gate 明确失败。归因显示风险 CDF 与原始异常图的融合尺度不一致会放大误报，唯一
 机制级修订已提交为 `a816b32`，当前正在空闲 GPU 上运行四类 × seeds 130--132 的正式
-70,000-step smoke 复验；在该批次结束前没有可提交的 RCBR 性能结论。
+70,000-step smoke 复验；首轮因逐 epoch 验证开销过大而在无指标前中断，已保留日志/checkpoint，
+并将验证频率降为每 20 epoch、训练结束后单独重算最终 quantile，准备重跑。当前没有可提交的
+RCBR 性能结论。
 
 ## Completed
 
@@ -49,12 +51,21 @@ overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
 
 ## Current run
 
-正式修订 smoke 批次：
+正式修订 smoke 批次（首轮已中断，未产生指标）：
 
 - batch：`reports/experiments/rcbr-smoke-20260824T143800Z-rcbr-rawfusion-70k`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
-- 当前阶段：四类 seed-130；启动时 GPU 0--3 空闲并已分配，GPU 4--7 等待下一阶段
+- 当前阶段：四类 seed-130 已运行约 75 分钟后中断；每类已生成 70k 训练过程中的 checkpoint，
+  但没有 `metrics.json`/gate，GPU 0--7 已释放
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
+
+训练调度修订：
+
+- `configs/baselines/efficientad_s_100_30.yaml` 新增 `validation_every_n_epochs: 20`；该项只
+  控制 EfficientAD 的校准 quantile 刷新频率，不改变训练 loss、步数、数据划分或测试协议。
+- `scripts/efficientad_rcbr_100_30.py` 在 fit 后用最终权重对 held-out calibration set 重算一次
+  quantile，确保推理归一化不依赖中间 epoch。
+- 首轮中断目录只作为工程诊断证据，不能计入性能统计；新批次必须使用新 batch stamp。
 
 ## Ready to run
 
@@ -65,7 +76,7 @@ overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke 尚未结束；
+- 正式 70,000-step 修订 smoke 首轮已中断且没有指标；优化后的新 smoke 尚未启动；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 未启动正式 2500 时延循环；
 - 未读取或运行 seeds 138–142；
@@ -104,7 +115,7 @@ overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
 
 ## Blockers / remaining work
 
-- 当前正式修订 smoke 正在运行；若仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
+- 优化后的正式修订 smoke 尚未运行；若仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
 - 只有正式 smoke 通过后，才可补齐 15 类 × 3 开发 seeds 并生成 freeze manifest。
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
   GTX 2060、CPU 和最终提交包仍未完成。
@@ -113,8 +124,8 @@ overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
 
 ## Next primary action
 
-监控正式修订 smoke batch `rcbr-smoke-20260824T143800Z-rcbr-rawfusion-70k`，完成后读取
-`smoke-gate.json`；通过才补全开发集，失败则停止 RCBR 性能扩展并转入系统/部署贡献。
+提交并启动使用验证调度优化的新正式 smoke batch；完成后读取 `smoke-gate.json`；通过才补全
+开发集，失败则停止 RCBR 性能扩展并转入系统/部署贡献。
 
 ## Parallel work
 
