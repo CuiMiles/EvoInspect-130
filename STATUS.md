@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T05:26:00+08:00
+updated_at: 2026-08-25T05:34:00+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -55,6 +55,10 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
   PatchCore 75-run source aggregate 做完整 CPU 重评，75/75 通过且 failures 为空；新结果
   `reports/experiments/upstream-patchcore-localization-reeval-20260824T172300-keycheck/aggregate.json`
   的 Overall F1=0.922353、AUPRO@0.05=0.724099，与既有强基线一致。
+- 新增确定性视频顺序/逻辑 FSM 与两级 GuardedAdapt 控制器：即时阈值/记忆更新可逆，候选
+  模型需通过反馈收益、锚定回归和影子验证门禁，并保留版本回滚；新增 CPU 测试后全仓库
+  pytest 为 54/54，新增模块 ruff 和 mypy 通过。该项是工程闭环证据，不代表真实视频或
+  反馈收益。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
 
@@ -66,9 +70,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
   smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）。截至
-  05:26 CST，剩余 transistor-s131/132 与 hazelnut-s131/132 四个 worker 仍存活并持续写出
-  checkpoint；transistor-s131/s132 与 hazelnut-s131 均已到 global_step 33,600，
-  hazelnut-s132 为 32,000。四个任务
+  05:34 CST，剩余 transistor-s131/132 与 hazelnut-s131/s132 四个 worker 仍存活并持续写出
+  checkpoint；四个任务均已到 global_step 35,200。四个任务
   尚未生成 `metrics.json`，因此尚无
   `smoke-gate.json` 或正式聚合结论。
   GPU 0--3 由其他用户占用，GPU 4--7 仅有本批次进程；watchdog 只检查 GPU 4--7，
@@ -100,8 +103,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 ## Not run or not yet accepted
 
 - 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（seed-130 四类已生成 4 个指标，补充
-  seeds 131--132 已生成 4 个指标；截至 05:26 CST 剩余 4 个 worker 仍在训练，transistor
-  与 hazelnut-s131 checkpoint 为 global_step 33,600，hazelnut-s132 为 32,000）；
+  seeds 131--132 已生成 4 个指标；截至 05:34 CST 剩余 4 个 worker 仍在训练，四个
+  checkpoint 均为 global_step 35,200）；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
   5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
@@ -145,8 +148,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 - GPU 安全重跑正在进行；若正式 smoke 仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
 - 只有正式 smoke 通过后，才可补齐 15 类 × 3 开发 seeds 并生成 freeze manifest。
-- AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
-  GTX 2060、CPU 和最终提交包仍未完成。
+- AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频/反馈协议的真实数据实测、
+  GTX 2060、CPU 和最终提交包仍未完成；视频 FSM 与 GuardedAdapt 工程骨架及 CPU 测试已完成。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
 - 最终性能基准必须使用通过开发门后选定的 checkpoint 重跑；当前延迟结果不能替代该步骤。
 - 若 smoke 失败，导师只允许最多一次机制级修订；不得用确认种子调参。

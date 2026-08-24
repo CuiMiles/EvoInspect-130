@@ -1,6 +1,6 @@
 # Latest experiment
 
-Updated 2026-08-25 05:26 CST. The latest completed evidence consists of a CPU localization
+Updated 2026-08-25 05:34 CST. The latest completed evidence consists of a CPU localization
 reevaluation and an RTX 3090 engineering latency benchmark; the formal revised RCBR smoke is
 still running and has not produced performance metrics or a gate.
 
@@ -35,6 +35,19 @@ Main evidence:
 - `reports/experiments/upstream-patchcore-localization-reeval-v2-20260824T101000/failures.json`
 - `reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json`
 
+## Completed engineering closure
+
+The deterministic video sequence FSM and two-level GuardedAdapt controller are implemented and
+covered by CPU tests. Full repository pytest is 54/54; the new modules pass ruff and mypy. This is
+an engineering/protocol result only: no real video accuracy, feedback gain, or deployment latency
+claim is attached.
+
+- `docs/15_SYSTEM_CLOSURE.md`
+- `src/evoinspect/sequence.py`
+- `src/evoinspect/guarded_adapt.py`
+- `tests/test_sequence.py`
+- `tests/test_guarded_adapt.py`
+
 ## Completed evidence: preliminary latency
 
 Using the existing 5000-step wood checkpoint, the repaired benchmark completed 100 warmup and
@@ -49,10 +62,9 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
 
 - Batch: `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`.
 - Seed-130 wood/capsule/transistor/hazelnut completed 4/4 `metrics.json`; the smoke-s131-132 stage
-  has 8 tasks total, with 4 completed metrics (wood-s131/132, capsule-s131/132). At 05:15 CST the
+  has 8 tasks total, with 4 completed metrics (wood-s131/132, capsule-s131/132). At 05:34 CST the
   remaining transistor-s131/132 and hazelnut-s131/132 workers were still alive and writing training
-  checkpoints; transistor-s131/132 and hazelnut-s131 reached global step 33,600 while
-  hazelnut-s132 remained at 32,000, and none had yet produced its
+  checkpoints; all four reached global step 35,200, and none had yet produced its
   `metrics.json` file.
   `smoke-gate.json`
   is not present yet,
