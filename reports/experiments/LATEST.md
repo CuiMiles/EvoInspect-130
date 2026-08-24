@@ -40,13 +40,14 @@ Main evidence:
 The deterministic video sequence FSM and two-level GuardedAdapt controller are implemented and
 covered by CPU tests. Full repository pytest is 54/54; the new modules pass ruff and mypy. This is
 an engineering/protocol result only: no real video accuracy, feedback gain, or deployment latency
-claim is attached.
+claim is attached. A six-scenario synthetic sequence fixture identifies 6/6 expected event patterns.
 
 - `docs/15_SYSTEM_CLOSURE.md`
 - `src/evoinspect/sequence.py`
 - `src/evoinspect/guarded_adapt.py`
 - `tests/test_sequence.py`
 - `tests/test_guarded_adapt.py`
+- `reports/experiments/system-closure-sequence-fixture-20260825T054200Z/report.json`
 
 ## Completed evidence: preliminary latency
 

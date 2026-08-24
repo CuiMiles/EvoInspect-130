@@ -1,0 +1,340 @@
+{
+  "protocol": "deterministic synthetic sequence fixture",
+  "expected_steps": [
+    "screen",
+    "battery",
+    "cover"
+  ],
+  "scenario_count": 6,
+  "correct_scenarios": 6,
+  "scenario_accuracy": 1.0,
+  "rows": [
+    {
+      "scenario": "normal",
+      "required_event_kinds": [],
+      "observed_event_kinds": [
+        "step_completed"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "step_completed",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 2,
+          "end_frame": 2,
+          "start_time_s": 0.2,
+          "end_time_s": 0.2,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        }
+      ]
+    },
+    {
+      "scenario": "missing_battery",
+      "required_event_kinds": [
+        "missing_step",
+        "reordered_step"
+      ],
+      "observed_event_kinds": [
+        "missing_step",
+        "reordered_step",
+        "step_completed"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "step_completed",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "missing_step",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "step 'battery' was skipped before observed step 'cover'",
+          "component": null
+        },
+        {
+          "kind": "reordered_step",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed a later step after one or more missing steps",
+          "component": null
+        }
+      ]
+    },
+    {
+      "scenario": "reordered_battery_first",
+      "required_event_kinds": [
+        "missing_step",
+        "reordered_step",
+        "repeated_step"
+      ],
+      "observed_event_kinds": [
+        "missing_step",
+        "reordered_step",
+        "repeated_step",
+        "step_completed"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "missing_step",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "step 'screen' was skipped before observed step 'battery'",
+          "component": null
+        },
+        {
+          "kind": "reordered_step",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "observed a later step after one or more missing steps",
+          "component": null
+        },
+        {
+          "kind": "repeated_step",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "step 'screen' was already completed before the current expected step",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 2,
+          "end_frame": 2,
+          "start_time_s": 0.2,
+          "end_time_s": 0.2,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        }
+      ]
+    },
+    {
+      "scenario": "repeated_screen",
+      "required_event_kinds": [
+        "repeated_step"
+      ],
+      "observed_event_kinds": [
+        "repeated_step",
+        "step_completed"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "step_completed",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "repeated_step",
+          "start_frame": 2,
+          "end_frame": 2,
+          "start_time_s": 0.2,
+          "end_time_s": 0.2,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "step 'screen' was already completed before the current expected step",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 3,
+          "end_frame": 3,
+          "start_time_s": 0.3,
+          "end_time_s": 0.3,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        }
+      ]
+    },
+    {
+      "scenario": "unexpected_robot_step",
+      "required_event_kinds": [
+        "unexpected_step"
+      ],
+      "observed_event_kinds": [
+        "step_completed",
+        "unexpected_step"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "step_completed",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "unexpected_step",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "robot",
+          "confidence": 0.0,
+          "reason": "step 'robot' is not present in the declared process sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 2,
+          "end_frame": 2,
+          "start_time_s": 0.2,
+          "end_time_s": 0.2,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 3,
+          "end_frame": 3,
+          "start_time_s": 0.3,
+          "end_time_s": 0.3,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        }
+      ]
+    },
+    {
+      "scenario": "anomaly_burst",
+      "required_event_kinds": [
+        "anomaly"
+      ],
+      "observed_event_kinds": [
+        "anomaly",
+        "step_completed"
+      ],
+      "correct": true,
+      "events": [
+        {
+          "kind": "step_completed",
+          "start_frame": 0,
+          "end_frame": 0,
+          "start_time_s": 0.0,
+          "end_time_s": 0.0,
+          "step": "screen",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 1,
+          "end_frame": 1,
+          "start_time_s": 0.1,
+          "end_time_s": 0.1,
+          "step": "battery",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        },
+        {
+          "kind": "anomaly",
+          "start_frame": 1,
+          "end_frame": 2,
+          "start_time_s": 0.1,
+          "end_time_s": 0.2,
+          "step": "battery",
+          "confidence": 0.95,
+          "reason": "consecutive anomaly observations were coalesced into one event interval",
+          "component": null
+        },
+        {
+          "kind": "step_completed",
+          "start_frame": 3,
+          "end_frame": 3,
+          "start_time_s": 0.3,
+          "end_time_s": 0.3,
+          "step": "cover",
+          "confidence": 1.0,
+          "reason": "observed step matched the declared sequence",
+          "component": null
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "synthetic observations, not a real video dataset",
+    "no claim about official accuracy, latency, or hidden-test behavior"
+  ]
+}

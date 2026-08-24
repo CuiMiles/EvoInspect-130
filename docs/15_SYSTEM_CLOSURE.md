@@ -61,8 +61,11 @@ FSM 不调用远程 API、不新增神经网络，也不读取测试标签。`Se
 - `tests/test_guarded_adapt.py`：覆盖即时更新回滚、候选门禁拒绝/发布、锚定退化、影子失败、
   版本回滚和状态持久化；
 - 全仓库 pytest：54/54 通过；新增模块 ruff 和 mypy 通过。
+- `scripts/evaluate_sequence_fixture.py` 在六个预定义工程场景上识别 6/6，输出事件区间和
+  解释到 `reports/experiments/system-closure-sequence-fixture-20260825T054200Z/report.json`。
 
-这些是 CPU 工程测试证据，不是数据集指标。真实视频协议、MVTec LOCO 评测、操作员反馈
+这些是 CPU 工程测试证据，不是数据集指标。合成 fixture 的 6/6 只验证事件词汇和区间序列化。
+真实视频协议、MVTec LOCO 评测、操作员反馈
 流、影子模型训练、更新耗时、回滚成功率和端到端时延仍需独立实验登记。
 
 ## 5. 后续实验接口
