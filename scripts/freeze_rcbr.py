@@ -15,6 +15,7 @@ TRACKED = (
     "scripts/efficientad_rcbr_100_30.py",
     "scripts/aggregate_rcbr.py",
     "scripts/benchmark_rcbr_latency.py",
+    "scripts/freeze_rcbr.py",
     "scripts/run_rcbr_experiment_suite.sh",
 )
 

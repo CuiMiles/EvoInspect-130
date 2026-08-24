@@ -117,7 +117,12 @@ def benchmark(args: argparse.Namespace) -> None:
             per_scale=int(router["candidates_per_scale"]),
         )
         latency_table = {candidate.area: roi_cost_ms for candidate in candidates}
-        candidates = attach_costs_and_utility(candidates, utility, latency_table)
+        candidates = attach_costs_and_utility(
+            candidates,
+            utility,
+            latency_table,
+            false_positive_penalty=float(router["utility_false_positive_penalty"]),
+        )
         selected = select_under_budget(candidates, input_shape, limits)
         routing_ms = (time.perf_counter() - started) * 1000
         local_model_ms = 0.0

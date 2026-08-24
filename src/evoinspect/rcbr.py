@@ -263,18 +263,28 @@ def cross_fitted_utility_predictions(
 
 
 def attach_costs_and_utility(
-    candidates: list[Roi], utility_model: UtilityModel | None, latency_table: dict[int, float]
+    candidates: list[Roi],
+    utility_model: UtilityModel | None,
+    latency_table: dict[int, float],
+    *,
+    false_positive_penalty: float = 0.0,
 ) -> list[Roi]:
     if not latency_table or any(size <= 0 or cost <= 0 for size, cost in latency_table.items()):
         raise ValueError("latency_table must contain positive area-pixel and millisecond values")
+    if false_positive_penalty < 0:
+        raise ValueError("false_positive_penalty must be non-negative")
     sizes = np.asarray(sorted(latency_table), dtype=np.float64)
     costs = np.asarray([latency_table[int(size)] for size in sizes], dtype=np.float64)
     attached: list[Roi] = []
     for roi in candidates:
-        benefit = (
+        useful_probability = (
             float(utility_model.predict(roi_features(roi))[0])
             if utility_model is not None
             else roi.predicted_benefit
+        )
+        benefit = max(
+            0.0,
+            useful_probability - false_positive_penalty * (1.0 - useful_probability),
         )
         cost = float(np.interp(roi.area, sizes, costs, left=costs[0], right=costs[-1]))
         attached.append(replace(roi, predicted_benefit=benefit, predicted_cost_ms=cost))

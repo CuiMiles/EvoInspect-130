@@ -7,6 +7,7 @@ from evoinspect.rcbr import (
     NormalRiskCalibrator,
     Roi,
     RouterLimits,
+    attach_costs_and_utility,
     cross_fitted_utility_predictions,
     fuse_refinements,
     generate_candidates,
@@ -74,3 +75,10 @@ def test_five_fold_utility_cross_fit_is_finite() -> None:
     assert np.isfinite(predictions).all()
     assert np.all((0 <= predictions) & (predictions <= 1))
     assert model.predict(features[:1]).shape == (1,)
+
+
+def test_false_positive_penalty_reduces_router_utility() -> None:
+    roi = Roi(0, 0, 4, 4, 0.4, 0.2, 0.1, 0.0, predicted_benefit=0.4)
+    unpenalized = attach_costs_and_utility([roi], None, {16: 2.0})[0]
+    penalized = attach_costs_and_utility([roi], None, {16: 2.0}, false_positive_penalty=0.5)[0]
+    assert penalized.predicted_benefit < unpenalized.predicted_benefit

@@ -33,7 +33,7 @@ overall_status: READY_FOR_USER_DEVELOPMENT_RUN
   分解解码、预处理/传输、全局模型、路由、局部模型、后处理和序列化；不冒充 2060 证据。
 - GPU 启动器跳过繁忙卡、不触碰现有进程；对使用卡加协作锁并在任务前复检。2026-08-24
   本轮 dry-run 时 8 张 RTX 3090 均为 20 MiB、0% 且无 compute process，但该状态会变化。
-- 全仓库 `pytest` 43/43 通过；`ruff check .` 通过；严格 `mypy src/evoinspect` 通过；两个
+- 全仓库 `pytest` 44/44 通过；`ruff check .` 通过；严格 `mypy src/evoinspect` 通过；两个
   bash 脚本语法检查和完整 development dry-run 通过。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。

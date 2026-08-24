@@ -22,7 +22,7 @@ engineering verification only and introduces no accuracy or latency claim.
 
 ## Verification
 
-- `pytest`: 43 passed.
+- `pytest`: 44 passed.
 - `ruff check .`: passed.
 - strict `mypy src/evoinspect`: passed.
 - `bash -n` for setup and launcher: passed.

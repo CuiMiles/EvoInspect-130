@@ -347,7 +347,12 @@ def build_image_outputs(
     latency_table = {roi.area: roi_cost_ms for roi in candidates}
     if not latency_table:
         latency_table = {input_shape[0] * input_shape[1]: roi_cost_ms}
-    candidates = attach_costs_and_utility(candidates, utility_model, latency_table)
+    candidates = attach_costs_and_utility(
+        candidates,
+        utility_model,
+        latency_table,
+        false_positive_penalty=float(router["utility_false_positive_penalty"]),
+    )
     limits = RouterLimits(
         latency_budget_ms=float(router["latency_budget_ms"]),
         max_rois=int(router["max_rois"]),
