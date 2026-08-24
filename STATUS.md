@@ -1,15 +1,15 @@
 # STATUS
 
-updated_at: 2026-08-24T11:39:55+08:00
-current_phase: G1_RCBR_ENVIRONMENT_READY
-overall_status: READY_FOR_USER_DEVELOPMENT_RUN
+updated_at: 2026-08-24T14:42:16+08:00
+current_phase: G1_RCBR_FORMAL_SMOKE_REVISION_RUNNING
+overall_status: FORMAL_RCBR_SMOKE_REVISION_RUNNING
 
 ## One-sentence truth
 
-固定上游 PatchCore 强基线与既有负结果保持不变；导师已批准 RCBR 主线，隔离环境、固定
-Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、两级门控和共享 GPU 安全
-启动器均已完成验证，但 EfficientAD-S/RCBR 尚未正式训练，因此没有新的算法指标或可提交
-创新结论。
+固定上游 PatchCore 强基线与既有负结果保持不变；RCBR 已完成 12 个 5000-step 工程 pilot，
+自动 smoke gate 明确失败。归因显示风险 CDF 与原始异常图的融合尺度不一致会放大误报，唯一
+机制级修订已提交为 `a816b32`，当前正在空闲 GPU 上运行四类 × seeds 130--132 的正式
+70,000-step smoke 复验；在该批次结束前没有可提交的 RCBR 性能结论。
 
 ## Completed
 
@@ -39,10 +39,22 @@ Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、�
   分解解码、预处理/传输、全局模型、路由、局部模型、后处理和序列化；不冒充 2060 证据。
 - GPU 启动器跳过繁忙卡、不触碰现有进程；对使用卡加协作锁并在任务前复检。2026-08-24
   本轮 dry-run 时 8 张 RTX 3090 均为 20 MiB、0% 且无 compute process，但该状态会变化。
-- 新环境内全仓库 `pytest` 44/44 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
+- 5000-step RCBR pilot 已完成 12/12，保存 72 个受控策略结果；其 smoke gate 失败，宏平均
+  full_rcbr 相对 PatchCore 的 AUPRO@0.05 差值为 -0.17024，Overall F1 差值为 -0.20082，
+  因此未扩展其余 11 类，也未解封确认 seeds。
+- 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
+
+## Current run
+
+正式修订 smoke 批次：
+
+- batch：`reports/experiments/rcbr-smoke-20260824T143800Z-rcbr-rawfusion-70k`
+- 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
+- 当前阶段：四类 seed-130；启动时 GPU 0--3 空闲并已分配，GPU 4--7 等待下一阶段
+- 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
 
 ## Ready to run
 
@@ -51,9 +63,11 @@ Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、�
 
 完整命令、输出和判定规则见 `docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
 
-## Not run in this code-preparation turn
+## Not run or not yet accepted
 
-- 未启动 GPU 训练、推理、PatchCore 开发参考 CPU 重评或正式 2500 时延循环；
+- 正式 70,000-step 修订 smoke 尚未结束；
+- 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
+- 未启动正式 2500 时延循环；
 - 未读取或运行 seeds 138–142；
 - 没有新增 accuracy、AUPRO、F1、ROI 面积或时延实测值。
 
@@ -78,7 +92,8 @@ Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、�
 ## Claims allowed today
 
 - 固定 PatchCore 的既有复现结果及其精确协议/硬件边界。
-- RCBR 是“已实现并通过工程测试的待验证候选方法”；可描述设计，不可描述性能收益。
+- RCBR 是“已实现、工程链路通过且 5000-step pilot 未通过预注册 smoke gate 的待修订方法”；
+  可报告该负诊断和唯一机制修订，不可描述性能收益。
 - 六种对照、数据隔离、门控、回退和 GPU 安全代码已经存在并通过 CPU/静态测试。
 
 ## Claims forbidden today
@@ -89,8 +104,8 @@ Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、�
 
 ## Blockers / remaining work
 
-- 环境阻塞已解除；首先需要用户运行 45 次开发任务并返回完整 batch，在此之前无法判断
-  RCBR 是否保留。
+- 当前正式修订 smoke 正在运行；若仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
+- 只有正式 smoke 通过后，才可补齐 15 类 × 3 开发 seeds 并生成 freeze manifest。
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
   GTX 2060、CPU 和最终提交包仍未完成。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
@@ -98,9 +113,8 @@ Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、�
 
 ## Next primary action
 
-用户运行 `scripts/run_rcbr_experiment_suite.sh development`，随后把命令末尾给出的完整
-batch 路径和 `logs/rcbr-development.log` 返回，先分析 smoke/full gate 再决定唯一一次修订
-或冻结；不要直接运行 confirmation。
+监控正式修订 smoke batch `rcbr-smoke-20260824T143800Z-rcbr-rawfusion-70k`，完成后读取
+`smoke-gate.json`；通过才补全开发集，失败则停止 RCBR 性能扩展并转入系统/部署贡献。
 
 ## Parallel work
 
