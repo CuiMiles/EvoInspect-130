@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-24T17:21:37+08:00
+updated_at: 2026-08-24T17:24:40+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -51,6 +51,10 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
   warmup=100、repeats=1000 的合成分辨率工程基准，端到端 p50=687.479 ms、p95=844.530 ms、
   max=1007.035 ms。该结果使用 5000-step wood checkpoint，只是 RTX 3090 工程测量，不是
   最终模型、原生高分辨率精度或 GTX 2060 证据。
+- 针对先前 `evaluate_saved_localization.py` 的 `f1_fixed_threshold` 报错，用官方
+  PatchCore 75-run source aggregate 做完整 CPU 重评，75/75 通过且 failures 为空；新结果
+  `reports/experiments/upstream-patchcore-localization-reeval-20260824T172300-keycheck/aggregate.json`
+  的 Overall F1=0.922353、AUPRO@0.05=0.724099，与既有强基线一致。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
 
@@ -61,8 +65,9 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：`wood/capsule/transistor/hazelnut` 四类 seed-130 并行训练，使用 GPU 4--7；
-  4 个 checkpoint 当前均为 `epoch=39, global_step=3200`，尚无 `metrics.json`、
-  `smoke-gate.json` 或其他可报告指标。GPU 0--2 为其他用户进程，GPU 3 空闲，未触碰其他进程。
+  4 个 checkpoint 最近均为 `epoch=99, global_step=8000`，尚无 `metrics.json`、
+  `smoke-gate.json` 或其他可报告指标。17:25 快照中 GPU 0--3 为 20 MiB/0% 空闲，
+  GPU 4--7 为本批次进程；此前其他用户占用的 GPU 从未被触碰，空闲状态是瞬时的。
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
 
 训练调度修订：
