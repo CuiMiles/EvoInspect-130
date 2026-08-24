@@ -3,7 +3,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from evoinspect.localization import compute_localization_diagnostics, connected_region_labels
+from evoinspect.localization import (
+    compute_localization_diagnostics,
+    connected_region_labels,
+    region_image_ids,
+)
 
 
 def test_connected_components_are_unique_and_eight_connected() -> None:
@@ -15,6 +19,15 @@ def test_connected_components_are_unique_and_eight_connected() -> None:
     assert labels[0, 0, 0] == labels[0, 1, 1]
     assert labels[1, 2, 2] != labels[0, 0, 0]
     assert sizes[1:].tolist() == [2, 1]
+    assert region_image_ids(labels, 2).tolist() == [0, 1]
+
+
+def test_region_image_mapping_rejects_cross_image_region_id() -> None:
+    labels = np.zeros((2, 2, 2), dtype=np.int32)
+    labels[0, 0, 0] = 1
+    labels[1, 1, 1] = 1
+    with pytest.raises(RuntimeError, match="exactly one image"):
+        region_image_ids(labels, 1)
 
 
 def test_perfect_localization_has_unit_aupro() -> None:

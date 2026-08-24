@@ -27,6 +27,29 @@ def connected_region_labels(
     return labels, sizes
 
 
+def region_image_ids(labels: NDArray[np.int32], region_count: int) -> NDArray[np.int64]:
+    """Map each positive region ID to one image without rescanning the full volume per ID."""
+    if labels.ndim != 3 or region_count < 0:
+        raise ValueError("labels must have N,H,W shape and region_count must be non-negative")
+    if region_count == 0:
+        return np.empty(0, dtype=np.int64)
+    foreground = labels > 0
+    region_ids = labels[foreground].astype(np.int64) - 1
+    if not len(region_ids) or int(region_ids.min()) < 0 or int(region_ids.max()) >= region_count:
+        raise ValueError("positive labels must cover declared region IDs")
+    image_grid = np.broadcast_to(
+        np.arange(labels.shape[0], dtype=np.int64)[:, None, None], labels.shape
+    )
+    image_ids = image_grid[foreground]
+    minimum = np.full(region_count, labels.shape[0], dtype=np.int64)
+    maximum = np.full(region_count, -1, dtype=np.int64)
+    np.minimum.at(minimum, region_ids, image_ids)
+    np.maximum.at(maximum, region_ids, image_ids)
+    if np.any(minimum != maximum) or np.any(maximum < 0):
+        raise RuntimeError("each region must belong to exactly one image")
+    return minimum
+
+
 def _clip_curve(
     fpr: NDArray[np.float64],
     pro: NDArray[np.float64],
@@ -234,13 +257,8 @@ def compute_localization_diagnostics(
 
     # The relative-area definition is fixed across tasks and datasets. Quantile slices
     # are retained only as a backwards-compatible diagnostic.
-    region_image_ids = np.zeros(region_count, dtype=np.int64)
-    for region_id in range(1, region_count + 1):
-        image_ids = np.flatnonzero(np.any(labels == region_id, axis=(1, 2)))
-        if len(image_ids) != 1:
-            raise RuntimeError(f"region {region_id} must belong to exactly one image")
-        region_image_ids[region_id - 1] = int(image_ids[0])
-    image_areas = np.asarray([targets[index].size for index in region_image_ids], dtype=np.float64)
+    image_ids = region_image_ids(labels, region_count)
+    image_areas = np.asarray([targets[index].size for index in image_ids], dtype=np.float64)
     relative_areas = foreground_sizes.astype(np.float64) / image_areas
     fixed_area_masks = {
         "tiny_le_0_001": relative_areas <= 0.001,
