@@ -1,0 +1,30 @@
+schema_version: 1
+model_id: efficientad-s-anomalib-2.3.0-5000step-development
+purpose: bounded_development_pilot
+upstream:
+  repository: https://github.com/open-edge-platform/anomalib
+  tag: v2.3.0
+  commit: 091ca6aca92c8d0e416394f79e52f5a3cea3db73
+  license: Apache-2.0
+model_size: small
+imagenette_dir: /home/CuiMinghao/models/evoinspect/imagenette
+input_resolution: [256, 256]
+normal_support_train: 80
+normal_support_calibration: 20
+training:
+  max_steps: 5000
+  max_epochs: 63
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  train_batch_size: 1
+  eval_batch_size: 1
+  num_workers: 4
+  precision: 32-true
+inference:
+  batch_size: 1
+  final_map_resolution: [256, 256]
+  score_quantile: 0.995
+  no_backbone_finetuning_on_defects: true
+downloads:
+  pretrained_teacher_sha256: c09aeaa2b33f244b3261a5efdaeae8f8284a949470a4c5a526c61275fe62684a
+  imagenette_sha256: 6cbfac238434d89fe99e651496f0812ebc7a10fa62bd42d6874042bf01de4efd
