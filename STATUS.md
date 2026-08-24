@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-24T20:30:03+08:00
+updated_at: 2026-08-24T20:37:25+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -65,7 +65,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：`wood/capsule/transistor/hazelnut` 四类 seed-130 并行训练，使用 GPU 4--7；
-  四类最新 checkpoint 均为 `epoch=679, global_step=54400`，四个训练进程仍存活；尚无
+  四类最新 checkpoint 均为 `epoch=699, global_step=56000`，四个训练进程仍存活；尚无
   `metrics.json`、`smoke-gate.json`
   或其他可报告指标。19:12 快照中 GPU 0--3 由其他用户 `PengJunhao` 的 PID 2055--2058
   占用，GPU 4--7 仅有本批次进程；watchdog 只检查 GPU 4--7，未触碰外部任务。
