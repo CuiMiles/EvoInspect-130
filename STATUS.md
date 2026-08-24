@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-24T16:46:00+08:00
+updated_at: 2026-08-24T16:59:47+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -51,12 +51,13 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## Current run
 
-正式修订 smoke 批次（首轮中断；优化批次运行中）：
+正式修订 smoke 批次（GPU 安全重跑运行中）：
 
-- batch：`reports/experiments/rcbr-smoke-20260824T143800Z-rcbr-rawfusion-70k`
+- batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
-- 当前阶段：四类 seed-130 已运行约 75 分钟后中断；每类已生成 70k 训练过程中的 checkpoint，
-  但没有 `metrics.json`/gate，GPU 0--7 已释放
+- 当前阶段：`wood/capsule/transistor/hazelnut` 四类 seed-130 并行训练，使用 GPU 4--7；
+  4 个 checkpoint 当前均为 `epoch=39, global_step=3200`，尚无 `metrics.json`、
+  `smoke-gate.json` 或其他可报告指标。GPU 0--2 为其他用户进程，GPU 3 空闲，未触碰其他进程。
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
 
 训练调度修订：
@@ -66,24 +67,24 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - `scripts/efficientad_rcbr_100_30.py` 在 fit 后用最终权重对 held-out calibration set 重算一次
   quantile，确保推理归一化不依赖中间 epoch。
 - 首轮中断目录只作为工程诊断证据，不能计入性能统计；新批次必须使用新 batch stamp。
-- 当前优化批次：`reports/experiments/rcbr-smoke-20260824T160100Z-rcbr-rawfusion-70k-vf20`，四类
+- 已终止优化批次：`reports/experiments/rcbr-smoke-20260824T160100Z-rcbr-rawfusion-70k-vf20`，四类
   seed-130 已进入训练，GPU 4--7 保持空闲；截至 16:31 已生成 4 个训练 checkpoint，4 个
   初始 quantile 阶段完成，但尚无 `metrics.json` 或 `smoke-gate.json`；随后发现 GPU 0--2
   出现其他用户进程，本批次已只终止我方进程组并保留 checkpoint，不能计入性能统计。
-- 新重跑批次：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`，
-  当前四类 seed-130 使用 GPU 4--7，启动前均为 20 MiB/0%，尚无 checkpoint 或指标；旧批次
-  仅保留为中断工程诊断。
+- 新重跑批次启动时 GPU 4--7 均为 20 MiB/0%；当前仍由 GPU 安全 watchdog 监控，旧批次
+  仅保留为中断工程诊断，不能计入性能统计。
 
 ## Ready to run
 
-1. 可选复核：`EVOINSPECT_DRY_RUN=1 bash scripts/run_rcbr_experiment_suite.sh development`
-2. 正式开发：`bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log`
+1. smoke gate 通过后由监督器自动解锁开发阶段；手动命令仍为：
+   `bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log`
+2. 可选复核：`EVOINSPECT_DRY_RUN=1 bash scripts/run_rcbr_experiment_suite.sh development`
 
 完整命令、输出和判定规则见 `docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke 首轮已中断且没有指标；GPU 安全重跑正在运行；
+- 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（4 个 seed-130 checkpoint，0 个指标）；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 未启动正式 2500 时延循环；
 - 未读取或运行 seeds 138–142；
