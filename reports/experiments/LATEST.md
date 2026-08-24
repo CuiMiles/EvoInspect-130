@@ -1,6 +1,6 @@
 # Latest experiment
 
-Updated 2026-08-24 23:04 CST. The latest completed evidence consists of a CPU localization
+Updated 2026-08-24 23:14 CST. The latest completed evidence consists of a CPU localization
 reevaluation and an RTX 3090 engineering latency benchmark; the formal revised RCBR smoke is
 still running and has not produced performance metrics or a gate.
 
@@ -49,8 +49,8 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
 
 - Batch: `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`.
 - Seed-130 wood/capsule/transistor/hazelnut completed 4/4 `metrics.json`; the smoke-s131-132 stage
-  has 8 tasks total, with 4 currently running on GPUs 4--7 (seed-131/132 latest about 17,600 steps)
-  and 4 queued. `smoke-gate.json` is not present yet, so no formal
+  has 8 tasks total, with 4 currently running on GPUs 4--7 (seed-131 latest about 20,800 steps,
+  seed-132 about 19,200 steps) and 4 queued. `smoke-gate.json` is not present yet, so no formal
   smoke conclusion is available.
   GPUs 0--3 are currently occupied by another user and were not touched.
 - The 5000-step RCBR pilot failed its pre-registered gate; the current 70k raw-score fusion
