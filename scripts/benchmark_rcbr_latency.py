@@ -25,7 +25,7 @@ from evoinspect.rcbr import (
     multiscale_disagreement,
     select_under_budget,
 )
-from scripts.efficientad_rcbr_100_30 import infer_array, resize_map, scalar_calibrate
+from scripts.efficientad_rcbr_100_30 import infer_array, resize_map
 
 
 def percentile(values: list[float]) -> dict[str, float]:
@@ -142,7 +142,10 @@ def benchmark(args: argparse.Namespace) -> None:
             refinements.append(
                 (
                     roi,
-                    scalar_calibrate(resize_map(local, (roi.height, roi.width)), normal_maps),
+                    # Keep local and global maps in the same raw EfficientAD score space.
+                    # Risk calibration is used only for routing, matching the revised RCBR
+                    # fusion implemented by the training/evaluation path.
+                    resize_map(local, (roi.height, roi.width)),
                     roi.predicted_benefit,
                 )
             )
