@@ -1,14 +1,15 @@
 # STATUS
 
-updated_at: 2026-08-24T11:12:00+08:00
-current_phase: G1_RCBR_CODE_READY
+updated_at: 2026-08-24T11:39:55+08:00
+current_phase: G1_RCBR_ENVIRONMENT_READY
 overall_status: READY_FOR_USER_DEVELOPMENT_RUN
 
 ## One-sentence truth
 
-固定上游 PatchCore 强基线与既有负结果保持不变；导师已批准 RCBR 主线，代码、六种受控
-对照、固定相对面积评测、两级门控、封存确认锁和共享 GPU 安全启动器均已通过 CPU/静态
-验证，但 EfficientAD-S/RCBR 尚未正式训练，因此当前没有新的算法指标或可提交创新结论。
+固定上游 PatchCore 强基线与既有负结果保持不变；导师已批准 RCBR 主线，隔离环境、固定
+Anomalib/EfficientAD 依赖、教师权重、Imagenette、六种受控对照、两级门控和共享 GPU 安全
+启动器均已完成验证，但 EfficientAD-S/RCBR 尚未正式训练，因此没有新的算法指标或可提交
+创新结论。
 
 ## Completed
 
@@ -17,8 +18,13 @@ overall_status: READY_FOR_USER_DEVELOPMENT_RUN
 - 停止 HeteroMemory、GuardedFusion 和 MaskedPrototype；PatchCore 只保留为强精度基线。
 - 固定官方 Anomalib tag `v2.3.0`、commit
   `091ca6aca92c8d0e416394f79e52f5a3cea3db73`、Apache-2.0，代码 checkout 干净。
-- 新增隔离 EfficientAD 环境安装器，不修改现有项目环境或 PatchCore 环境；预训练教师和
-  Imagenette 下载使用上游给定 SHA-256。
+- 隔离 EfficientAD 环境已安装到 `/home/CuiMinghao/envs/evoinspect-efficientad`，未修改现有
+  项目/PatchCore 环境；Python 3.11.16、Torch 2.6.0+cu124、Anomalib 2.3.0 可导入，
+  EfficientAD-S、Engine 与 Folder 均可实例化。
+- EfficientAD 预训练教师已下载到仓库忽略目录，Imagenette 已下载到外部模型目录；两份
+  教师文件记录独立 SHA-256，Imagenette 共 13,395 个文件。
+- 安装时发现 `imagecodecs 2026.3.6` 不再提供 CPython 3.11 wheel 且源码 limited-ABI 编译
+  失败；安装器已固定最新兼容二进制版 `2026.1.14`，重跑成功且 `pip check` 无冲突。
 - 实现 RCBR v1：空间正常风险校准、多尺度不一致/高频/位置候选、5 折 ROI 收益估计、
   NMS、实测成本表、最多 4 ROI 的时延/面积硬预算、共享模型局部复检、单调融合和显式回退。
 - 每个类别/seed 只训练一个 EfficientAD-S，复用权重与局部推理评估统一下采样、全网格、
@@ -33,22 +39,20 @@ overall_status: READY_FOR_USER_DEVELOPMENT_RUN
   分解解码、预处理/传输、全局模型、路由、局部模型、后处理和序列化；不冒充 2060 证据。
 - GPU 启动器跳过繁忙卡、不触碰现有进程；对使用卡加协作锁并在任务前复检。2026-08-24
   本轮 dry-run 时 8 张 RTX 3090 均为 20 MiB、0% 且无 compute process，但该状态会变化。
-- 全仓库 `pytest` 44/44 通过；`ruff check .` 通过；严格 `mypy src/evoinspect` 通过；两个
-  bash 脚本语法检查和完整 development dry-run 通过。
+- 新环境内全仓库 `pytest` 44/44 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
+  文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
 
 ## Ready to run
 
-1. `bash scripts/setup_efficientad_env.sh`
-2. `EVOINSPECT_DRY_RUN=1 bash scripts/run_rcbr_experiment_suite.sh development`
-3. `bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log`
+1. 可选复核：`EVOINSPECT_DRY_RUN=1 bash scripts/run_rcbr_experiment_suite.sh development`
+2. 正式开发：`bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log`
 
 完整命令、输出和判定规则见 `docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
 
 ## Not run in this code-preparation turn
 
-- 未安装新的 EfficientAD 环境；未下载 EfficientAD 教师或 Imagenette；
 - 未启动 GPU 训练、推理、PatchCore 开发参考 CPU 重评或正式 2500 时延循环；
 - 未读取或运行 seeds 138–142；
 - 没有新增 accuracy、AUPRO、F1、ROI 面积或时延实测值。
@@ -85,7 +89,8 @@ overall_status: READY_FOR_USER_DEVELOPMENT_RUN
 
 ## Blockers / remaining work
 
-- 首先需要用户运行 45 次开发训练并返回完整 batch；在此之前无法判断 RCBR 是否保留。
+- 环境阻塞已解除；首先需要用户运行 45 次开发任务并返回完整 batch，在此之前无法判断
+  RCBR 是否保留。
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
   GTX 2060、CPU 和最终提交包仍未完成。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。

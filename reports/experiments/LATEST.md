@@ -28,7 +28,7 @@ Main evidence:
 - `reports/experiments/upstream-patchcore-localization-reeval-v2-20260824T101000/failures.json`
 - `reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json`
 
-RCBR code preparation is now complete; see
+RCBR code and isolated EfficientAD environment preparation are now complete; see
 `reports/experiments/rcbr-code-readiness-report-20260824.md`. This is not a completed model
 experiment and therefore does not replace the verified metrics above.
 

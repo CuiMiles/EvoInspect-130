@@ -43,7 +43,7 @@ def read_config(path: Path) -> dict[str, Any]:
         value = json.loads(text)
     except json.JSONDecodeError:
         try:
-            import yaml  # type: ignore[import-untyped]
+            import yaml
         except ImportError as exc:
             raise ValueError(
                 f"{path} is not JSON-compatible YAML and PyYAML is not installed"

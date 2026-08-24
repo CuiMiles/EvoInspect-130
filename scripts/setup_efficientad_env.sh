@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 env_prefix="${EVOINSPECT_EFFICIENTAD_ENV:-/home/CuiMinghao/envs/evoinspect-efficientad}"
-conda_exe="${EVOINSPECT_CONDA:-/home/CuiMinghao/miniforge3/bin/conda}"
+conda_exe="${EVOINSPECT_CONDA:-/home/CuiMinghao/apps/miniforge3/bin/conda}"
 upstream="${repo_root}/third_party/anomalib-2.3.0"
 expected_commit="091ca6aca92c8d0e416394f79e52f5a3cea3db73"
 
@@ -25,6 +25,10 @@ python_exe="${env_prefix}/bin/python"
 "${python_exe}" -m pip install \
   --index-url https://download.pytorch.org/whl/cu124 \
   torch==2.6.0 torchvision==0.21.0
+# imagecodecs 2026.3.6 no longer publishes a CPython 3.11 wheel and its source
+# build fails with the limited Python ABI. Keep the newest release that provides
+# a compatible binary wheel so setup remains compiler-independent and repeatable.
+"${python_exe}" -m pip install --only-binary=:all: imagecodecs==2026.1.14
 "${python_exe}" -m pip install -e "${upstream}"
 "${python_exe}" -m pip install -e "${repo_root}[metrics,yaml,dev]"
 

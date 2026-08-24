@@ -4,8 +4,9 @@ Date: 2026-08-24
 
 ## Outcome
 
-RCBR v1 and its complete development launcher are code-ready but untrained. This report contains
-engineering verification only and introduces no accuracy or latency claim.
+RCBR v1, its complete development launcher, and the isolated EfficientAD environment are ready but
+untrained. This report contains engineering verification only and introduces no accuracy or
+latency claim.
 
 ## Implemented evidence
 
@@ -22,28 +23,36 @@ engineering verification only and introduces no accuracy or latency claim.
 
 ## Verification
 
-- `pytest`: 44 passed.
+- Isolated environment: Python 3.11.16, Torch 2.6.0+cu124, Anomalib 2.3.0.
+- `EfficientAd(model_size="small")`, `Engine`, and `Folder`: imported/instantiated successfully.
+- `pip check`: no broken requirements.
+- EfficientAD teacher weights: two files, 41 MB total, independent SHA-256 recorded.
+- Imagenette: downloaded outside the repository, 13,395 files, 1.5 GB parent directory.
+- `pytest`: 44 passed in the installed environment.
 - `ruff check .`: passed.
 - strict `mypy src/evoinspect`: passed.
 - `bash -n` for setup and launcher: passed.
 - development launcher dry-run: 4 + 8 + 33 = 45 tasks; no training files or GPU process created.
-- Direct Anomalib API import in the existing project environment was not possible because
-  `omegaconf` is intentionally absent. This is expected; the isolated setup script installs the
-  pinned upstream dependencies before formal training. Actual train/infer API execution remains
-  to be validated by the first smoke task.
+- The first dependency pass failed while compiling `imagecodecs 2026.3.6`, which has no CPython
+  3.11 wheel. The installer now pins the newest compatible binary wheel, `2026.1.14`; the rerun
+  completed and retained the already installed pinned CUDA Torch packages.
+- Actual train/infer execution and resulting metrics remain to be validated by the seed-130 smoke
+  stage. Import and construction success is not a training result.
 
 ## Run boundary
 
-No EfficientAD environment was installed, no upstream weight was downloaded, no GPU training was
-started, and seeds 138–142 remain sealed. If the seed-130 functional stage fails, the launcher
-stops with evidence rather than continuing all 45 tasks.
+No GPU training was started and seeds 138–142 remain sealed. At validation time the eight GPUs had
+no compute processes; this is only a snapshot and the launcher must recheck before every task. If
+the seed-130 functional stage fails, the launcher stops with evidence rather than continuing all 45
+tasks.
 
 ## Command
 
 ```bash
-bash scripts/setup_efficientad_env.sh
 bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log
 ```
 
 Return the batch path printed by the launcher. Do not run confirmation before development results
 are reviewed and a freeze manifest is created.
+
+Environment evidence: `evidence/environment-efficientad-20260824.txt`.
