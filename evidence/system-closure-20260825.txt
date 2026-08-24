@@ -1,18 +1,18 @@
-run_id: system-closure-20260825T053617+0800
-commit: d9c77a8091b7a95bf2a421e4672d3818b6b2f476
+run_id: system-closure-20260825T054655+0800
+commit: a94c77ac34307fd555a11fafacb260af8447f40f
 scope: deterministic video sequence FSM and two-level GuardedAdapt controller
 hardware: CPU-only; no training GPU requested
 
-command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m pytest -q tests/test_sequence.py tests/test_guarded_adapt.py
+command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m pytest -q
 result:
-.......                                                                  [100%]
-7 passed in 0.04s
+......................................................                   [100%]
+54 passed in 5.35s
 
-command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m ruff check src/evoinspect/sequence.py src/evoinspect/guarded_adapt.py tests/test_sequence.py tests/test_guarded_adapt.py
+command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m ruff check .
 result: All checks passed!
 
-command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m mypy src/evoinspect/sequence.py src/evoinspect/guarded_adapt.py
-result: Success: no issues found in 2 source files
+command: /home/CuiMinghao/envs/evoinspect-efficientad/bin/python -m mypy src
+result: Success: no issues found in 17 source files
 
 interpretation: engineering and static-test evidence only; no real-video accuracy, feedback gain,
 online latency, GTX 2060 result, or official 200 ms claim is supported by this file.
