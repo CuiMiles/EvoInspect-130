@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-24T16:39:00+08:00
-current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RESTART_PENDING
-overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
+updated_at: 2026-08-24T16:46:00+08:00
+current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
+overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## One-sentence truth
 
@@ -10,8 +10,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
 自动 smoke gate 明确失败。归因显示风险 CDF 与原始异常图的融合尺度不一致会放大误报，唯一
 机制级修订已提交为 `a816b32`，当前正在空闲 GPU 上运行四类 × seeds 130--132 的正式
 70,000-step smoke 复验；首轮因逐 epoch 验证开销过大而在无指标前中断，已保留日志/checkpoint，
-并将验证频率降为每 20 epoch、训练结束后单独重算最终 quantile。优化后的新批次已在 GPU 0--3
-运行，当前没有可提交的 RCBR 性能结论。
+并将验证频率降为每 20 epoch、训练结束后单独重算最终 quantile。当前 GPU 安全重跑使用 GPU 4--7，
+当前没有可提交的 RCBR 性能结论。
 
 ## Completed
 
@@ -70,7 +70,9 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
   seed-130 已进入训练，GPU 4--7 保持空闲；截至 16:31 已生成 4 个训练 checkpoint，4 个
   初始 quantile 阶段完成，但尚无 `metrics.json` 或 `smoke-gate.json`；随后发现 GPU 0--2
   出现其他用户进程，本批次已只终止我方进程组并保留 checkpoint，不能计入性能统计。
-- 新重跑将使用新 batch stamp 和启动前确认的 GPU 4--7；旧批次仅保留为中断工程诊断。
+- 新重跑批次：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`，
+  当前四类 seed-130 使用 GPU 4--7，启动前均为 20 MiB/0%，尚无 checkpoint 或指标；旧批次
+  仅保留为中断工程诊断。
 
 ## Ready to run
 
@@ -81,7 +83,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke 首轮已中断且没有指标；优化后的新 smoke 正在运行；
+- 正式 70,000-step 修订 smoke 首轮已中断且没有指标；GPU 安全重跑正在运行；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
 - 未启动正式 2500 时延循环；
 - 未读取或运行 seeds 138–142；
@@ -120,7 +122,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
 
 ## Blockers / remaining work
 
-- GPU 安全重跑尚未完成；若正式 smoke 仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
+- GPU 安全重跑正在进行；若正式 smoke 仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
 - 只有正式 smoke 通过后，才可补齐 15 类 × 3 开发 seeds 并生成 freeze manifest。
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
   GTX 2060、CPU 和最终提交包仍未完成。
@@ -129,7 +131,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RESTART_PENDING
 
 ## Next primary action
 
-启动 GPU 安全重跑并读取 `smoke-gate.json`；通过才补全开发集，失败则停止 RCBR 性能扩展并转入
+监控 GPU 安全重跑并读取 `smoke-gate.json`；通过才补全开发集，失败则停止 RCBR 性能扩展并转入
 系统/部署贡献。
 
 ## Parallel work
