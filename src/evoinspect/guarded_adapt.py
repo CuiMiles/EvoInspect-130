@@ -260,6 +260,8 @@ class GuardedAdaptController:
 
         reasons: list[str] = []
         artifact = Path(candidate.artifact_path)
+        if any(item.version_id == candidate.version_id for item in self._versions):
+            reasons.append("candidate version_id already exists")
         if not artifact.is_file():
             reasons.append("candidate artifact does not exist")
         elif self.policy.max_artifact_bytes is not None:
@@ -368,6 +370,39 @@ class GuardedAdaptController:
             stream.write(payload)
             temporary = Path(stream.name)
         temporary.replace(destination)
+
+    @classmethod
+    def load(cls, path: Path) -> GuardedAdaptController:
+        """Restore a persisted controller without discarding audit history."""
+
+        with path.open(encoding="utf-8") as stream:
+            payload = json.load(stream)
+        versions = [ModelVersion(**item) for item in payload["versions"]]
+        active_id = str(payload["active_version_id"])
+        active = next((item for item in versions if item.version_id == active_id), None)
+        if active is None or active.status != "active":
+            raise ValueError("persisted controller has no active version")
+        instance = cls(active, policy=GatePolicy(**payload["policy"]), state_path=path)
+        instance._versions = versions
+        instance._active_version_id = active_id
+        instance._thresholds = {
+            str(key): float(value) for key, value in payload.get("thresholds", {}).items()
+        }
+        instance._memory = [str(value) for value in payload.get("memory", [])]
+        instance._immediate_updates = [
+            ImmediateUpdate(**item) for item in payload.get("immediate_updates", [])
+        ]
+        instance._decisions = [
+            GateDecision(
+                accepted=bool(item["accepted"]),
+                version_id=str(item["version_id"]),
+                feedback_gain=float(item["feedback_gain"]),
+                anchor_regression=float(item["anchor_regression"]),
+                reasons=tuple(str(reason) for reason in item.get("reasons", [])),
+            )
+            for item in payload.get("decisions", [])
+        ]
+        return instance
 
     def _save_if_configured(self) -> None:
         if self.state_path is not None:

@@ -83,3 +83,6 @@ def test_model_rollback_persists_state(tmp_path: Path) -> None:
     assert active.version_id == "base"
     assert active.status == "active"
     assert instance.state_path is not None and instance.state_path.is_file()
+    restored = GuardedAdaptController.load(instance.state_path)
+    assert restored.active_version.version_id == "base"
+    assert len(restored.versions) == 2
