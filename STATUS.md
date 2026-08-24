@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-24T16:59:47+08:00
+updated_at: 2026-08-24T17:21:37+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -46,6 +46,11 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
   因此未扩展其余 11 类，也未解封确认 seeds。
 - 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
+- 修复并实测 `benchmark_rcbr_latency.py`：补齐修订后 raw-score 融合接口和 PyTorch 2.6
+  可信 `PosixPath` checkpoint allowlist；在 GPU 3 的 RTX 3090 上完成 2500×2500、batch=1、
+  warmup=100、repeats=1000 的合成分辨率工程基准，端到端 p50=687.479 ms、p95=844.530 ms、
+  max=1007.035 ms。该结果使用 5000-step wood checkpoint，只是 RTX 3090 工程测量，不是
+  最终模型、原生高分辨率精度或 GTX 2060 证据。
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
 
@@ -86,7 +91,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 - 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（4 个 seed-130 checkpoint，0 个指标）；
 - 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
-- 未启动正式 2500 时延循环；
+- 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
+  5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
 - 未读取或运行 seeds 138–142；
 - 没有新增 accuracy、AUPRO、F1、ROI 面积或时延实测值。
 
@@ -113,6 +119,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 固定 PatchCore 的既有复现结果及其精确协议/硬件边界。
 - RCBR 是“已实现、工程链路通过且 5000-step pilot 未通过预注册 smoke gate 的待修订方法”；
   可报告该负诊断和唯一机制修订，不可描述性能收益。
+- 可报告 5000-step wood checkpoint 在 RTX 3090 上的合成 2500×2500 时延分解，但必须明确
+  checkpoint、GPU、输入重采样和不代表 GTX 2060/官方 200 ms。
 - 六种对照、数据隔离、门控、回退和 GPU 安全代码已经存在并通过 CPU/静态测试。
 
 ## Claims forbidden today
@@ -128,6 +136,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频 FSM、反馈/影子发布/回滚、
   GTX 2060、CPU 和最终提交包仍未完成。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
+- 最终性能基准必须使用通过开发门后选定的 checkpoint 重跑；当前延迟结果不能替代该步骤。
 - 若 smoke 失败，导师只允许最多一次机制级修订；不得用确认种子调参。
 
 ## Next primary action
