@@ -241,19 +241,6 @@ def mask_for_row(row: dict[str, str], shape: tuple[int, int]) -> NDArray[np.bool
         return np.asarray(resized, dtype=np.uint8) > 0
 
 
-def scalar_calibrate(
-    values: NDArray[np.floating[Any]], normal_scores: NDArray[np.float32]
-) -> NDArray[np.float32]:
-    from scipy import special  # type: ignore[import-untyped]
-
-    flat = np.asarray(normal_scores, dtype=np.float64).ravel()
-    scale = max(float(flat.std(ddof=1)), 1e-8)
-    return np.asarray(
-        special.ndtr((np.asarray(values, dtype=np.float64) - float(flat.mean())) / scale),
-        dtype=np.float32,
-    )
-
-
 def full_grid(shape: tuple[int, int], rows: int, columns: int, cost_ms: float) -> list[Roi]:
     height, width = shape
     result: list[Roi] = []
@@ -402,12 +389,14 @@ def build_image_outputs(
     outputs: dict[str, NDArray[np.float32]] = {"uniform_downsample": global_map}
     audit: dict[str, Any] = {}
     for strategy in STRATEGIES[1:]:
-        base = calibrated if strategy in {"risk_calibrated", "full_rcbr"} else global_map
+        # Risk calibration is a routing signal, not a replacement anomaly-score space.
+        # The global and local EfficientAD outputs must remain comparable before max fusion;
+        # mixing a spatial CDF with raw model scores caused broad false-positive inflation in
+        # the first smoke gate. The calibrated map still drives candidate generation above.
+        base = global_map
         refinements = []
         for roi in selected[strategy]:
             local = local_maps[(roi.y0, roi.x0, roi.y1, roi.x1)]
-            if strategy in {"risk_calibrated", "full_rcbr"}:
-                local = scalar_calibrate(local, normal_maps)
             evidence = roi.predicted_benefit if strategy == "full_rcbr" else 1.0
             refinements.append((roi, local, evidence))
         output, records = fuse_refinements(
