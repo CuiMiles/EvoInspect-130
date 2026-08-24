@@ -178,7 +178,13 @@ def train_efficientad(
     elapsed = time.perf_counter() - started
     checkpoint = output_dir / "model.ckpt"
     engine.trainer.save_checkpoint(checkpoint, weights_only=False)
+    # Lightning's strategy teardown moves the module back to CPU after fit. All
+    # calibration, router fitting and controlled test inference below must run on
+    # the assigned GPU rather than silently consuming many shared CPU cores.
+    model.to(torch.device("cuda", 0))
     model.eval()
+    if model.device.type != "cuda":
+        raise RuntimeError("EfficientAD model was not restored to CUDA after training")
     return model, {
         "training_seconds": elapsed,
         "checkpoint": str(checkpoint),
