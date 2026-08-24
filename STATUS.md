@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T03:48:19+08:00
+updated_at: 2026-08-25T03:49:31+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -66,7 +66,7 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
   smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）；第二批
-  transistor-s131/132 已到 11,200 steps，hazelnut-s131/132 已到 9,600 steps；尚无
+  transistor-s131/132 已到 11,200 steps，hazelnut-s131 已到 11,200、s132 已到 9,600 steps；尚无
   `smoke-gate.json` 或正式聚合结论。GPU 0--3 由其他用户占用，
   GPU 4--7 仅有本批次进程；
   watchdog 只检查 GPU 4--7，未触碰外部任务。
