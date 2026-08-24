@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T03:02:03+08:00
+updated_at: 2026-08-25T03:48:19+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
 overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
@@ -65,9 +65,9 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
 - 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
-  smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）；transistor-s131/132
-  与 hazelnut-s131/132 正在运行，已进入第二批训练；尚无 `smoke-gate.json` 或正式聚合结论。
-  GPU 0--3 由其他用户占用，
+  smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）；第二批
+  transistor-s131/132 已到 11,200 steps，hazelnut-s131/132 已到 9,600 steps；尚无
+  `smoke-gate.json` 或正式聚合结论。GPU 0--3 由其他用户占用，
   GPU 4--7 仅有本批次进程；
   watchdog 只检查 GPU 4--7，未触碰外部任务。
 - 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
