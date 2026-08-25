@@ -1,17 +1,15 @@
 # STATUS
 
-updated_at: 2026-08-25T07:20:00+08:00
-current_phase: G1_RCBR_FORMAL_SMOKE_VALIDATION_GPU_SAFE_RUNNING
-overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
+updated_at: 2026-08-25T08:12:00+08:00
+current_phase: G1_RCBR_FORMAL_SMOKE_REJECTED_SYSTEM_DEPLOYMENT_PIVOT
+overall_status: FORMAL_RCBR_SMOKE_FAILED_RCBR_PIVOT
 
 ## One-sentence truth
 
-固定上游 PatchCore 强基线与既有负结果保持不变；RCBR 已完成 12 个 5000-step 工程 pilot，
-自动 smoke gate 明确失败。归因显示风险 CDF 与原始异常图的融合尺度不一致会放大误报，唯一
-机制级修订已提交为 `a816b32`，当前正在空闲 GPU 上运行四类 × seeds 130--132 的正式
-70,000-step smoke 复验；首轮因逐 epoch 验证开销过大而在无指标前中断，已保留日志/checkpoint，
-并将验证频率降为每 20 epoch、训练结束后单独重算最终 quantile。当前 GPU 安全重跑使用 GPU 4--7，
-当前没有可提交的 RCBR 性能结论。
+固定上游 PatchCore 强基线与既有负结果保持不变；RCBR 5000-step pilot 与唯一 raw-score-space
+fusion 机制修订的正式 70,000-step smoke 均未通过预注册 gate。正式批次 12/12 完成，宏平均
+ΔAUPRO@0.05=+0.015647 但低于 +0.025 门槛，ΔOverall F1=-0.150921，ΔUnseen F1=-0.165300；
+RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的报告收敛路线。
 
 ## Completed
 
@@ -44,6 +42,11 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 5000-step RCBR pilot 已完成 12/12，保存 72 个受控策略结果；其 smoke gate 失败，宏平均
   full_rcbr 相对 PatchCore 的 AUPRO@0.05 差值为 -0.17024，Overall F1 差值为 -0.20082，
   因此未扩展其余 11 类，也未解封确认 seeds。
+- 正式 70,000-step RCBR raw-score-space fusion smoke 已完成 12/12；`smoke-gate.json` 明确
+  `passed=false`。平均 ΔAUPRO@0.05=+0.015647、最差类别=-0.105517、Overall F1=-0.150921、
+  Unseen F1=-0.165300，五项预注册 gate 检查全部失败；development 扩展与确认 seeds 138--142
+  均未启动。完整负结果报告见
+  `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md`。
 - 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 修复并实测 `benchmark_rcbr_latency.py`：补齐修订后 raw-score 融合接口和 PyTorch 2.6
@@ -62,22 +65,19 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 - 根 Git 已初始化并用于可追溯代码快照；大体积实验目录、权重、NPZ、FAISS 和生成参考被
   排除，未来训练可记录真实 commit。
 
-## Current run
+## Formal smoke outcome
 
-正式修订 smoke 批次（GPU 安全重跑运行中）：
+正式修订 smoke 批次已结束：
 
 - batch：`reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`
 - 配置：`configs/baselines/efficientad_s_100_30.yaml`，70,000 steps
-- 当前阶段：seed-130 的 wood/capsule/transistor/hazelnut 已完成 4/4 `metrics.json`；
-  smoke-s131-132 已完成 4/8 指标（wood-s131/132、capsule-s131/132）。截至
-  07:20 CST，剩余 transistor-s131/132 与 hazelnut-s131/s132 四个 worker 仍存活并持续写出
-  checkpoint；最近读取到的进度为 transistor-s131/s132=60,800、hazelnut-s131/s132=59,200，
-  目标为 70,000。
-  四个任务仍未完成最终评估，尚未生成 `metrics.json`，因此尚无 `smoke-gate.json` 或正式
-  聚合结论。
-  GPU 0--3 由其他用户占用，GPU 4--7 仅有本批次进程；watchdog 只检查 GPU 4--7，
-  未触碰外部任务。
-- 目标：验证原始异常分数空间融合修订；通过前不得补跑其余类别
+- 范围：capsule、hazelnut、transistor、wood × seeds 130--132，共 12 个任务
+- 结果：12/12 `metrics.json` 完成，`smoke-gate.json` 为 `passed=false`；无正式 `aggregate.json`
+  是预期行为，因为 gate 失败后启动器不会扩展 development。
+- gate 失败项：平均 AUPRO@0.05、类别不下降比例、最差类别、Overall F1、Unseen F1 均未达标。
+- GPU 安全：任务只使用 GPU 4--7；完成后 GPU 4--7 已释放，GPU 0--3 的其他用户任务未被触碰。
+- 详细数值与 provenance：
+  `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md`
 
 训练调度修订：
 
@@ -95,18 +95,15 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## Ready to run
 
-1. smoke gate 通过后由监督器自动解锁开发阶段；手动命令仍为：
-   `bash scripts/run_rcbr_experiment_suite.sh development 2>&1 | tee logs/rcbr-development.log`
-2. 可选复核：`EVOINSPECT_DRY_RUN=1 bash scripts/run_rcbr_experiment_suite.sh development`
-
-完整命令、输出和判定规则见 `docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
+RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶段应冻结 PatchCore 强基线，
+补齐最终延迟/部署证据，并整理报告；正式 smoke 的原始命令、输出和判定规则见
+`docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke GPU 安全重跑正在运行（seed-130 四类已生成 4 个指标，补充
-  seeds 131--132 已生成 4 个指标；截至 07:20 CST 剩余 4 个 worker 仍在训练，最近
-  checkpoint 进度为 59,200--60,800）；
-- 5000-step pilot 已完成但未通过 smoke gate，不能当作最终 RCBR 结果；
+- 正式 70,000-step 修订 smoke 已完成 12/12，但未通过 smoke gate；RCBR 不得作为最终正向
+  性能结果；
+- 5000-step pilot 与正式 70,000-step smoke 均已保留为负结果证据；
 - 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
   5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
 - 未读取或运行 seeds 138–142；
@@ -133,8 +130,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 ## Claims allowed today
 
 - 固定 PatchCore 的既有复现结果及其精确协议/硬件边界。
-- RCBR 是“已实现、工程链路通过且 5000-step pilot 未通过预注册 smoke gate 的待修订方法”；
-  可报告该负诊断和唯一机制修订，不可描述性能收益。
+- RCBR 是“已实现、工程链路通过但 5000-step pilot 和正式 70,000-step smoke 均未通过预注册
+  gate 的负结果”；可报告正式 gate 数值和失败诊断，不可描述性能收益或优于 PatchCore。
 - 可报告 5000-step wood checkpoint 在 RTX 3090 上的合成 2500×2500 时延分解，但必须明确
   checkpoint、GPU、输入重采样和不代表 GTX 2060/官方 200 ms。
 - 六种对照、数据隔离、门控、回退和 GPU 安全代码已经存在并通过 CPU/静态测试。
@@ -147,8 +144,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## Blockers / remaining work
 
-- GPU 安全重跑正在进行；若正式 smoke 仍失败，RCBR 算法创新必须降级，不能再继续扫参或扩展确认集。
-- 只有正式 smoke 通过后，才可补齐 15 类 × 3 开发 seeds 并生成 freeze manifest。
+- 正式 smoke 已失败；RCBR 算法创新必须降级为负结果，不能再继续扫参、补齐其余类别或扩展确认集。
+- development 与确认 seeds 138--142 已按 gate 规则保持封存。
 - AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频/反馈协议的真实数据实测、
   GTX 2060、CPU 和最终提交包仍未完成；视频 FSM 与 GuardedAdapt 工程骨架及 CPU 测试已完成。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
@@ -157,8 +154,8 @@ overall_status: FORMAL_RCBR_SMOKE_GPU_SAFE_RUNNING
 
 ## Next primary action
 
-监控 GPU 安全重跑并读取 `smoke-gate.json`；通过才补全开发集，失败则停止 RCBR 性能扩展并转入
-系统/部署贡献。
+冻结 PatchCore 主基线与 RCBR 负结果证据，使用最终选定的可部署基线重跑正式 2500×2500 延迟，
+并完成报告/模型包/claim ledger；不得再启动 RCBR development 或 confirmation。
 
 ## Parallel work
 

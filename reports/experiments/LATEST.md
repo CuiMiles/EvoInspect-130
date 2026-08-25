@@ -1,8 +1,8 @@
 # Latest experiment
 
-Updated 2026-08-25 07:20 CST. The latest completed evidence consists of a CPU localization
-reevaluation and an RTX 3090 engineering latency benchmark; the formal revised RCBR smoke is
-still running and has not produced performance metrics or a gate.
+Updated 2026-08-25 08:12 CST. The latest completed evidence includes the formal revised RCBR smoke:
+12/12 runs completed, but the preregistered gate failed. RCBR performance expansion is stopped;
+the report route is fixed PatchCore plus the system/deployment evidence.
 
 ## Completed evidence: localization reevaluation
 
@@ -59,20 +59,25 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
   accuracy, GTX 2060 evidence, or a final-model result.
 - Evidence: `reports/experiments/rcbr-latency-20260824T170800Z-rtx3090-preliminary/latency-2500-rtx3090-gpu3.json`.
 
-## Active RCBR smoke
+## Formal RCBR smoke result
 
 - Batch: `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7`.
-- Seed-130 wood/capsule/transistor/hazelnut completed 4/4 `metrics.json`; the smoke-s131-132 stage
-  has 8 tasks total, with 4 completed metrics (wood-s131/132, capsule-s131/132). At 07:20 CST the
-  remaining transistor-s131/132 and hazelnut-s131/132 workers were still alive and writing training
-  checkpoints; the latest inspected progress was global_step 60,800 for transistor-s131/132 and
-  59,200 for hazelnut-s131/132, with a 70,000-step target. None had yet produced its `metrics.json`
-  file. `smoke-gate.json` is not
-  present yet, so no formal smoke conclusion is available.
-  GPUs 0--3 are currently occupied by another user and were not touched.
-- The 5000-step RCBR pilot failed its pre-registered gate; the current 70k raw-score fusion
-  rerun is the single authorized mechanism revision and cannot be called a gain until its gate.
+- Scope: capsule, hazelnut, transistor, wood × seeds 130--132; 70,000 steps per run.
+- Completion: 12/12 `metrics.json`; `smoke-gate.json` exists with `passed=false`.
+- Gate values: mean ΔAUPRO@0.05 `+0.015647` (threshold `+0.025`), worst category `−0.105517`,
+  ΔOverall F1 `−0.150921`, and ΔUnseen F1 `−0.165300`; all five preregistered checks failed.
+- Macro diagnostics: AUPRO@0.30 `−0.056845`, fixed-small AUPRO@0.05 `−0.104910`, Image AUROC
+  `−0.060087`, PRO@1% FPR `+0.082341`, mean ROI area `2.1357%`, P95 ROI area `4.5573%`.
+- Consequence: no development expansion, freeze manifest, or confirmation seeds 138--142; the
+  RCBR revision is retained only as a controlled negative/diagnostic result.
+- GPU safety: the batch used only GPUs 4--7; GPUs 0--3 were occupied by another user and were not
+  touched. GPUs 4--7 were released after completion.
 
-Next primary action: monitor the active smoke until `smoke-gate.json` appears. Only a passed gate
-unlocks the remaining 11 categories × 3 development seeds; confirmation seeds 138--142 remain
-sealed.
+Main evidence:
+
+- `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md`
+- `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/smoke-gate.json`
+- `evidence/rcbr-smoke-20260824T164000Z.txt`
+
+Next primary action: freeze the PatchCore accuracy baseline and run the final 2500×2500 deployment
+latency/package evidence. Do not launch RCBR development or confirmation experiments.
