@@ -1,6 +1,6 @@
 # Latest experiment
 
-Updated 2026-08-25 08:12 CST. The latest completed evidence includes the formal revised RCBR smoke:
+Updated 2026-08-25 08:32 CST. The latest completed evidence includes the formal revised RCBR smoke:
 12/12 runs completed, but the preregistered gate failed. RCBR performance expansion is stopped;
 the report route is fixed PatchCore plus the system/deployment evidence.
 
@@ -58,6 +58,19 @@ Using the existing 5000-step wood checkpoint, the repaired benchmark completed 1
 - This is an RTX 3090 synthetic-resolution engineering measurement, not native-resolution
   accuracy, GTX 2060 evidence, or a final-model result.
 - Evidence: `reports/experiments/rcbr-latency-20260824T170800Z-rtx3090-preliminary/latency-2500-rtx3090-gpu3.json`.
+
+## Completed evidence: post-smoke 70k latency diagnostic
+
+Using the completed but gate-rejected wood-s130 RCBR checkpoint, the benchmark ran on physical
+GPU 4 (RTX 3090), batch size 1, synthetic 2500×2500 input, 100 warmups and 1,000 measured repeats.
+The normal sample p50/p95/max was 350.153/362.552/383.206 ms; a registered wood scratch sample
+was 371.293/386.795/420.942 ms. Both selected zero ROI, so the local-model branch was not
+exercised. This is a diagnostic RTX 3090 measurement for a rejected checkpoint, not GTX 2060,
+CPU, native high-resolution accuracy, or a final positive deployment claim.
+
+- `reports/experiments/rcbr-latency-20260825T081500Z-rcbr-70k-negative-gpu4/latency-2500-rtx3090-gpu4.json`
+- `reports/experiments/rcbr-latency-20260825T081500Z-rcbr-70k-negative-gpu4/latency-2500-rtx3090-gpu4-scratch000.json`
+- `evidence/rcbr-latency-20260825.txt`
 
 ## Formal RCBR smoke result
 

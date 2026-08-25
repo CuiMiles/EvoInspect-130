@@ -1,0 +1,20 @@
+run_id=rcbr-latency-20260825T081500Z-rcbr-70k-negative-gpu4
+purpose=post-smoke engineering latency evidence for the rejected 70k RCBR checkpoint
+checkpoint=reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/runs/rcbr-wood-s130-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/result/model.ckpt
+model_sha256=16ca49b615a177c0b018d0073183e8578d16c2405edbc07a465986448ab2a16a
+hardware=RTX 3090 physical GPU 4; Torch 2.6.0+cu124; CUDA 12.4; batch_size=1; FP32
+protocol=synthetic 2500x2500 resize; warmup=100; repeats=1000; decode/preprocess/routing/local/postprocess/serialization separated
+normal_sample=mvtec-wood-test-good-000
+normal_end_to_end_ms_p50=350.1526238396764
+normal_end_to_end_ms_p95=362.5520685687661
+normal_end_to_end_ms_max=383.2056559622288
+normal_roi_count=0
+scratch_sample=mvtec-wood-test-scratch-000
+scratch_end_to_end_ms_p50=371.2927298620343
+scratch_end_to_end_ms_p95=386.7946512065828
+scratch_end_to_end_ms_max=420.94225995242596
+scratch_roi_count=0
+latency_json_normal=reports/experiments/rcbr-latency-20260825T081500Z-rcbr-70k-negative-gpu4/latency-2500-rtx3090-gpu4.json
+latency_json_scratch=reports/experiments/rcbr-latency-20260825T081500Z-rcbr-70k-negative-gpu4/latency-2500-rtx3090-gpu4-scratch000.json
+scope_warning=RTX 3090 synthetic-resolution engineering measurement for a rejected RCBR checkpoint; not native high-resolution accuracy, GTX 2060 evidence, CPU evidence, or final positive model claim
+gpu_safety=only GPU4 used; GPUs0-3 foreign processes were not touched; GPUs5-7 idle

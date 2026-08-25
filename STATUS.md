@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-25T08:12:00+08:00
+updated_at: 2026-08-25T08:32:00+08:00
 current_phase: G1_RCBR_FORMAL_SMOKE_REJECTED_SYSTEM_DEPLOYMENT_PIVOT
 overall_status: FORMAL_RCBR_SMOKE_FAILED_RCBR_PIVOT
 
@@ -47,6 +47,10 @@ RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的
   Unseen F1=-0.165300，五项预注册 gate 检查全部失败；development 扩展与确认 seeds 138--142
   均未启动。完整负结果报告见
   `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md`。
+- 对已完成但被 gate 否决的 wood-s130 checkpoint 补做 RTX 3090 GPU4、2500×2500、batch=1、
+  warmup=100、repeats=1000 延迟测量：正常样本端到端 p50/p95/max=
+  350.153/362.552/383.206 ms；scratch 样本为 371.293/386.795/420.942 ms。两次均为 0 ROI，
+  仅作工程诊断，不代表最终正向模型或 GTX 2060。
 - 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 修复并实测 `benchmark_rcbr_latency.py`：补齐修订后 raw-score 融合接口和 PyTorch 2.6
@@ -104,8 +108,8 @@ RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶
 - 正式 70,000-step 修订 smoke 已完成 12/12，但未通过 smoke gate；RCBR 不得作为最终正向
   性能结果；
 - 5000-step pilot 与正式 70,000-step smoke 均已保留为负结果证据；
-- 尚未对 smoke/development 选定的最终 checkpoint 重跑正式 2500 时延循环；当前仅有
-  5000-step wood checkpoint 的 RTX 3090 合成分辨率工程基准；
+- 已对被否决的 70k wood checkpoint 重跑正式 2500 延迟循环；仍未取得通过 gate 的最终模型，
+  当前测量为 RTX 3090 合成分辨率工程诊断，且 local ROI 分支未被样本触发；
 - 未读取或运行 seeds 138–142；
 - 没有新增 accuracy、AUPRO、F1、ROI 面积或时延实测值。
 
@@ -154,8 +158,8 @@ RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶
 
 ## Next primary action
 
-冻结 PatchCore 主基线与 RCBR 负结果证据，使用最终选定的可部署基线重跑正式 2500×2500 延迟，
-并完成报告/模型包/claim ledger；不得再启动 RCBR development 或 confirmation。
+冻结 PatchCore 主基线与 RCBR 负结果/延迟证据，完成报告、模型包、使用说明和 claim ledger；
+若能获得 GTX 2060 或等价设备，再做独立硬件复测，但不得再启动 RCBR development 或 confirmation。
 
 ## Parallel work
 

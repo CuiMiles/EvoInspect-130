@@ -1,0 +1,104 @@
+{
+  "batch_size": 1,
+  "created_at": "2026-08-25T00:29:17+00:00",
+  "hardware": {
+    "cuda": "12.4",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "physical_gpu": "4",
+    "platform": "Linux-5.4.0-150-generic-x86_64-with-glibc2.27",
+    "torch": "2.6.0+cu124"
+  },
+  "input_resolution": [
+    2500,
+    2500
+  ],
+  "latency_ms": {
+    "decode": {
+      "max": 261.84938475489616,
+      "mean": 220.98502000421286,
+      "p50": 219.214778393507,
+      "p95": 227.69698156043887,
+      "p99": 240.43761793524024
+    },
+    "end_to_end": {
+      "max": 420.94225995242596,
+      "mean": 373.3364101666957,
+      "p50": 371.2927298620343,
+      "p95": 386.7946512065828,
+      "p99": 401.8592958152294
+    },
+    "global_model": {
+      "max": 9.25912894308567,
+      "mean": 6.324424734339118,
+      "p50": 6.296364590525627,
+      "p95": 6.653248332440853,
+      "p99": 7.158688046038151
+    },
+    "local_models": {
+      "max": 0.0,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0
+    },
+    "local_preprocess_and_transfer": {
+      "max": 0.0,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0
+    },
+    "postprocess": {
+      "max": 1.3453718274831772,
+      "mean": 0.5081158764660358,
+      "p50": 0.5048252642154694,
+      "p95": 0.5408085882663727,
+      "p99": 0.5650442093610764
+    },
+    "preprocess_and_transfer": {
+      "max": 82.67796412110329,
+      "mean": 66.03328268416226,
+      "p50": 64.62384480983019,
+      "p95": 73.74868812039495,
+      "p99": 76.07436625286937
+    },
+    "routing": {
+      "max": 115.39806798100471,
+      "mean": 79.44729996658862,
+      "p50": 78.95594649016857,
+      "p95": 84.58011979237199,
+      "p99": 87.45240887627006
+    },
+    "serialization": {
+      "max": 0.14592893421649933,
+      "mean": 0.031724922358989716,
+      "p50": 0.027230940759181976,
+      "p95": 0.05166670307517052,
+      "p99": 0.057505331933498376
+    }
+  },
+  "model_sha256": "16ca49b615a177c0b018d0073183e8578d16c2405edbc07a465986448ab2a16a",
+  "precision": "32-true",
+  "repeats": 1000,
+  "roi_area_fraction": {
+    "max": 0.0,
+    "mean": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "roi_count": {
+    "max": 0.0,
+    "mean": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "router_state_sha256": "11c3325f5905ffb3232b84eb7c8fc8cc96ed53a36eb97454d1dafbbe30fb7077",
+  "sample_id": "mvtec-wood-test-scratch-000",
+  "schema_version": 1,
+  "status": "completed_synthetic_resolution_latency_benchmark",
+  "throughput_images_per_second_from_mean_e2e": 2.678549353258894,
+  "warmup": 100,
+  "warning": "The source image was resized to 2500x2500 before benchmarking. This is an RTX 3090 synthetic-resolution end-to-end measurement, not native high-resolution accuracy or RTX 2060 evidence."
+}
