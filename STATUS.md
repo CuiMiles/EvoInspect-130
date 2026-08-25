@@ -51,6 +51,8 @@ RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的
   warmup=100、repeats=1000 延迟测量：正常样本端到端 p50/p95/max=
   350.153/362.552/383.206 ms；scratch 样本为 371.293/386.795/420.942 ms。两次均为 0 ROI，
   仅作工程诊断，不代表最终正向模型或 GTX 2060。
+- 已生成最终报告证据索引 `docs/16_FINAL_REPORT_EVIDENCE_20260825.md`，明确主表、负结果、
+  延迟范围和未完成项；可据此写报告，但官方最终提交仍为 PARTIAL。
 - 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 修复并实测 `benchmark_rcbr_latency.py`：补齐修订后 raw-score 融合接口和 PyTorch 2.6

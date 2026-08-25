@@ -91,6 +91,7 @@ Main evidence:
 - `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md`
 - `reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/smoke-gate.json`
 - `evidence/rcbr-smoke-20260824T164000Z.txt`
+- `docs/16_FINAL_REPORT_EVIDENCE_20260825.md`
 
 Next primary action: freeze the PatchCore accuracy baseline and run the final 2500×2500 deployment
 latency/package evidence. Do not launch RCBR development or confirmation experiments.
