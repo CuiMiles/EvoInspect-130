@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 import platform
@@ -77,7 +78,25 @@ def evaluate_run(run_dir: Path, config: dict[str, Any]) -> dict[str, Any]:
             )
     split = json.loads((run_dir / "split.json").read_text(encoding="utf-8"))
     meta = json.loads((run_dir / "model" / "meta.json").read_text(encoding="utf-8"))
-    initial = float(meta["threshold"]["threshold"])
+    return evaluate_records(
+        records,
+        split,
+        float(meta["threshold"]["threshold"]),
+        {
+            "predictions_sha256": file_sha256(run_dir / "predictions.jsonl"),
+            "truth_sha256": file_sha256(run_dir / "test_truth.csv"),
+        },
+        config,
+    )
+
+
+def evaluate_records(
+    records: list[dict[str, Any]],
+    split: dict[str, Any],
+    initial: float,
+    evidence: dict[str, str],
+    config: dict[str, Any],
+) -> dict[str, Any]:
     grouped = partitions(records)
     feedback_scores, feedback_labels = scores_labels(grouped["feedback"])
     target_scores, target_labels = scores_labels(grouped["target"])
@@ -140,11 +159,25 @@ def evaluate_run(run_dir: Path, config: dict[str, Any]) -> dict[str, Any]:
         "candidate_feedback_gain": candidate_feedback_gain,
         "candidate_gate_anchor_regression": candidate_gate_regression,
         "strategies": outputs,
-        "evidence": {
-            "predictions_sha256": file_sha256(run_dir / "predictions.jsonl"),
-            "truth_sha256": file_sha256(run_dir / "test_truth.csv"),
-        },
+        "evidence": evidence,
     }
+
+
+def read_pack(path: Path, config: dict[str, Any]) -> list[dict[str, Any]]:
+    runs = []
+    with gzip.open(path, "rt", encoding="utf-8") as stream:
+        for line in stream:
+            item = json.loads(line)
+            runs.append(
+                evaluate_records(
+                    item["records"],
+                    item["split"],
+                    float(item["initial_threshold"]),
+                    item["evidence"],
+                    config,
+                )
+            )
+    return runs
 
 
 def aggregate(runs: list[dict[str, Any]], strategy: str) -> dict[str, Any]:
@@ -193,10 +226,16 @@ def main() -> int:
     args = parser.parse_args()
     config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     source = Path(config["source_batch"])
-    run_dirs = sorted(
-        path for path in (source / "runs").iterdir() if (path / "metrics.json").is_file()
-    )
-    runs = [evaluate_run(path, config) for path in run_dirs]
+    source_pack = Path(config["source_pack"])
+    if source_pack.is_file():
+        runs = read_pack(source_pack, config)
+        source_mode = "tracked_score_pack"
+    else:
+        run_dirs = sorted(
+            path for path in (source / "runs").iterdir() if (path / "metrics.json").is_file()
+        )
+        runs = [evaluate_run(path, config) for path in run_dirs]
+        source_mode = "original_run_directories"
     if len(runs) != 75:
         raise RuntimeError(f"expected 75 frozen runs, found {len(runs)}")
     commit, dirty = git_state(Path.cwd())
@@ -206,6 +245,9 @@ def main() -> int:
         "created_at": utc_now(),
         "scope": config["scope"],
         "source_batch": str(source),
+        "source_pack": str(source_pack),
+        "source_pack_sha256": file_sha256(source_pack) if source_pack.is_file() else None,
+        "source_mode": source_mode,
         "source_runs": len(runs),
         "categories": len({run["category"] for run in runs}),
         "seeds": sorted({run["seed"] for run in runs}),

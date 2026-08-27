@@ -1,6 +1,7 @@
 schema_version: 1
 scope: mvtec_feedback_replay_on_frozen_patchcore_scores
 source_batch: reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160
+source_pack: evidence/guarded_adapt_replay_input.jsonl.gz
 strategies: [NoUpdate, NaiveUpdate, ThresholdUpdate, GuardedAdapt]
 partition:
   feedback_train_fraction: 0.40

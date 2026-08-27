@@ -95,6 +95,10 @@ seeds 133–137 的75个真实 MVTec 预测分数与真值，按标签和 sample
 target evaluation、gate anchor、audit anchor。标签仅模拟操作员按顺序揭示；这是离线 replay，
 不是生产用户研究。
 
+为支持清洁目录复现，逐样本图像不进入仓库；仅导出 sample-id、冻结分数、标签、初始阈值和
+原始文件哈希到 `evidence/guarded_adapt_replay_input.jsonl.gz`。该82,754字节 score pack 不含
+图像，可在原75个run目录不存在时重放同一策略结果。
+
 | 策略 | target gain均值 | anchor regression均值 | harmful-update rate | accepted-update rate |
 |---|---:|---:|---:|---:|
 | NoUpdate | 0.000000 | 0.000000 | 0.0000 | 0.0000 |
@@ -104,7 +108,7 @@ target evaluation、gate anchor、audit anchor。标签仅模拟操作员按顺�
 
 GuardedAdapt 对11个拒绝更新执行精确恢复，rollback success=11/11=1.0；五个在独立 audit
 anchor 上表现为有害的 bounded candidate 中，门禁阻断3个（0.60）。适应逻辑 CPU p50/p95/
-p99=0.464/0.934/0.952ms。小切片离散性较强，仍有2/75有害更新未被 gate anchor 预见，
+p99=0.477/0.931/0.937ms。小切片离散性较强，仍有2/75有害更新未被 gate anchor 预见，
 因此不能写成“完全阻断”或“准确率提高”；核心证据只是相同 replay 下有害更新率下降、历史
 能力门禁和回滚链路可执行。
 
