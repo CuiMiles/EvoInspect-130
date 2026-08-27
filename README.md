@@ -30,7 +30,7 @@ EvoInspect-130（智检演化130）是面向工业组装图像/视频的离线 A
 EVOINSPECT_BOOTSTRAP_PYTHON=/home/CuiMinghao/envs/evoinspect-efficientad/bin/python
 "$EVOINSPECT_BOOTSTRAP_PYTHON" -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
-.venv/bin/python -m pip install -e '.[dev,yaml,metrics,images,video]'
+.venv/bin/python -m pip install -e '.[dev,yaml,metrics,images,video,research]'
 .venv/bin/python -m pytest -q
 .venv/bin/python -m ruff check .
 .venv/bin/python -m mypy src
