@@ -1,0 +1,21 @@
+schema_version: 1
+scope: mvtec_feedback_replay_on_frozen_patchcore_scores
+source_batch: reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160
+strategies: [NoUpdate, NaiveUpdate, ThresholdUpdate, GuardedAdapt]
+partition:
+  feedback_train_fraction: 0.40
+  target_evaluation_fraction: 0.20
+  gate_anchor_fraction: 0.20
+  audit_anchor_fraction: 0.20
+  deterministic_stratification: label_then_sample_id_sha256
+threshold_update:
+  max_shift_iqr_fraction: 0.25
+guard:
+  min_feedback_gain: 0.0
+  max_gate_anchor_regression: 0.01
+  exact_rollback_required: true
+harmful_update:
+  audit_anchor_regression_gt: 0.01
+claims:
+  accuracy_improvement_claim_allowed: false
+  purpose: harmful_update_blocking_and_historical_capability_protection

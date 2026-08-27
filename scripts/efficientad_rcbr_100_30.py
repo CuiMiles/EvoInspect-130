@@ -141,8 +141,11 @@ def train_efficientad(
         data_root / "development" / "masks",
     )
     training = config["training"]
+    model_size = str(config["model_size"])
+    if model_size not in {"small", "medium"}:
+        raise RuntimeError(f"unsupported EfficientAD model_size: {model_size}")
     datamodule = Folder(
-        name=f"efficientad-s-{seed}",
+        name=f"efficientad-{model_size}-{seed}",
         root=data_root,
         normal_dir="train/good",
         normal_test_dir="calibration/good",
@@ -156,7 +159,7 @@ def train_efficientad(
     )
     model = EfficientAd(
         imagenet_dir=Path(config["imagenette_dir"]),
-        model_size="small",
+        model_size=model_size,
         lr=float(training["learning_rate"]),
         weight_decay=float(training["weight_decay"]),
     )

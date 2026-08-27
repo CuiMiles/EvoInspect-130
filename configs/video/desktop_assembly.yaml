@@ -1,0 +1,22 @@
+schema_version: 1
+scope: functional_demo_only
+benchmark_claim_allowed: false
+expected_steps: [bottle, cup, mouse]
+marker_to_component:
+  0: bottle
+  1: cup
+  2: mouse
+processing_width: 540
+sample_every_frames: 3
+stable_samples: 8
+simple_detector:
+  blue_pixel_min: 5000
+  cup_without_bottle_min: 6000
+  cup_with_bottle_min: 20000
+  mouse_bright_pixel_min: 8000
+public_event_mapping:
+  missing_step_before_later_step: skip
+  missing_step_at_stream_end: missing
+  reordered_step: reorder
+  repeated_step: repeat
+  unexpected_step: unknown

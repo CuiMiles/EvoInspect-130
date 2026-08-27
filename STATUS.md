@@ -1,19 +1,33 @@
 # STATUS
 
-updated_at: 2026-08-27T15:14:36+08:00
-current_phase: G2_SUBMISSION_CLOSURE_REQUIRED
-overall_status: RESEARCH_REPORT_READY_SUBMISSION_NOT_READY
+updated_at: 2026-08-27T19:43:08+08:00
+current_phase: PRELIMINARY_SUBMISSION_FREEZE
+overall_status: DRAFT_ARTIFACTS_READY_EFFICIENTAD_AND_2060_BLOCKED
 
 ## One-sentence truth
 
-固定上游 PatchCore 强基线与既有负结果保持不变；RCBR 5000-step pilot 与唯一 raw-score-space
-fusion 机制修订的正式 70,000-step smoke 均未通过预注册 gate。正式批次 12/12 完成，宏平均
-ΔAUPRO@0.05=+0.015647 但低于 +0.025 门槛，ΔOverall F1=-0.150921，ΔUnseen F1=-0.165300；
-RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的报告收敛路线。
-截至 2026-08-27，研究结果可写入报告，但四件官方提交物仍为 0/4，最终部署模型、真实视频、
-真实反馈闭环和 GTX 2060/CPU 验证均缺失，因此作品尚未达到提交标准。
+RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 训练/质量门代码
+和安全8卡启动器就绪但因8张3090均被其他用户占用尚未启动；真实视频5/5与 GuardedAdapt
+75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过，但团队元数据、M质量门、真实
+GTX2060时延和最终清洁复现仍阻止正式上传。
 
-## Completed
+## Freeze completion snapshot
+
+- 导师冻结决定已固化：`docs/18_PRELIMINARY_SUBMISSION_FREEZE.md`。
+- RCBR 不再修改/扫参/进入摘要或主创新；HeteroMemory、GuardedFusion、MaskedPrototype、
+  TriSynth 停止；其余扩展数据集/模型暂停。
+- 新增统一 Accuracy/Edge `InferenceEngine`，单元测试通过。
+- EfficientAD-M/S 独立100+30 runner、聚合 gate、2500 p50/p95/p99 benchmark和安全8卡脚本
+  已完成；M正式范围为15类×seeds143–145=45任务。
+- 共享服务器当前8张RTX3090均有其他用户进程，本轮没有启动训练或触碰他人进程。
+- OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
+  产生12个skip/reorder/repeat/missing事件；仅功能验证。
+- GuardedAdapt真实分数replay：15类、5 seeds、75 runs；harmful-update rate为0.0267，
+  accepted-update rate为0.8533，拒绝更新rollback 11/11；不声称生产准确率提高。
+- 四件草稿约束通过：简介PDF 169中文字符/268非空白字符；项目PDF 5页；MP4 122.133秒、
+  25,724,846字节；ZIP小于1MB且完整。正式命名和团队信息仍缺。
+
+## Completed before freeze (historical)
 
 - 完整读取并固化 `docs/13_Advisor_reply.md`；不再按导师的逐日日程等待，所有当前可写的
   RCBR 实验代码一次完成。
@@ -106,19 +120,17 @@ RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的
 
 ## Ready to run
 
-RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶段应冻结 PatchCore 强基线，
-补齐最终延迟/部署证据，并整理报告；正式 smoke 的原始命令、输出和判定规则见
-`docs/14_RCBR_EXPERIMENT_EXECUTION_PLAN.md`。
+EfficientAD-M 正式质量门是当前唯一允许的长训练：
+`scripts/run_efficientad_frozen_8gpu.sh m`。正常模式会跳过繁忙 GPU；当前没有安全空闲卡，
+因此只完成了45任务 dry-run。RCBR 和其他冻结/暂停路线不得运行。
 
 ## Not run or not yet accepted
 
-- 正式 70,000-step 修订 smoke 已完成 12/12，但未通过 smoke gate；RCBR 不得作为最终正向
-  性能结果；
-- 5000-step pilot 与正式 70,000-step smoke 均已保留为负结果证据；
-- 已对被否决的 70k wood checkpoint 重跑正式 2500 延迟循环；仍未取得通过 gate 的最终模型，
-  当前测量为 RTX 3090 合成分辨率工程诊断，且 local ROI 分支未被样本触发；
-- 未读取或运行 seeds 138–142；
-- 没有新增 accuracy、AUPRO、F1、ROI 面积或时延实测值。
+- EfficientAD-M 45任务尚未启动，质量门未知；S fallback尚未启动。
+- 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
+- 2500 EfficientAD frozen checkpoint benchmark尚未运行。
+- 提交草稿尚未填写团队元数据或按官方文件名重命名。
+- README清洁目录/环境完整复现尚未执行。
 
 ## Existing verified metrics (unchanged)
 
@@ -146,31 +158,36 @@ RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶
 - 可报告 5000-step wood checkpoint 在 RTX 3090 上的合成 2500×2500 时延分解，但必须明确
   checkpoint、GPU、输入重采样和不代表 GTX 2060/官方 200 ms。
 - 六种对照、数据隔离、门控、回退和 GPU 安全代码已经存在并通过 CPU/静态测试。
+- OpenCV 5段实拍视频的解码、组件事件和FSM功能结果，但必须标注桌面功能验证而非工业benchmark。
+- GuardedAdapt 75-run离线MVTec真实分数replay的有害更新率、接受率、回滚率和CPU适应时延，
+  但不得描述为生产准确率提高或真实用户研究。
+- 四件提交物“草稿已生成且格式/大小约束通过”，不能说“正式可上传”。
 
 ## Claims forbidden today
 
 - RCBR 已经提升 AUPRO/F1、已经实时、优于 PatchCore、满足 200ms 或可作为最终模型。
-- GTX 2060、CPU、原生 2500 高分辨率、小缺陷跨数据集、视频逻辑和反馈闭环已经完成。
+- EfficientAD-M已通过质量门、Edge Engine已冻结、GTX2060<200ms、CPU<2s或原生2500精度。
+- 真实视频工业准确率/泛化；GuardedAdapt生产准确率提高或完全阻断有害更新。
+- 四件材料已完成正式元数据、命名、人工审校并可直接上传。
 - “首次”“首创”“SOTA”“国际领先”“全面超越”或任何获奖保证。
 
 ## Blockers / remaining work
 
-- 正式 smoke 已失败；RCBR 算法创新必须降级为负结果，不能再继续扫参、补齐其余类别或扩展确认集。
-- development 与确认 seeds 138--142 已按 gate 规则保持封存。
-- AHL/DRA 少监督开放集基线、MVTec AD 2、MVTec LOCO、视频/反馈协议的真实数据实测、
-  GTX 2060、CPU 和最终提交包仍未完成；视频 FSM 与 GuardedAdapt 工程骨架及 CPU 测试已完成。
+- 8张3090均被其他用户占用；必须等待安全空闲窗口，不能抢占或终止他人进程。
+- 无远程GTX2060主机/IP、SSH端口、用户名、认证方式和工作目录。
+- EfficientAD-M质量门、冻结checkpoint与2500时延尚无结果。
+- 团队名称、参赛组别、成员/学校/分工未知，提交草稿无法正式命名和定稿。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
-- 最终性能基准必须使用通过开发门后选定的 checkpoint 重跑；当前延迟结果不能替代该步骤。
-- 若 smoke 失败，导师只允许最多一次机制级修订；不得用确认种子调参。
+- 最终清洁目录/环境复现尚未执行。
 
 ## Next primary action
 
-停止无边界模型探索，立即确定一个真实可运行的最终图像模型，完成统一推理入口、模型使用
-说明、真实视频最小演示、反馈/回滚演示和四件官方提交物，并在清洁环境验收；若能获得
-GTX 2060 或等价设备，只对冻结模型做独立复测，不得再启动 RCBR development 或 confirmation。
+在不抢占他人GPU的前提下启动并完成 EfficientAD-M 15类×3 seeds冻结质量门；通过后立即
+冻结Edge Engine并进入2500/GTX2060部署基准，失败则保存证据后只做一次S Pareto判断。
 
 ## Parallel work
 
-- 可并行取得 GTX 2060/等价低端设备，但不占用当前开发 GPU 任务。
-- 可并行下载并登记 MVTec AD 2 / LOCO、集成 AHL 或 DRA、实现视频 FSM 和反馈回滚骨架。
-- 可并行完成人工许可证签核、组织方书面澄清和最终提交材料框架。
+- 获取GTX2060主机/IP、SSH端口、用户名、认证方式和远程工作目录。
+- 填写团队名称、参赛组别、成员、学校和分工，审校PDF/MP4并执行正式命名。
+- 人工许可证签核和组织方接口/时延口径书面澄清。
+- 提交源码完成后在全新目录/环境执行README CPU/静态完整复现。

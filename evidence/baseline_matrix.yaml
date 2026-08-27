@@ -7,12 +7,18 @@ baselines:
     gpu: none
     purpose: validate_pipeline_not_algorithm
   - name: EfficientAD
-    status: queued
+    status: frozen_m_ready_to_run_s_fallback_only
     preferred_gpu: 0
-    upstream_commit: pending
-    license: pending
-    budget_hours: 8
-    early_stop: smoke_or_protocol_failure
+    upstream_commit: 091ca6aca92c8d0e416394f79e52f5a3cea3db73
+    upstream_tag: v2.3.0
+    license: Apache-2.0
+    budget_hours: 60
+    protocol: mvtec_15category_official_style_up_to_100_30_seeds_143_145
+    config:
+      - configs/baselines/efficientad_m_100_30.yaml
+      - configs/baselines/efficientad_s_100_30.yaml
+    launcher: scripts/run_efficientad_frozen_8gpu.sh
+    early_stop: frozen_quality_gate_failure_no_unbounded_tuning
   - name: PatchCore
     status: completed_p0_and_official_style_p1
     preferred_gpu: 1
@@ -31,7 +37,7 @@ baselines:
       - reports/experiments/upstream-patchcore-standard-mvtec15-s0-8gpu-20260823T234806Z-22135/aggregate.json
       - reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json
       - reports/experiments/upstream-patchcore-baselines-report-20260824.md
-    limitation: "Pinned upstream core is unchanged, but the 100+30 protocol uses a repository adapter and CPU FAISS; no AUPRO, 2500x2500, GTX 2060, or end-to-end deployment latency yet."
+    limitation: "Pinned upstream core is unchanged, but the 100+30 protocol uses a repository adapter and CPU FAISS; localization is complete, but no frozen 2500x2500 GTX 2060 end-to-end deployment latency exists."
   - name: patchcore-lite-wrn50-random-coreset+logreg
     family: patch_memory_plus_supervised_linear_probe
     status: completed_direct_archive_15category_5seeds_but_superseded_by_upstream
@@ -45,27 +51,32 @@ baselines:
     evidence: reports/experiments/guarded-fusion-v2-final15-5seed-20260824.json
     limitation: "Not official PatchCore and materially weaker than the pinned upstream baseline; retained only as an ablation and implementation precursor."
   - name: AnomalyDINO
-    status: queued
+    status: paused_by_preliminary_submission_freeze
     preferred_gpu: 1
     upstream_commit: pending
     license: pending
     budget_hours: 8
     early_stop: smoke_or_protocol_failure
   - name: AHL_or_DRA
-    status: queued
+    status: paused_by_preliminary_submission_freeze
     preferred_gpu: 2
     upstream_commit: pending
     license: pending
     budget_hours: 12
     early_stop: smoke_or_protocol_failure
   - name: RealNet_or_GLASS
-    status: queued
+    status: paused_by_preliminary_submission_freeze
     preferred_gpu: 3
     upstream_commit: pending
     license: pending
     budget_hours: 12
     early_stop: smoke_or_protocol_failure
 explorations:
+  - name: RCBR
+    status: frozen_formal_negative_result_no_further_development
+    protocol: mvtec_4category_100_30_70000step_seeds_130_132
+    evidence: reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/smoke-gate.json
+    result: "12/12 complete; gate false; delta AUPRO@0.05 +0.015647, delta Overall F1 -0.150921, delta Unseen F1 -0.165300."
   - name: GuardedFusion_v3_upstream
     status: eliminated_development_gate
     config: configs/innovations/guarded_fusion_v3_upstream_dev.yaml
@@ -85,4 +96,4 @@ gpu_launch_gate:
     - no_unrelated_compute_process_on_selected_gpu
     - explicit_cuda_visible_devices
     - checkpoint_and_wall_time_budget
-  current_status: passed_for_8_independent_gpus_at_2026-08-24T08:05:33+08:00_then_all_idle
+  current_status: all_8_rtx3090_busy_with_other_users_at_2026-08-27_freeze_audit_no_training_started

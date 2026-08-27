@@ -28,6 +28,12 @@ inference:
   final_map_resolution: [256, 256]
   score_quantile: 0.995
   no_backbone_finetuning_on_defects: true
+quality_gate:
+  overall_f1_min: 0.89
+  unseen_f1_min: 0.83
+  image_auroc_min: 0.97
+  required_categories: 15
+  test_label_leakage_max: 0
 downloads:
   pretrained_teacher_sha256: c09aeaa2b33f244b3261a5efdaeae8f8284a949470a4c5a526c61275fe62684a
   imagenette_sha256: 6cbfac238434d89fe99e651496f0812ebc7a10fa62bd42d6874042bf01de4efd

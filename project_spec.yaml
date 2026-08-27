@@ -1,5 +1,5 @@
-spec_version: "2.0"
-updated_at: "2026-08-23"
+spec_version: "2.1"
+updated_at: "2026-08-27"
 project:
   name_zh: "智检演化130"
   name_en: "EvoInspect-130"
@@ -50,26 +50,39 @@ official_problem:
       detection_time_percent: 30
 
 research_thesis:
-  core: "把30个已知缺陷用于交叉拟合复检收益而非微调主干，把100个正常样本拆分为检测构建和区域条件风险校准，在严格低误报下选择高价值ROI。"
-  deployment: "以真实硬件时延表和硬预算驱动共享轻量模型的全局筛查与局部高分辨率复检，并提供确定性安全回退。"
-  self_learning: "把反馈更新拆成可逆即时记忆更新和带回归门禁的候选模型更新，量化适应收益、遗忘和回滚。"
+  core: "冻结PatchCore精度引擎，并以相同100+30隔离协议复现EfficientAD-M边缘候选；M不要求超过PatchCore，但必须通过预注册质量线。"
+  deployment: "通过统一InferenceEngine显式切换Accuracy/Edge，冻结模型后在真实GTX2060上测量2500x2500 model-only与end-to-end时延。"
+  self_learning: "GuardedAdapt是唯一主要系统创新：反馈更新可逆，候选阈值或模型必须通过反馈收益和锚定回归门禁，并量化有害更新、接受率和回滚。"
 
 primary_innovations:
-  - id: I1
-    name: "RCBR"
-    zh: "风险校准的硬预算高分辨率复检路由"
-    type: algorithm
-    mandatory_ablation: true
-  - id: I2
-    name: "SharedModelDeployment"
-    zh: "共享轻量模型的硬件自适应全局到局部部署"
-    type: deployment_algorithm
-    mandatory_ablation: true
   - id: I3
     name: "GuardedAdapt"
     zh: "带回放门禁、影子验证和回滚的可信反馈闭环"
     type: system
     mandatory_ablation: true
+
+preliminary_submission_freeze:
+  effective_date: "2026-08-27"
+  decision_doc: docs/18_PRELIMINARY_SUBMISSION_FREEZE.md
+  accuracy_engine: PatchCore
+  edge_engine_primary_candidate: EfficientAD-M
+  edge_engine_speed_fallback: EfficientAD-S
+  efficientad_m_quality_gate:
+    overall_f1_min: 0.89
+    unseen_f1_min: 0.83
+    image_auroc_min: 0.97
+    all_15_categories_complete: true
+    test_label_leakage_max: 0
+  frozen_negative_only: [RCBR]
+  stopped_research: [HeteroMemory, GuardedFusion, MaskedPrototype, TriSynth]
+  paused_until_submission_closure:
+    - DAGM_2007
+    - MVTec_AD_2
+    - MVTec_LOCO_AD
+    - AnomalyDINO
+    - AHL_or_DRA
+    - RealNet_or_GLASS
+    - cpu_under_2s
 
 online_graph:
   maximum_neural_models: 3

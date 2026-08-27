@@ -11,6 +11,7 @@ dependencies = []
 
 [project.optional-dependencies]
 images = ["Pillow>=10.3"]
+video = ["opencv-python-headless>=4.10", "PyYAML>=6.0"]
 dev = [
   "mypy>=1.10",
   "pytest>=8.2",
