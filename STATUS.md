@@ -1,15 +1,15 @@
 # STATUS
 
-updated_at: 2026-08-27T19:43:08+08:00
+updated_at: 2026-08-28T00:25:03+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: DRAFT_ARTIFACTS_READY_EFFICIENTAD_AND_2060_BLOCKED
+overall_status: CLEAN_REPRO_AND_DRAFTS_READY_EFFICIENTAD_AND_2060_BLOCKED
 
 ## One-sentence truth
 
 RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 训练/质量门代码
 和安全8卡启动器就绪但因8张3090均被其他用户占用尚未启动；真实视频5/5与 GuardedAdapt
 75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过，但团队元数据、M质量门、真实
-GTX2060时延和最终清洁复现仍阻止正式上传。
+GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经通过。
 
 ## Freeze completion snapshot
 
@@ -20,12 +20,16 @@ GTX2060时延和最终清洁复现仍阻止正式上传。
 - EfficientAD-M/S 独立100+30 runner、聚合 gate、2500 p50/p95/p99 benchmark和安全8卡脚本
   已完成；M正式范围为15类×seeds143–145=45任务。
 - 共享服务器当前8张RTX3090均有其他用户进程，本轮没有启动训练或触碰他人进程。
+- 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
+  2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
   产生12个skip/reorder/repeat/missing事件；仅功能验证。
 - GuardedAdapt真实分数replay：15类、5 seeds、75 runs；harmful-update rate为0.0267，
   accepted-update rate为0.8533，拒绝更新rollback 11/11；不声称生产准确率提高。
 - 四件草稿约束通过：简介PDF 169中文字符/268非空白字符；项目PDF 5页；MP4 122.133秒、
   25,724,846字节；ZIP小于1MB且完整。正式命名和团队信息仍缺。
+- 从commit `44d6b0c`的全新目录和全新venv完成README复现：pytest 60/60、ruff、mypy、
+  GuardedAdapt重放、提交校验、45任务dry-run和pip check全部通过，未使用GPU。
 
 ## Completed before freeze (historical)
 
@@ -130,7 +134,6 @@ EfficientAD-M 正式质量门是当前唯一允许的长训练：
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿尚未填写团队元数据或按官方文件名重命名。
-- README清洁目录/环境完整复现尚未执行。
 
 ## Existing verified metrics (unchanged)
 
@@ -178,7 +181,6 @@ EfficientAD-M 正式质量门是当前唯一允许的长训练：
 - EfficientAD-M质量门、冻结checkpoint与2500时延尚无结果。
 - 团队名称、参赛组别、成员/学校/分工未知，提交草稿无法正式命名和定稿。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
-- 最终清洁目录/环境复现尚未执行。
 
 ## Next primary action
 
@@ -190,4 +192,4 @@ EfficientAD-M 正式质量门是当前唯一允许的长训练：
 - 获取GTX2060主机/IP、SSH端口、用户名、认证方式和远程工作目录。
 - 填写团队名称、参赛组别、成员、学校和分工，审校PDF/MP4并执行正式命名。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
-- 提交源码完成后在全新目录/环境执行README CPU/静态完整复现。
+- 清洁复现已完成；代码或依赖发生实质修改后需重新执行。

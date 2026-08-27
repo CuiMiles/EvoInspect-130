@@ -18,7 +18,7 @@
 
 ## 2. 当前机器真实状态
 
-2026-08-27 本轮启动时，8 张 RTX 3090 均有其他用户计算进程和高显存占用。本轮没有启动
+2026-08-28 00:25复核时，8 张 RTX 3090 均有其他用户计算进程和高显存占用。本轮没有启动
 任何训练、没有终止或修改其他用户进程。`scripts/run_efficientad_frozen_8gpu.sh` 只选择无计算
 进程、显存≤256 MiB、利用率≤5%的卡，并为每张卡取得 `/tmp/evoinspect-130-gpu-N.lock`；
 任务启动前再次检查，失败即退出。
@@ -64,6 +64,10 @@ fallback。
 repeats=1000，分别报告 model-only 与 end-to-end p50/p95/p99/max、吞吐、CUDA/Torch/GPU、
 checkpoint和输入哈希。当前没有冻结 EfficientAD checkpoint，也没有 GTX2060 实机报告，
 因此 claim ledger 中不存在“满足2060 200ms”的声明。
+
+连接前交接见 `docs/19_REMOTE_2060_HANDOFF.md`。硬件测量 checkpoint 已在训练前固定为
+EfficientAD-M bottle/seed143；质量门不通过时打包器拒绝生成部署包。远端脚本拒绝繁忙 GPU、
+默认拒绝非2060并保存设备、环境、模型、阈值和输入哈希。
 
 ## 5. 真实视频功能验证
 
@@ -123,7 +127,7 @@ p99=0.477/0.931/0.937ms。小切片离散性较强，仍有2/75有害更新未�
 | 作品简介PDF | `works_intro.pdf` | 1页；中文169字、非空白268字符，均≤300 |
 | 官方结构项目PDF | `project_document.pdf` | 5页、A4、包含官方模板各章节 |
 | 项目MP4 | `project_video.mp4` | 122.133秒、1280×720、25.7MB，≤5min且≤200MB |
-| 辅助ZIP | `auxiliary_material.zip` | 133项、约0.34MB、完整性通过且≤200MB |
+| 辅助ZIP | `auxiliary_material.zip` | 144项、小于0.5MB、完整性通过且≤200MB |
 
 验证：`evidence/submission_artifact_validation.json`。四件草稿并不等于正式可上传：团队名称、
 参赛组别、作者/成员、学校、分工未知，官方文件名仍是占位；项目PDF还必须在 EfficientAD-M/
@@ -143,7 +147,8 @@ p99=0.477/0.931/0.937ms。小切片离散性较强，仍有2/75有害更新未�
 1. 等待安全空闲 GPU，运行 EfficientAD-M 45任务并执行冻结质量门；若通过立即部署。
 2. 同时取得远程 GTX2060连接参数；M通过后运行独立2500基准并更新 claim ledger。
 3. 用户提供团队元数据，替换提交物占位和官方文件名。
-4. 在新目录/新环境从 README 执行完整 CPU/静态复现；训练和2060因外部资源分别记录。
+4. 新目录/新环境CPU/静态复现已完成；证据为
+   `evidence/clean_reproduction_20260828.json`。训练和2060仍因外部资源分别记录。
 
 唯一主动作：**在不抢占他人 GPU 的前提下启动并完成 EfficientAD-M 冻结质量门。**
 

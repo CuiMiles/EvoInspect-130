@@ -1,5 +1,5 @@
 spec_version: "2.1"
-updated_at: "2026-08-27"
+updated_at: "2026-08-28"
 project:
   name_zh: "智检演化130"
   name_en: "EvoInspect-130"
@@ -67,6 +67,8 @@ preliminary_submission_freeze:
   accuracy_engine: PatchCore
   edge_engine_primary_candidate: EfficientAD-M
   edge_engine_speed_fallback: EfficientAD-S
+  edge_latency_representative: "EfficientAD-M bottle seed143, predeclared before training"
+  remote_handoff: docs/19_REMOTE_2060_HANDOFF.md
   efficientad_m_quality_gate:
     overall_f1_min: 0.89
     unseen_f1_min: 0.83

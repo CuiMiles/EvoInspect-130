@@ -1,0 +1,12 @@
+captured_at=2026-08-28T00:25:03+08:00
+scope=read-only nvidia-smi snapshot before deciding whether to train
+decision=no EvoInspect GPU workload started; all requested GPUs had other-user compute processes
+gpu0=NVIDIA GeForce RTX 3090,20944/24576 MiB,PID 5566,PengJunhao
+gpu1=NVIDIA GeForce RTX 3090,24036/24576 MiB,PID 5567,PengJunhao
+gpu2=NVIDIA GeForce RTX 3090,8331/24576 MiB,48 percent,PID 7945 and 9303,yinjiaxi
+gpu3=NVIDIA GeForce RTX 3090,3895/24576 MiB,PID 14543 and 16016,yinjiaxi
+gpu4=NVIDIA GeForce RTX 3090,17272/24576 MiB,PID 7493,PengJunhao
+gpu5=NVIDIA GeForce RTX 3090,16142/24576 MiB,PID 7494,PengJunhao
+gpu6=NVIDIA GeForce RTX 3090,16786/24576 MiB,PID 7495,PengJunhao
+gpu7=NVIDIA GeForce RTX 3090,17242/24576 MiB,PID 7497,PengJunhao
+warning=process ownership and utilization are time-varying; recheck immediately before every launch

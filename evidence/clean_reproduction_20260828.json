@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "created_at": "2026-08-28T00:25:03+08:00",
+  "tested_commit": "44d6b0c0f7b495a30c9cac15e5a95557656008c8",
+  "clean_root": "/tmp/evoinspect-clean-44d6b0c",
+  "environment": {
+    "type": "new_venv",
+    "python": "3.11.16",
+    "install": ".venv/bin/python -m pip install -e '.[dev,yaml,metrics,images,video,research]'",
+    "pip_check": "no_broken_requirements"
+  },
+  "checks": {
+    "pytest": {"passed": 60, "failed": 0, "duration_seconds": 3.41},
+    "ruff": "passed",
+    "mypy": {"status": "passed", "source_files": 19},
+    "guarded_adapt_replay": {
+      "status": "passed",
+      "runs": 75,
+      "harmful_update_rate": 0.02666666666666667,
+      "accepted_update_rate": 0.8533333333333334,
+      "rollback_success_rate": 1.0,
+      "report_sha256": "4f4244b5719ca8ba4295daced5740e6c55c744cc7f3802ee520797e1b3ac75b3"
+    },
+    "submission_constraints": {
+      "passed": true,
+      "video_duration_seconds": 122.13333333333334,
+      "report_sha256": "bdfb0cabdb3aee6a0847af6e7b53be93622be14d5e3b3d5feb182bb6eaeb6785"
+    },
+    "efficientad_m_dry_run": {"status": "passed", "tasks": 45, "gpu_work_started": false},
+    "remote_shell_syntax": "passed"
+  },
+  "log_sha256": "bfc7debfeb50db84f551c700bb649c586482a0acf36b782fbd48ae7a7251bca5",
+  "scope": "clean CPU/static reproduction only; no EfficientAD training and no GTX 2060 measurement"
+}
