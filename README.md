@@ -81,18 +81,17 @@ test-label leakage=0。失败后不得无边界调参。
 
 ## 2500×2500 与 GTX 2060
 
-训练完成后，从冻结 run 中选择预先声明的 checkpoint，在目标设备运行：
+训练完成且 M 整体质量门通过后，部署时延 checkpoint 已预声明为 bottle/seed143。先按
+`docs/19_REMOTE_2060_HANDOFF.md` 构建包含固定模型、阈值、输入哈希和固定上游源码的包；
+连接后先做只读核查：
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 PYTHONPATH=src:. \
-/path/to/evoinspect-efficientad/bin/python scripts/benchmark_efficientad_latency.py \
-  --checkpoint RUN/result/model.ckpt \
-  --metrics RUN/result/metrics.json \
-  --test-inputs RUN/test_inputs.csv \
-  --config configs/baselines/efficientad_m_100_30.yaml \
-  --output RUN/latency-2500.json \
-  --physical-gpu 0
+scripts/check_remote_2060_connection.sh USER@HOST
 ```
+
+远程 bundle 内依次运行 `scripts/setup_remote_2060_env.sh` 和
+`scripts/run_remote_2060_benchmark.sh`。运行器拒绝已有计算进程、非 2060（诊断显式解锁除外）
+和覆盖旧报告。
 
 该基准固定 batch=1、2500×2500、warmup=100、repeats=1000，并分别报告 model-only 与
 end-to-end p50/p95/p99。只有 `nvidia-smi` 实际记录为 GTX 2060 的报告才能进入对应声明。

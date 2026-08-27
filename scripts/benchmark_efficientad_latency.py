@@ -32,21 +32,34 @@ def percentiles(values: list[float]) -> dict[str, float]:
     }
 
 
-def source_png(inputs: Path, resolution: int) -> tuple[bytes, str]:
-    with inputs.open(encoding="utf-8", newline="") as stream:
-        row = next(csv.DictReader(stream))
-    with Image.open(row["path"]) as image:
+def source_png(
+    resolution: int, *, inputs: Path | None = None, image_path: Path | None = None
+) -> tuple[bytes, str, Path]:
+    if (inputs is None) == (image_path is None):
+        raise ValueError("exactly one of inputs or image_path is required")
+    if inputs is not None:
+        with inputs.open(encoding="utf-8", newline="") as stream:
+            row = next(csv.DictReader(stream))
+        source = Path(row["path"])
+        sample_id = row["sample_id"]
+    else:
+        assert image_path is not None
+        source = image_path
+        sample_id = image_path.stem
+    with Image.open(source) as image:
         resized = image.convert("RGB").resize((resolution, resolution), Image.Resampling.BILINEAR)
     buffer = io.BytesIO()
     resized.save(buffer, format="PNG", compress_level=1)
-    return buffer.getvalue(), row["sample_id"]
+    return buffer.getvalue(), sample_id, source
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint", required=True, type=Path)
     parser.add_argument("--metrics", required=True, type=Path)
-    parser.add_argument("--test-inputs", required=True, type=Path)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--test-inputs", type=Path)
+    source.add_argument("--image", type=Path)
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--physical-gpu", required=True)
@@ -65,7 +78,9 @@ def main() -> int:
     torch.serialization.add_safe_globals([PosixPath])
     model = EfficientAd.load_from_checkpoint(args.checkpoint, map_location="cuda")
     model.cuda().eval()
-    encoded, sample_id = source_png(args.test_inputs, args.resolution)
+    encoded, sample_id, source_path = source_png(
+        args.resolution, inputs=args.test_inputs, image_path=args.image
+    )
     sections: dict[str, list[float]] = {
         name: []
         for name in (
@@ -133,7 +148,8 @@ def main() -> int:
         },
         "checkpoint_sha256": file_sha256(args.checkpoint),
         "metrics_sha256": file_sha256(args.metrics),
-        "test_inputs_sha256": file_sha256(args.test_inputs),
+        "benchmark_source": str(source_path),
+        "benchmark_source_sha256": file_sha256(source_path),
         "warning": (
             "Source image resized to 2500x2500 before measurement; accuracy at native 2500 "
             "resolution is not implied. Hardware claims are limited to the recorded device."
