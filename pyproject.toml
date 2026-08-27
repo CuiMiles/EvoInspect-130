@@ -41,7 +41,7 @@ pythonpath = ["src", "."]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-exclude = ["third_party"]
+exclude = ["third_party", ".venv"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "RUF"]
