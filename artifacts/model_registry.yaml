@@ -1,15 +1,17 @@
 schema_version: 1
 models:
   - model_id: efficientad-s-anomalib-2.3.0-rcbr-v1
-    status: code_ready_untrained
+    status: formal_smoke_rejected_negative_result_family
     upstream: open-edge-platform/anomalib@091ca6aca92c8d0e416394f79e52f5a3cea3db73
     license: Apache-2.0
-    online_graph_role: candidate_global_and_shared_roi_model
-    artifact_path: null
-    model_hash: null
+    online_graph_role: rejected_candidate_research_diagnostic_only
+    artifact_path: reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/runs
+    model_hash: "per-run SHA-256 recorded in each of 12 metrics.json files"
     config_path: configs/baselines/efficientad_s_100_30.yaml
     method_config_path: configs/innovations/rcbr_v1_dev.yaml
-    restrictions: "No training result exists yet; no accuracy, latency, novelty, or deployment claim is allowed until gated experiments finish."
+    result_evidence: reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md
+    latency_evidence: evidence/rcbr-latency-20260825.txt
+    restrictions: "Formal 70,000-step four-category smoke completed 12/12 but failed all preregistered gates; development and confirmation are forbidden. Retain only as a negative/diagnostic result, not as a final model or performance innovation."
   - model_id: fixture-stat-v1
     status: engineering_test_only
     upstream: null

@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-25T08:32:00+08:00
-current_phase: G1_RCBR_FORMAL_SMOKE_REJECTED_SYSTEM_DEPLOYMENT_PIVOT
-overall_status: FORMAL_RCBR_SMOKE_FAILED_RCBR_PIVOT
+updated_at: 2026-08-27T15:14:36+08:00
+current_phase: G2_SUBMISSION_CLOSURE_REQUIRED
+overall_status: RESEARCH_REPORT_READY_SUBMISSION_NOT_READY
 
 ## One-sentence truth
 
@@ -10,6 +10,8 @@ overall_status: FORMAL_RCBR_SMOKE_FAILED_RCBR_PIVOT
 fusion 机制修订的正式 70,000-step smoke 均未通过预注册 gate。正式批次 12/12 完成，宏平均
 ΔAUPRO@0.05=+0.015647 但低于 +0.025 门槛，ΔOverall F1=-0.150921，ΔUnseen F1=-0.165300；
 RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的报告收敛路线。
+截至 2026-08-27，研究结果可写入报告，但四件官方提交物仍为 0/4，最终部署模型、真实视频、
+真实反馈闭环和 GTX 2060/CPU 验证均缺失，因此作品尚未达到提交标准。
 
 ## Completed
 
@@ -53,6 +55,9 @@ RCBR 性能扩展已停止，转入 PatchCore 强基线 + 系统/部署贡献的
   仅作工程诊断，不代表最终正向模型或 GTX 2060。
 - 已生成最终报告证据索引 `docs/16_FINAL_REPORT_EVIDENCE_20260825.md`，明确主表、负结果、
   延迟范围和未完成项；可据此写报告，但官方最终提交仍为 PARTIAL。
+- 已完成 2026-08-27 指导教师版提交就绪度审计：
+  `docs/17_ADVISOR_STATUS_AND_SUBMISSION_READINESS_20260827.md`。结论为研究报告可写，但正式
+  作品提交不就绪；官方四件提交物均未生成，关键系统/硬件证据仍缺失。
 - 新环境内全仓库 `pytest` 47/47 通过；`ruff check .` 通过；严格 `mypy src` 检查 15 个源码
   文件无问题；两个 bash 脚本语法检查和完整 development dry-run 通过。
 - 修复并实测 `benchmark_rcbr_latency.py`：补齐修订后 raw-score 融合接口和 PyTorch 2.6
@@ -160,8 +165,9 @@ RCBR smoke gate 已失败，不得运行 development 或确认 seeds。下一阶
 
 ## Next primary action
 
-冻结 PatchCore 主基线与 RCBR 负结果/延迟证据，完成报告、模型包、使用说明和 claim ledger；
-若能获得 GTX 2060 或等价设备，再做独立硬件复测，但不得再启动 RCBR development 或 confirmation。
+停止无边界模型探索，立即确定一个真实可运行的最终图像模型，完成统一推理入口、模型使用
+说明、真实视频最小演示、反馈/回滚演示和四件官方提交物，并在清洁环境验收；若能获得
+GTX 2060 或等价设备，只对冻结模型做独立复测，不得再启动 RCBR development 或 confirmation。
 
 ## Parallel work
 

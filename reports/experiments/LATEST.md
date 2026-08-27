@@ -1,8 +1,17 @@
 # Latest experiment
 
-Updated 2026-08-25 08:32 CST. The latest completed evidence includes the formal revised RCBR smoke:
+Updated 2026-08-27 15:14 CST. The latest completed evidence includes the formal revised RCBR smoke:
 12/12 runs completed, but the preregistered gate failed. RCBR performance expansion is stopped;
 the report route is fixed PatchCore plus the system/deployment evidence.
+
+## Submission-readiness audit
+
+The 2026-08-27 audit found that research evidence is sufficient for an honest report, but the
+work is not ready for official submission. The required summary PDF, template-based project PDF,
+MP4 video and auxiliary ZIP are all still `not_started`; there is no selected deployment model,
+real-video/feedback validation, GTX 2060/CPU result or clean-environment submission-package test.
+The advisor-facing decision document is
+`docs/17_ADVISOR_STATUS_AND_SUBMISSION_READINESS_20260827.md`.
 
 ## Completed evidence: localization reevaluation
 
