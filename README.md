@@ -27,7 +27,8 @@ EvoInspect-130（智检演化130）是面向工业组装图像/视频的离线 A
 下面的命令只安装 CPU/视频测试依赖，不下载数据、不启动 GPU：
 
 ```bash
-python3.11 -m venv .venv
+EVOINSPECT_BOOTSTRAP_PYTHON=/home/CuiMinghao/envs/evoinspect-efficientad/bin/python
+"$EVOINSPECT_BOOTSTRAP_PYTHON" -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e '.[dev,yaml,metrics,images,video]'
 .venv/bin/python -m pytest -q
