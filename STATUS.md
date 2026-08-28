@@ -1,13 +1,13 @@
 # STATUS
 
-updated_at: 2026-08-28T17:15:28+08:00
+updated_at: 2026-08-28T17:51:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: EFFICIENTAD_M_RUNNING_GPU2_SUBMISSION_METADATA_PARTIAL
+overall_status: EFFICIENTAD_M_ACCELERATED_SHARED_GPU_LAUNCH_SUBMISSION_METADATA_PARTIAL
 
 ## One-sentence truth
 
-RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 45任务已在安全
-空闲的GPU 2启动，当前执行bottle/seed143；真实视频5/5与 GuardedAdapt
+RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 45任务正切换到
+23-worker共享GPU加速批次，目标墙钟不超过12小时但仍以实测为准；真实视频5/5与 GuardedAdapt
 75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过；Cuisine、崔明浩、西安交通大学
 和单人分工已写入，参赛组别仍待确认，M质量门、真实
 GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经通过。
@@ -24,9 +24,13 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
   后台会话回收，再发现启动器未显式传播单任务退出码且PTY中断未清理后台worker。0个正式
   metrics产生，不能计入算法结果。现已修复退出码传播、worker fail-fast和信号清理并通过
   受控失败测试。
-- 修复commit `5ee4b9e`的新正式批次
-  `efficientad-m-frozen-20260828T091500Z-gpu2-3`已在GPU 2和3启动；bottle/seed143与144均
-  已进入CUDA训练，两卡各约1306MiB，17:15利用率70%/43%，无其他用户CUDA PID。
+- 修复commit `5ee4b9e`的双worker批次
+  `efficientad-m-frozen-20260828T091500Z-gpu2-3`运行约32分钟后由用户授权中止并改为吞吐优先
+  调度；两个任务均只产生中间checkpoint、0个正式metrics，不计入算法结论。
+- 共享GPU加速启动器保留默认独占模式，新增显式`EVOINSPECT_ALLOW_SHARED_GPU=1`和重复GPU
+  slot；按启动前显存余量门禁，不终止其他用户进程。计划23 workers：GPU2×6、GPU3×5、
+  GPU4--7各×3；GPU0/1因仅余约3.1GiB/89MiB而排除。每进程CUDA上限0.12、CPU线程1、
+  DataLoader worker 1；45任务最多两轮，12小时是调度目标而非已验证承诺。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频

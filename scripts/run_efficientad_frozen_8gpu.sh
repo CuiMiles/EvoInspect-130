@@ -12,10 +12,12 @@ esac
 efficient_python="${EVOINSPECT_EFFICIENTAD_PYTHON:-/home/CuiMinghao/envs/evoinspect-efficientad/bin/python}"
 main_python="${EVOINSPECT_PYTHON:-/home/CuiMinghao/envs/evoinspect-130/bin/python}"
 manifest="${EVOINSPECT_MANIFEST:-/home/CuiMinghao/data/mvtec_ad_official/manifests/mvtec_ad_manifest.csv}"
-gpu_text="${EVOINSPECT_GPU_IDS:-0 1 2 3 4 5 6 7}"
+gpu_text="${EVOINSPECT_GPU_SLOTS:-${EVOINSPECT_GPU_IDS:-0 1 2 3 4 5 6 7}}"
 seeds_text="${EVOINSPECT_SEEDS:-143 144 145}"
 max_memory_mb="${EVOINSPECT_MAX_IDLE_MEMORY_MB:-256}"
 max_utilization="${EVOINSPECT_MAX_IDLE_UTILIZATION:-5}"
+allow_shared_gpu="${EVOINSPECT_ALLOW_SHARED_GPU:-0}"
+min_free_memory_mb="${EVOINSPECT_MIN_FREE_MEMORY_MB:-2048}"
 task_timeout="${EVOINSPECT_TASK_TIMEOUT:-18h}"
 dry_run="${EVOINSPECT_DRY_RUN:-0}"
 stamp="${EVOINSPECT_BATCH_STAMP:-$(date -u +%Y%m%dT%H%M%SZ)-$$}"
@@ -24,12 +26,17 @@ categories_text="bottle cable capsule carpet grid hazelnut leather metal_nut pil
 
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 is_uint() { [[ "$1" =~ ^[0-9]+$ ]]; }
-gpu_is_idle() {
-  local gpu="$1" snapshot memory utilization processes
-  snapshot="$(nvidia-smi -i "${gpu}" --query-gpu=memory.used,utilization.gpu --format=csv,noheader,nounits 2>/dev/null)" || return 1
-  IFS=',' read -r memory utilization <<<"${snapshot}"
-  memory="${memory//[[:space:]]/}"; utilization="${utilization//[[:space:]]/}"
-  is_uint "${memory}" && is_uint "${utilization}" || return 1
+gpu_can_start() {
+  local gpu="$1" snapshot memory free_memory utilization processes
+  snapshot="$(nvidia-smi -i "${gpu}" --query-gpu=memory.used,memory.free,utilization.gpu --format=csv,noheader,nounits 2>/dev/null)" || return 1
+  IFS=',' read -r memory free_memory utilization <<<"${snapshot}"
+  memory="${memory//[[:space:]]/}"; free_memory="${free_memory//[[:space:]]/}"
+  utilization="${utilization//[[:space:]]/}"
+  is_uint "${memory}" && is_uint "${free_memory}" && is_uint "${utilization}" || return 1
+  if [[ "${allow_shared_gpu}" == "1" ]]; then
+    (( free_memory >= min_free_memory_mb ))
+    return
+  fi
   processes="$(nvidia-smi -i "${gpu}" --query-compute-apps=pid --format=csv,noheader,nounits 2>/dev/null || true)"
   [[ -z "${processes}" ]] && (( memory <= max_memory_mb && utilization <= max_utilization ))
 }
@@ -42,15 +49,15 @@ read -r -a categories <<<"${categories_text}"
 declare -a gpu_ids=()
 for gpu in "${requested_gpus[@]}"; do
   is_uint "${gpu}" || die "invalid GPU id: ${gpu}"
-  if [[ "${dry_run}" == "1" ]] || gpu_is_idle "${gpu}"; then
+  if [[ "${dry_run}" == "1" ]] || gpu_can_start "${gpu}"; then
     gpu_ids+=("${gpu}")
   else
     printf 'SKIP BUSY GPU %s; no process is touched\n' "${gpu}" >&2
   fi
 done
-(( ${#gpu_ids[@]} > 0 )) || die "no requested GPU is safely idle"
-printf 'EfficientAD-%s: %s category-seed tasks on GPUs: %s\n' \
-  "${size^^}" "$(( ${#categories[@]} * ${#seeds[@]} ))" "${gpu_ids[*]}"
+(( ${#gpu_ids[@]} > 0 )) || die "no requested GPU has sufficient capacity"
+printf 'EfficientAD-%s: %s category-seed tasks on GPU slots: %s (shared=%s)\n' \
+  "${size^^}" "$(( ${#categories[@]} * ${#seeds[@]} ))" "${gpu_ids[*]}" "${allow_shared_gpu}"
 if [[ "${dry_run}" == "1" ]]; then
   printf 'DRY RUN output=%s config=%s seeds=%s\n' "${batch_root}" "${config}" "${seeds[*]}"
   exit 0
@@ -67,7 +74,7 @@ run_task() {
     return 0
   fi
   mkdir -p "${run_dir}"
-  gpu_is_idle "${gpu}" || { printf 'GPU %s became busy before %s\n' "${gpu}" "${run_id}" >>"${log}"; return 90; }
+  gpu_can_start "${gpu}" || { printf 'GPU %s lacks safe capacity before %s\n' "${gpu}" "${run_id}" >>"${log}"; return 90; }
   timeout --signal=TERM --kill-after=60s "${task_timeout}" \
     env CUDA_VISIBLE_DEVICES="${gpu}" EVOINSPECT_PHYSICAL_GPU="${gpu}" \
     PYTHONPATH="${repo_root}/src:${repo_root}" \
@@ -78,13 +85,18 @@ run_task() {
       printf 'PREPARE FAIL code=%s gpu=%s %s\n' "${code}" "${gpu}" "${run_id}" >>"${log}"
       return "${code}"
     }
-  gpu_is_idle "${gpu}" || {
-    printf 'GPU %s became busy after prepare for %s\n' "${gpu}" "${run_id}" >>"${log}"
+  gpu_can_start "${gpu}" || {
+    printf 'GPU %s lacks safe capacity after prepare for %s\n' "${gpu}" "${run_id}" >>"${log}"
     return 90
   }
   timeout --signal=TERM --kill-after=60s "${task_timeout}" \
     env CUDA_VISIBLE_DEVICES="${gpu}" EVOINSPECT_PHYSICAL_GPU="${gpu}" \
     EVOINSPECT_GPU_MEMORY_FRACTION="${EVOINSPECT_GPU_MEMORY_FRACTION:-0.45}" \
+    EVOINSPECT_NUM_WORKERS="${EVOINSPECT_NUM_WORKERS:-4}" \
+    OMP_NUM_THREADS="${EVOINSPECT_CPU_THREADS_PER_TASK:-1}" \
+    MKL_NUM_THREADS="${EVOINSPECT_CPU_THREADS_PER_TASK:-1}" \
+    OPENBLAS_NUM_THREADS="${EVOINSPECT_CPU_THREADS_PER_TASK:-1}" \
+    NUMEXPR_NUM_THREADS="${EVOINSPECT_CPU_THREADS_PER_TASK:-1}" \
     PYTHONPATH="${repo_root}/src:${repo_root}:${repo_root}/third_party/anomalib-2.3.0/src" \
     "${efficient_python}" "${repo_root}/scripts/efficientad_baseline_100_30.py" \
     --adaptation "${run_dir}/adaptation.csv" --test-inputs "${run_dir}/test_inputs.csv" \
@@ -114,7 +126,9 @@ stop_workers() {
 trap stop_workers INT TERM HUP
 for slot in "${!gpu_ids[@]}"; do
   (
-    exec 9>"/tmp/evoinspect-130-gpu-${gpu_ids[slot]}.lock"
+    lock_suffix="${gpu_ids[slot]}"
+    [[ "${allow_shared_gpu}" == "1" ]] && lock_suffix="${gpu_ids[slot]}-slot-${slot}"
+    exec 9>"/tmp/evoinspect-130-gpu-${lock_suffix}.lock"
     flock -n 9 || exit 91
     index=0; failures=0
     for category in "${categories[@]}"; do

@@ -128,6 +128,9 @@ def train_efficientad(
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
+    cpu_threads = int(os.environ.get("EVOINSPECT_CPU_THREADS_PER_TASK", "0"))
+    if cpu_threads > 0:
+        torch.set_num_threads(cpu_threads)
     torch.cuda.set_per_process_memory_fraction(
         float(os.environ.get("EVOINSPECT_GPU_MEMORY_FRACTION", "0.35")), device=0
     )
@@ -144,6 +147,7 @@ def train_efficientad(
     model_size = str(config["model_size"])
     if model_size not in {"small", "medium"}:
         raise RuntimeError(f"unsupported EfficientAD model_size: {model_size}")
+    num_workers = int(os.environ.get("EVOINSPECT_NUM_WORKERS", training["num_workers"]))
     datamodule = Folder(
         name=f"efficientad-{model_size}-{seed}",
         root=data_root,
@@ -153,7 +157,7 @@ def train_efficientad(
         mask_dir="development/masks",
         train_batch_size=1,
         eval_batch_size=int(training["eval_batch_size"]),
-        num_workers=int(training["num_workers"]),
+        num_workers=num_workers,
         val_split_mode="same_as_test",
         seed=seed,
     )
@@ -204,6 +208,8 @@ def train_efficientad(
         "cuda_version": torch.version.cuda,
         "gpu": torch.cuda.get_device_name(0),
         "peak_allocated_bytes": int(torch.cuda.max_memory_allocated()),
+        "num_workers": num_workers,
+        "cpu_threads": torch.get_num_threads(),
     }
 
 
