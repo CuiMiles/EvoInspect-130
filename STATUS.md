@@ -1,13 +1,13 @@
 # STATUS
 
-updated_at: 2026-08-28T17:52:00+08:00
+updated_at: 2026-08-28T19:46:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: EFFICIENTAD_M_ACCELERATED_SHARED_GPU_LAUNCH_SUBMISSION_METADATA_PARTIAL
+overall_status: EFFICIENTAD_M_RUNNING_GPU2_3_CPU_RELIEF_SUBMISSION_METADATA_PARTIAL
 
 ## One-sentence truth
 
-RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 45任务已由
-23-worker在GPU2--7共享加速运行，目标墙钟不超过12小时但仍以实测为准；真实视频5/5与 GuardedAdapt
+RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M当前仅保留
+GPU2/3上的11个worker，GPU4--7上我们的12个worker已按用户要求停止以解除CPU瓶颈；真实视频5/5与 GuardedAdapt
 75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过；Cuisine、崔明浩、西安交通大学
 和单人分工已写入，参赛组别仍待确认，M质量门、真实
 GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经通过。
@@ -34,6 +34,10 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 - commit `bcc5dfd`的正式加速批次`efficientad-m-frozen-20260828T095200Z-shared23`已启动；
   23/23 CUDA任务进入训练，GPU2--7利用率98--100%，各进程约1278MiB，启动审计各卡仍余
   约12--18GiB，0个失败标记、0个正式metrics。GPU0/1未使用，其他用户进程未被修改。
+- 2026-08-28 19:44按用户指令仅终止GPU4--7上属于本项目的12个timeout/Python进程树；
+  GPU2/3的11个CUDA训练继续，其他用户进程未动。停止后GPU4--7本项目CUDA进程为0，
+  项目CPU占用由约2582%降至约1041%，系统load开始由34回落至23；12个中断任务保留日志与
+  checkpoint但不计为正式结果，待GPU2/3任务完成或其他卡用户进程结束后重新运行。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
