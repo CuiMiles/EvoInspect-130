@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-28T17:14:00+08:00
+updated_at: 2026-08-28T17:15:28+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: EFFICIENTAD_M_RUNNING_GPU2_SUBMISSION_METADATA_PARTIAL
 
@@ -23,7 +23,10 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 - 2026-08-28 17:05以commit `cc555b4`启动的批次在首任务阶段中断并保留诊断证据：先发现
   后台会话回收，再发现启动器未显式传播单任务退出码且PTY中断未清理后台worker。0个正式
   metrics产生，不能计入算法结果。现已修复退出码传播、worker fail-fast和信号清理并通过
-  受控失败测试；GPU 2和3均已完全释放，准备以新batch重启。
+  受控失败测试。
+- 修复commit `5ee4b9e`的新正式批次
+  `efficientad-m-frozen-20260828T091500Z-gpu2-3`已在GPU 2和3启动；bottle/seed143与144均
+  已进入CUDA训练，两卡各约1306MiB，17:15利用率70%/43%，无其他用户CUDA PID。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
@@ -129,13 +132,13 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 
 ## Running now
 
-EfficientAD-M 正式质量门是当前唯一允许的长训练。GPU 2和3已安全空闲；修复后的新batch
-将立即双卡启动。不得改配置、启动S或恢复其他冻结路线。
+EfficientAD-M 正式质量门是当前唯一允许的长训练。修复后的45任务新batch正在GPU 2和3
+分片执行。不得改配置、重复启动、启动S或恢复其他冻结路线。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M首批工程启动0/45产生最终metrics并已中断；修复后正式新批次待立即启动，
-  质量门未知；S fallback尚未启动。
+- EfficientAD-M修复后正式新批次运行中，当前0/45产生最终metrics，质量门未知；S fallback
+  尚未启动。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
