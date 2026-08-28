@@ -58,7 +58,7 @@ fi
 
 mkdir -p "${batch_root}/runs"
 run_task() {
-  local gpu="$1" category="$2" seed="$3"
+  local gpu="$1" category="$2" seed="$3" code
   local run_id="efficientad-${size}-${category}-s${seed}-${stamp}"
   local run_dir="${batch_root}/runs/${run_id}"
   local log="${run_dir}/run.log"
@@ -73,7 +73,15 @@ run_task() {
     PYTHONPATH="${repo_root}/src:${repo_root}" \
     "${main_python}" "${repo_root}/scripts/patchcore_lite_bottle.py" prepare \
     --manifest "${manifest}" --output-dir "${run_dir}" --seed "${seed}" --category "${category}" \
-    >>"${log}" 2>&1
+    >>"${log}" 2>&1 || {
+      code=$?
+      printf 'PREPARE FAIL code=%s gpu=%s %s\n' "${code}" "${gpu}" "${run_id}" >>"${log}"
+      return "${code}"
+    }
+  gpu_is_idle "${gpu}" || {
+    printf 'GPU %s became busy after prepare for %s\n' "${gpu}" "${run_id}" >>"${log}"
+    return 90
+  }
   timeout --signal=TERM --kill-after=60s "${task_timeout}" \
     env CUDA_VISIBLE_DEVICES="${gpu}" EVOINSPECT_PHYSICAL_GPU="${gpu}" \
     EVOINSPECT_GPU_MEMORY_FRACTION="${EVOINSPECT_GPU_MEMORY_FRACTION:-0.45}" \
@@ -82,12 +90,28 @@ run_task() {
     --adaptation "${run_dir}/adaptation.csv" --test-inputs "${run_dir}/test_inputs.csv" \
     --test-truth "${run_dir}/test_truth.csv" --split "${run_dir}/split.json" \
     --config "${config}" --output-dir "${run_dir}/result" --run-id "${run_id}" \
-    --seed "${seed}" --registry "${batch_root}/experiment_registry.csv" >>"${log}" 2>&1
+    --seed "${seed}" --registry "${batch_root}/experiment_registry.csv" >>"${log}" 2>&1 || {
+      code=$?
+      printf 'TRAIN/EVAL FAIL code=%s gpu=%s %s\n' "${code}" "${gpu}" "${run_id}" >>"${log}"
+      return "${code}"
+    }
   printf 'PASS gpu=%s %s\n' "${gpu}" "${run_id}"
 }
 
 worker_count="${#gpu_ids[@]}"
 declare -a pids=()
+stop_workers() {
+  trap - INT TERM HUP
+  for pid in "${pids[@]}"; do
+    while read -r child; do
+      [[ -n "${child}" ]] && kill -TERM "${child}" 2>/dev/null || true
+    done < <(pgrep -P "${pid}" 2>/dev/null || true)
+    kill -TERM "${pid}" 2>/dev/null || true
+  done
+  for pid in "${pids[@]}"; do wait "${pid}" 2>/dev/null || true; done
+  exit 130
+}
+trap stop_workers INT TERM HUP
 for slot in "${!gpu_ids[@]}"; do
   (
     exec 9>"/tmp/evoinspect-130-gpu-${gpu_ids[slot]}.lock"
@@ -96,7 +120,12 @@ for slot in "${!gpu_ids[@]}"; do
     for category in "${categories[@]}"; do
       for seed in "${seeds[@]}"; do
         if (( index % worker_count == slot )); then
-          run_task "${gpu_ids[slot]}" "${category}" "${seed}" || failures=$((failures + 1))
+          if ! run_task "${gpu_ids[slot]}" "${category}" "${seed}"; then
+            failures=$((failures + 1))
+            printf 'STOP WORKER gpu=%s after failed task category=%s seed=%s\n' \
+              "${gpu_ids[slot]}" "${category}" "${seed}" >&2
+            break 2
+          fi
         fi
         index=$((index + 1))
       done
