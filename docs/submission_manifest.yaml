@@ -2,6 +2,11 @@ schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
 last_readiness_audit_at: "2026-08-28T17:01:13+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
+source_repository:
+  url: https://github.com/CuiMiles/EvoInspect-130
+  visibility: private
+  default_branch: master
+  pushed_at: "2026-08-28T20:18:00+08:00"
 readiness_evidence: evidence/submission_artifact_validation.json
 deadline_local_file: "2026-09-01T23:59:00+08:00"
 artifacts:
