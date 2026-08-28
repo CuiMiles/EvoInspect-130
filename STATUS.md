@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-29T07:54:00+08:00
+updated_at: 2026-08-29T07:55:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: EFFICIENTAD_M_RESUME_PREPARING_GPU0_3_SUBMISSION_METADATA_PARTIAL
+overall_status: EFFICIENTAD_M_RESUMED_GPU0_3_SUBMISSION_METADATA_PARTIAL
 
 ## One-sentence truth
 
@@ -48,6 +48,9 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
   NVIDIA驱动，系统无本项目CUDA进程；恢复监控已改为驱动不可见时持续记录但禁止启动。
 - 07:53解除受限执行环境后确认物理GPU驱动正常；GPU0--3均为20MiB、0%且无计算进程，
   GPU4--7仍有其他用户任务。恢复计划固定为GPU0--3各3个slot，共12路，仅重跑33个缺失项。
+- 22个中断`result`目录已移动为`result.interrupted-20260829T075400`备份；12个正式metrics保留。
+  07:54恢复批次已在GPU0--3启动12/12 CUDA任务，四卡利用率98--99%、各约3.9GiB，0个
+  当前failure；GPU4--7其他用户进程未修改。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频

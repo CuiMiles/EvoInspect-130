@@ -39,6 +39,11 @@ launch_pid=""
 resumed=0
 while true; do
   snapshot
+  metrics_now="$(find "${batch_root}" -name metrics.json | wc -l)"
+  if (( metrics_now == 45 )); then
+    log "all 45 metrics are present; monitor completed"
+    break
+  fi
   active23=$(( $(our_count_on_gpu 2) + $(our_count_on_gpu 3) ))
   launcher_count="$(pgrep -af 'scripts/run_efficientad_frozen_8gpu.sh m' | wc -l)"
 
