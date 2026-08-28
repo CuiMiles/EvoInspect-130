@@ -10,6 +10,7 @@ dist/
 *.egg-info/
 .venv/
 data/raw/
+data/video/
 data/derived/*
 !data/derived/.gitkeep
 artifacts/runs/
