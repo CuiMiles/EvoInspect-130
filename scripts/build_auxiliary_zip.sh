@@ -11,7 +11,7 @@ zip -q -r "${output}" \
   AGENTS.md README.md STATUS.md project_spec.yaml pyproject.toml \
   src scripts configs docs evidence \
   artifacts/model_registry.yaml data/dataset_registry.yaml \
-  submission/README.md submission/works_intro.txt submission/works_intro.html \
+  submission/README.md submission/metadata.yaml submission/works_intro.txt submission/works_intro.html \
   submission/project_document.html \
   reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json \
   reports/experiments/upstream-patchcore-baselines-report-20260824.md \

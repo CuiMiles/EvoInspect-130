@@ -1,18 +1,32 @@
 {
   "schema_version": 1,
-  "created_at": "2026-08-27T16:27:06+00:00",
+  "created_at": "2026-08-28T09:04:10+00:00",
   "constraints_passed": true,
   "final_upload_ready": false,
   "final_upload_blockers": [
-    "team name, group, author/member, school and division of work are not provided",
+    "missing metadata: competition group",
     "official filename placeholders have not been replaced",
     "EfficientAD-M gate and actual GTX 2060 benchmark are incomplete"
+  ],
+  "metadata": {
+    "schema_version": 1,
+    "team_name": "Cuisine",
+    "competition_group": null,
+    "leader": "崔明浩",
+    "members": [
+      "崔明浩"
+    ],
+    "school": "西安交通大学",
+    "division_of_work": "单人团队；项目调研、方案设计、代码实现、实验、视频和材料均由崔明浩独立完成。"
+  },
+  "missing_metadata": [
+    "competition group"
   ],
   "artifacts": {
     "entry_summary": {
       "path": "submission/drafts/works_intro.pdf",
-      "size_bytes": 46317,
-      "sha256": "5bbcecbce04cc81d9a7687489a11101434161f54903ae62993ae4541ebf4fe7b",
+      "size_bytes": 48138,
+      "sha256": "71c7863c6ea9bcff1546ef3977a648a9e722d59d0cc15aec5e4759b7833c1a26",
       "pages": 1,
       "valid_pdf": true,
       "source_path": "submission/works_intro.txt",
@@ -23,8 +37,8 @@
     },
     "project_document": {
       "path": "submission/drafts/project_document.pdf",
-      "size_bytes": 194764,
-      "sha256": "a738f9b6b484777c828317bc0ee27f16ade86c4bd1d2aeec44b1cf5eab8b4c01",
+      "size_bytes": 912049,
+      "sha256": "be53ec986e9a059c569453047cd72f006f76036dae44ec1093a47fea7606438e",
       "pages": 5,
       "valid_pdf": true
     },
@@ -42,9 +56,9 @@
     },
     "auxiliary_material": {
       "path": "submission/drafts/auxiliary_material.zip",
-      "size_bytes": 446614,
-      "sha256": "4ade012d99df616a6143b5153ae5473f7d2cafc0cb1592e39b94786c6912156f",
-      "members": 144,
+      "size_bytes": 448861,
+      "sha256": "4362fa6ece97c8907e557644ed05ffdd75a3c9fcc9a94421c5a94f05c27b072f",
+      "members": 146,
       "corrupt_member": null,
       "valid_zip": true,
       "within_200_mib": true

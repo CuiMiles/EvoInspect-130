@@ -129,8 +129,8 @@ p99=0.477/0.931/0.937ms。小切片离散性较强，仍有2/75有害更新未�
 | 项目MP4 | `project_video.mp4` | 122.133秒、1280×720、25.7MB，≤5min且≤200MB |
 | 辅助ZIP | `auxiliary_material.zip` | 144项、小于0.5MB、完整性通过且≤200MB |
 
-验证：`evidence/submission_artifact_validation.json`。四件草稿并不等于正式可上传：团队名称、
-参赛组别、作者/成员、学校、分工未知，官方文件名仍是占位；项目PDF还必须在 EfficientAD-M/
+验证：`evidence/submission_artifact_validation.json`。团队Cuisine、队长/唯一成员崔明浩、
+西安交通大学和单人分工已填写；参赛组别仍待确认，官方文件名仍是占位；项目PDF还必须在 EfficientAD-M/
 2060 结果返回后删改待验证内容并重新审校。
 
 ## 8. 当前允许和禁止声明

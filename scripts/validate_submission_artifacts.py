@@ -13,6 +13,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import cv2
+import yaml
 
 LIMIT = 209_715_200
 
@@ -41,9 +42,22 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--draft-dir", type=Path, default=Path("submission/drafts"))
     parser.add_argument("--intro", type=Path, default=Path("submission/works_intro.txt"))
+    parser.add_argument("--metadata", type=Path, default=Path("submission/metadata.yaml"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     intro_text = args.intro.read_text(encoding="utf-8").strip()
+    metadata = yaml.safe_load(args.metadata.read_text(encoding="utf-8"))
+    required_metadata = {
+        "team_name": "team name",
+        "competition_group": "competition group",
+        "leader": "leader",
+        "members": "members",
+        "school": "school",
+        "division_of_work": "division of work",
+    }
+    missing_metadata = [
+        label for key, label in required_metadata.items() if not metadata.get(key)
+    ]
     chinese = len(re.findall(r"[\u3400-\u9fff]", intro_text))
     non_whitespace = len(re.sub(r"\s", "", intro_text))
     intro = pdf(args.draft_dir / "works_intro.pdf")
@@ -93,6 +107,7 @@ def main() -> int:
     }
     constraints_passed = bool(
         intro["valid_pdf"]
+        and intro["pages"] == 1
         and intro["within_300_chinese_characters"]
         and intro["within_300_non_whitespace_characters"]
         and document["valid_pdf"]
@@ -101,16 +116,23 @@ def main() -> int:
         and auxiliary["valid_zip"]
         and auxiliary["within_200_mib"]
     )
+    blockers = []
+    if missing_metadata:
+        blockers.append("missing metadata: " + ", ".join(missing_metadata))
+    blockers.extend(
+        [
+            "official filename placeholders have not been replaced",
+            "EfficientAD-M gate and actual GTX 2060 benchmark are incomplete",
+        ]
+    )
     report = {
         "schema_version": 1,
         "created_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "constraints_passed": constraints_passed,
         "final_upload_ready": False,
-        "final_upload_blockers": [
-            "team name, group, author/member, school and division of work are not provided",
-            "official filename placeholders have not been replaced",
-            "EfficientAD-M gate and actual GTX 2060 benchmark are incomplete",
-        ],
+        "final_upload_blockers": blockers,
+        "metadata": metadata,
+        "missing_metadata": missing_metadata,
         "artifacts": {
             "entry_summary": intro,
             "project_document": document,

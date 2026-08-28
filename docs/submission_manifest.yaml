@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-28T00:25:03+08:00"
+last_readiness_audit_at: "2026-08-28T17:01:13+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
 readiness_evidence: evidence/submission_artifact_validation.json
 deadline_local_file: "2026-09-01T23:59:00+08:00"
@@ -10,14 +10,14 @@ artifacts:
     max_chinese_characters: 300
     template_required: false
     filename_pattern: "{team}_{project}_参赛作品简介.pdf"
-    status: draft_generated_constraints_passed_metadata_blocked
+    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
     path: submission/drafts/works_intro.pdf
     source: submission/works_intro.txt
   - id: project_document
     format: pdf
     template_required: true
     filename_pattern: "{team}_{project}_项目文档.pdf"
-    status: draft_generated_constraints_passed_metadata_and_results_blocked
+    status: draft_generated_constraints_passed_competition_group_results_and_filename_blocked
     path: submission/drafts/project_document.pdf
     source: submission/project_document.html
   - id: project_video
@@ -25,7 +25,7 @@ artifacts:
     max_duration_seconds: 300
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_项目视频.mp4"
-    status: draft_generated_constraints_passed_metadata_blocked
+    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
     path: submission/drafts/project_video.mp4
     duration_seconds: 122.13333333333334
     size_bytes: 25724846
@@ -33,7 +33,7 @@ artifacts:
     format: zip
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_其他.zip"
-    status: draft_generated_constraints_passed_metadata_blocked
+    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
     path: submission/drafts/auxiliary_material.zip
     size_status: validated_under_200_mib
 validation:
@@ -41,11 +41,16 @@ validation:
   constraints_passed: true
   final_upload_ready: false
 metadata_blockers:
-  - team_name
   - competition_group
-  - author_and_members
-  - school
-  - division_of_work
+metadata_completed:
+  source: submission/metadata.yaml
+  team_name: Cuisine
+  leader: 崔明浩
+  members: [崔明浩]
+  school: 西安交通大学
+  division_of_work: "单人团队；全部工作由崔明浩独立完成。"
+packaging_blockers:
+  - official_filenames_not_applied
 technical_blockers:
   - efficientad_m_quality_gate
   - actual_gtx2060_2500_latency
