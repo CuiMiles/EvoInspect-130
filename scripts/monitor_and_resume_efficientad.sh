@@ -12,7 +12,10 @@ log() { printf '[%s] %s\n' "$(date --iso-8601=seconds)" "$*" | tee -a "${log_pat
 
 our_count_on_gpu() {
   local gpu="$1" uuid
-  uuid="$(nvidia-smi --query-gpu=uuid -i "${gpu}" --format=csv,noheader,nounits | tr -d '[:space:]')"
+  if ! uuid="$(nvidia-smi --query-gpu=uuid -i "${gpu}" --format=csv,noheader,nounits 2>/dev/null | tr -d '[:space:]')" || [[ -z "${uuid}" ]]; then
+    echo -1
+    return 0
+  fi
   nvidia-smi --query-compute-apps=gpu_uuid,process_name --format=csv,noheader,nounits \
     | awk -F',' -v u="${uuid}" '$1==u && $2 ~ /CuiMinghao\/envs\/evoinspect-efficientad/ {n++} END {print n+0}'
 }
@@ -25,8 +28,10 @@ snapshot() {
   gpu4="$(our_count_on_gpu 4)"; gpu5="$(our_count_on_gpu 5)"
   gpu6="$(our_count_on_gpu 6)"; gpu7="$(our_count_on_gpu 7)"
   log "metrics=${metrics}/45 failures=${failures} our_cuda_gpu2_3=${active23} our_cuda_gpu4_7=${gpu4},${gpu5},${gpu6},${gpu7}"
-  nvidia-smi --query-gpu=index,memory.used,memory.free,utilization.gpu,temperature.gpu \
-    --format=csv,noheader,nounits | sed -n '3,8p' >>"${log_path}"
+  if ! nvidia-smi --query-gpu=index,memory.used,memory.free,utilization.gpu,temperature.gpu \
+    --format=csv,noheader,nounits >>"${log_path}" 2>&1; then
+    log "GPU_QUERY_UNAVAILABLE; resume is disabled until nvidia-smi recovers"
+  fi
 }
 
 log "monitor started batch=${batch_root} interval=${interval_seconds}s"
@@ -50,7 +55,7 @@ while true; do
     done < <(find "${batch_root}/runs" -type f -path '*/result/failure.json' -print)
     log "moved_interrupted_result_dirs=${moved}; original artifacts retained"
     EVOINSPECT_ALLOW_SHARED_GPU=1 \
-    EVOINSPECT_GPU_SLOTS='2 2 3 3 4 4 5 5 6 6 7 7' \
+    EVOINSPECT_GPU_SLOTS='0 0 0 1 1 1 2 2 2 3 3 3' \
     EVOINSPECT_MIN_FREE_MEMORY_MB=2048 \
     EVOINSPECT_GPU_MEMORY_FRACTION=0.12 \
     EVOINSPECT_NUM_WORKERS=1 \
