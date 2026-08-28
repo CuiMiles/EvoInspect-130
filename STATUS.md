@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-28T20:18:00+08:00
+updated_at: 2026-08-28T22:56:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: EFFICIENTAD_M_RUNNING_GPU2_3_CPU_RELIEF_SUBMISSION_METADATA_PARTIAL
 
@@ -40,6 +40,9 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
   checkpoint但不计为正式结果，待GPU2/3任务完成或其他卡用户进程结束后重新运行。
 - 当前完整Git历史已推送到私有仓库`https://github.com/CuiMiles/EvoInspect-130`；默认分支
   `master`，本地与远端HEAD均为`b402211`（首次推送核验时），checkpoint和实验大目录未跟踪。
+- 每小时监控/恢复脚本`monitor_and_resume_efficientad.sh`已启动；日志写入当前批次
+  `hourly_monitor.log`。触发条件为GPU2/3本轮11个worker全部退出且原启动器结束；届时仅
+  移动失败结果目录到可恢复备份并按原run-id重跑缺失项，不会重复已完成项。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
