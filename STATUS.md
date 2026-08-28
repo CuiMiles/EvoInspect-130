@@ -1,13 +1,13 @@
 # STATUS
 
-updated_at: 2026-08-28T17:01:13+08:00
+updated_at: 2026-08-28T17:07:40+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: CLEAN_REPRO_AND_DRAFTS_READY_EFFICIENTAD_AND_2060_BLOCKED
+overall_status: EFFICIENTAD_M_RUNNING_GPU2_SUBMISSION_METADATA_PARTIAL
 
 ## One-sentence truth
 
-RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 训练/质量门代码
-和安全8卡启动器就绪但因8张3090均被其他用户占用尚未启动；真实视频5/5与 GuardedAdapt
+RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M 45任务已在安全
+空闲的GPU 2启动，当前执行bottle/seed143；真实视频5/5与 GuardedAdapt
 75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过；Cuisine、崔明浩、西安交通大学
 和单人分工已写入，参赛组别仍待确认，M质量门、真实
 GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经通过。
@@ -20,8 +20,9 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 - 新增统一 Accuracy/Edge `InferenceEngine`，单元测试通过。
 - EfficientAD-M/S 独立100+30 runner、聚合 gate、2500 p50/p95/p99 benchmark和安全8卡脚本
   已完成；M正式范围为15类×seeds143–145=45任务。
-- 2026-08-28 17:00复核GPU 2为20MiB、0%、无compute process且协作锁可用；提交元数据
-  冻结提交后立即只在GPU 2启动M训练，不探测或占用其他卡。
+- 2026-08-28 17:05以commit `cc555b4`启动正式批次
+  `efficientad-m-frozen-20260828T090500Z-gpu2`；只使用GPU 2。17:07首任务bottle/seed143
+  已进入CUDA训练，20.7M参数、显存约1306MiB、利用率67%，唯一CUDA PID 26167。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
@@ -125,15 +126,16 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 - 新重跑批次启动时 GPU 4--7 均为 20 MiB/0%；当前仍由 GPU 安全 watchdog 监控，旧批次
   仅保留为中断工程诊断，不能计入性能统计。
 
-## Ready to run
+## Running now
 
 EfficientAD-M 正式质量门是当前唯一允许的长训练：
-`scripts/run_efficientad_frozen_8gpu.sh m`。正常模式会跳过繁忙 GPU；当前没有安全空闲卡，
-因此只完成了45任务 dry-run。RCBR 和其他冻结/暂停路线不得运行。
+`scripts/run_efficientad_frozen_8gpu.sh m`。45任务正在GPU 2串行执行；当前不得重启、改配置、
+启动S或恢复其他冻结路线。第一轮后台启动只完成清单后被命令会话回收，未创建CUDA进程；
+同一batch随后使用持续PTY会话正常启动，不计前一次为算法失败。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M 45任务即将在GPU 2启动，质量门未知；S fallback尚未启动。
+- EfficientAD-M 45任务已启动但0/45产生最终metrics，质量门未知；S fallback尚未启动。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
@@ -187,7 +189,7 @@ EfficientAD-M 正式质量门是当前唯一允许的长训练：
 
 ## Next primary action
 
-在不抢占他人GPU的前提下启动并完成 EfficientAD-M 15类×3 seeds冻结质量门；通过后立即
+持续监控并完成 EfficientAD-M 15类×3 seeds冻结质量门；通过后立即
 冻结Edge Engine并进入2500/GTX2060部署基准，失败则保存证据后只做一次S Pareto判断。
 
 ## Parallel work
