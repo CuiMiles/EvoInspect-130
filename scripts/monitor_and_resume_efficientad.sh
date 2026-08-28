@@ -22,8 +22,8 @@ our_count_on_gpu() {
 
 snapshot() {
   local metrics failures active23 gpu4 gpu5 gpu6 gpu7
-  metrics="$(find "${batch_root}" -name metrics.json | wc -l)"
-  failures="$(find "${batch_root}" -name failure.json | wc -l)"
+  metrics="$(find "${batch_root}/runs" -path '*/result/metrics.json' | wc -l)"
+  failures="$(find "${batch_root}/runs" -path '*/result/failure.json' | wc -l)"
   active23=$(( $(our_count_on_gpu 2) + $(our_count_on_gpu 3) ))
   gpu4="$(our_count_on_gpu 4)"; gpu5="$(our_count_on_gpu 5)"
   gpu6="$(our_count_on_gpu 6)"; gpu7="$(our_count_on_gpu 7)"
@@ -39,7 +39,7 @@ launch_pid=""
 resumed=0
 while true; do
   snapshot
-  metrics_now="$(find "${batch_root}" -name metrics.json | wc -l)"
+  metrics_now="$(find "${batch_root}/runs" -path '*/result/metrics.json' | wc -l)"
   if (( metrics_now == 45 )); then
     log "all 45 metrics are present; monitor completed"
     break
@@ -76,7 +76,7 @@ while true; do
 
   if (( resumed == 1 )) && ! kill -0 "${launch_pid}" 2>/dev/null; then
     snapshot
-    if [[ "$(find "${batch_root}" -name metrics.json | wc -l)" -eq 45 ]]; then
+    if [[ "$(find "${batch_root}/runs" -path '*/result/metrics.json' | wc -l)" -eq 45 ]]; then
       log "resume launcher ended with all 45 metrics present"
     else
       log "resume launcher ended before 45 metrics; inspect resume-launch.log"
