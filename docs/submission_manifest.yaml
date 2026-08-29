@@ -63,6 +63,7 @@ technical_blockers:
   - actual_gtx2060_2500_latency
 completed_closure_evidence:
   clean_directory_environment_reproduction: evidence/clean_reproduction_20260828.json
+  final_freeze_clean_reproduction: evidence/final_clean_reproduction_20260829.json
   guarded_adapt_risk_negative_result: reports/experiments/guarded-adapt-risk-20260829-preregistered-e17419c/report.json
 unknowns:
   - upload_total_size_limit

@@ -22,6 +22,9 @@ evaluator v2.1 结果，剩余9份训练结束后只补评并执行45/45冻结�
   38个正常训练 + 10个正常校准，并使用22个support anomaly；不使用development/test定阈值。
   协议缺陷产生的33份旧结果已可恢复归档，commit `7272064`下统一重评当前36个checkpoint，
   36/36成功、dirty=false、泄漏事件0；最终质量结论仍须等待45/45。
+- 从commit `e359e06`的全新clone和全新Python 3.11 venv按README完成最终冻结CPU/静态复现：
+  pytest 67/67、ruff、mypy 20个源码文件、pip check、45任务dry-run、全部shell语法和提交物
+  约束均通过，未启动GPU。证据为`evidence/final_clean_reproduction_20260829.json`。
 
 - 导师冻结决定已固化：`docs/18_PRELIMINARY_SUBMISSION_FREEZE.md`。
 - RCBR 不再修改/扫参/进入摘要或主创新；HeteroMemory、GuardedFusion、MaskedPrototype、

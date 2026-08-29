@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "created_at": "2026-08-29T21:16:39+08:00",
+  "tested_commit": "e359e06fc266c3b643cbbe861489391d83b8fde5",
+  "clean_root": "/tmp/evoinspect-final-repro-1TolrA/repo",
+  "environment": {
+    "type": "new_git_clone_and_new_venv",
+    "python": "3.11.16",
+    "pip": "26.2.1",
+    "install": ".venv/bin/python -m pip install -e '.[dev,yaml,metrics,images,video,research]'",
+    "pip_check": "no_broken_requirements"
+  },
+  "checks": {
+    "pytest": {"passed": 67, "failed": 0, "duration_seconds": 4.12},
+    "ruff": "passed",
+    "mypy": {"status": "passed", "source_files": 20},
+    "efficientad_m_dry_run": {"status": "passed", "tasks": 45, "gpu_work_started": false},
+    "all_shell_scripts_syntax": "passed",
+    "submission_constraints": {
+      "passed": true,
+      "final_upload_ready": false,
+      "video_duration_seconds": 122.13333333333334,
+      "report_sha256": "823d0f6efad78b5c1dbfa552c8dbd2c8257ae4fc42f71f4b54cb9ae60d53524c"
+    }
+  },
+  "scope": "Fresh clone and fresh Python environment CPU/static reproduction; no GPU workload, GTX 2060 measurement, or video GT metric."
+}
