@@ -122,7 +122,8 @@ def main() -> int:
     blockers.extend(
         [
             "official filename placeholders have not been replaced",
-            "EfficientAD-M gate and actual GTX 2060 benchmark are incomplete",
+            "EfficientAD-M final gate, video GT, and actual GTX 2060 benchmark are incomplete",
+            "GuardedAdapt-Risk failed its preregistered positive-innovation gate",
         ]
     )
     report = {

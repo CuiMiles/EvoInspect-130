@@ -12,13 +12,14 @@ zip -q -r "${output}" \
   src scripts configs docs evidence \
   artifacts/model_registry.yaml data/dataset_registry.yaml \
   submission/README.md submission/metadata.yaml submission/works_intro.txt submission/works_intro.html \
-  submission/project_document.html \
+  submission/project_document.html submission/assets \
   reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json \
   reports/experiments/upstream-patchcore-baselines-report-20260824.md \
   reports/experiments/upstream-patchcore-localization-reeval-20260824T172300-keycheck/aggregate.json \
   reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/analysis.md \
   reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/smoke-gate.json \
   reports/experiments/guarded-adapt-replay-20260827T194500-cpu/report.json \
+  reports/experiments/guarded-adapt-risk-20260829-preregistered-e17419c/report.json \
   reports/experiments/video-demo-20260827T194000-cpu-annotated/report.json \
   -x '*/__pycache__/*' '*.pyc' '*.ckpt' '*.npz' '*.faiss' '*.lock' \
      'reports/experiments/*/annotated/*' 'data/video/*' \
