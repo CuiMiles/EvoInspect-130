@@ -129,7 +129,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if any(row["role"] == "development" for row in [*normal_rows, *anomaly_rows]):
         raise RuntimeError("development rows entered strict calibration")
     output = args.run_dir / str(evaluator["test_policy"]["output_directory_name"])
-    output.mkdir(parents=True, exist_ok=False)
+    if output.exists():
+        raise FileExistsError(output)
+    temporary_output = args.run_dir / f".{output.name}.inprogress-{os.getpid()}"
+    temporary_output.mkdir(parents=True, exist_ok=False)
     started_at = utc_now()
     device = torch.device(args.device)
     if device.type == "cuda":
@@ -160,7 +163,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         maps.append(anomaly_map)
         scores.append(score)
         latencies.append(elapsed_ms)
-    prediction_path = output / "predictions.jsonl"
+    prediction_path = temporary_output / "predictions.jsonl"
     with prediction_path.open("x", encoding="utf-8") as stream:
         for row, score, elapsed_ms in zip(test_inputs, scores, latencies, strict=True):
             stream.write(
@@ -175,7 +178,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 )
                 + "\n"
             )
-    np.savez_compressed(output / "prediction_maps.npz", predictions=np.stack(maps))
+    np.savez_compressed(temporary_output / "prediction_maps.npz", predictions=np.stack(maps))
 
     # The truth file is deliberately opened only after every score and decision is durable.
     truth_path = args.run_dir / "test_truth.csv"
@@ -248,7 +251,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "This 256x256 timing is not GTX2060 or 2500x2500 evidence.",
         ],
     }
-    write_json(output / "metrics.json", report)
+    write_json(temporary_output / "metrics.json", report)
+    temporary_output.rename(output)
     return report
 
 
