@@ -1,16 +1,15 @@
 # STATUS
 
-updated_at: 2026-08-29T07:55:00+08:00
+updated_at: 2026-08-29T17:27:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: EFFICIENTAD_M_RESUMED_GPU0_3_SUBMISSION_METADATA_PARTIAL
+overall_status: FINAL_ROUTE_DECIDED_EFFICIENTAD_EVALUATOR_V2_REQUIRED
 
 ## One-sentence truth
 
-RCBR 已冻结为正式负结果；PatchCore 固定为 Accuracy Engine，EfficientAD-M当前仅保留
-GPU2/3上的11个worker，GPU4--7上我们的12个worker已按用户要求停止以解除CPU瓶颈；真实视频5/5与 GuardedAdapt
-75-run反馈回放已完成，四件初赛草稿的格式/大小约束均通过；Cuisine、崔明浩、西安交通大学
-和单人分工已写入，参赛组别仍待确认，M质量门、真实
-GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经通过。
+RCBR 已冻结为正式负结果，PatchCore 固定为 Accuracy Engine；EfficientAD-M 当前批次26/45、
+0个当前failure，但runner未使用30张`support_anomaly`、图像分数偏离上游`amax`且toothbrush
+的unseen为空，现有数字只能作为诊断；最终路线已固定为保留checkpoint、立即实现strict-100+30
+evaluator v2并只重评一次，通过后上真实GTX2060，失败后仅允许一次S单seed Pareto筛查。
 
 ## Freeze completion snapshot
 
@@ -51,6 +50,14 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 - 22个中断`result`目录已移动为`result.interrupted-20260829T075400`备份；12个正式metrics保留。
   07:54恢复批次已在GPU0--3启动12/12 CUDA任务，四卡利用率98--99%、各约3.9GiB，0个
   当前failure；GPU4--7其他用户进程未修改。
+- 2026-08-29 17:27快照：批次26/45 metrics、0个当前failure、9/15类，10个本项目CUDA
+  worker仍在GPU0--3运行。阶段宏平均Overall F1=0.872878、24个eligible run的Unseen
+  F1=0.779026、Image AUROC=0.945544。当前scorer下即使剩余19项AUROC全为1.0，最终上限
+  也只有0.968537，低于0.97；这些数字因下述协议偏差不得作为正式M质量结论。
+- evaluator审计发现三项阻塞：baseline runner未读取已存在的30张`support_anomaly`而使用额外
+  development异常定阈值；项目使用99.5%分位图像分数而固定上游EfficientAD使用`amax`；
+  toothbrush单缺陷类型导致`unseen=null`且现聚合器会失败。最终路线和停止条件见
+  `docs/20_FINAL_ROUTE_DECISION_20260829.md`。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
 - OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
@@ -156,13 +163,14 @@ GTX2060时延仍阻止正式上传；清洁目录/环境CPU与静态复现已经
 
 ## Running now
 
-EfficientAD-M 正式质量门是当前唯一允许的长训练。修复后的45任务新batch正在GPU 2和3
-分片执行。不得改配置、重复启动、启动S或恢复其他冻结路线。
+EfficientAD-M checkpoint补齐是当前唯一允许的长训练。45任务batch当前在GPU0--3分片执行；
+当前metrics仅为诊断，不是strict-100+30正式证据。不得改训练配置、重复启动、启动S或恢复
+其他冻结路线；CPU侧必须并行实现evaluator v2。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M修复后正式新批次运行中，当前0/45产生最终metrics，质量门未知；S fallback
-  尚未启动。
+- EfficientAD-M当前26/45产生诊断metrics、0 failure；strict-100+30 evaluator v2尚未实现，
+  因此正式质量门仍未知。S fallback尚未启动。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
@@ -216,8 +224,8 @@ EfficientAD-M 正式质量门是当前唯一允许的长训练。修复后的45�
 
 ## Next primary action
 
-持续监控并完成 EfficientAD-M 15类×3 seeds冻结质量门；通过后立即
-冻结Edge Engine并进入2500/GTX2060部署基准，失败则保存证据后只做一次S Pareto判断。
+不中断当前M checkpoint生产，立即实现并冻结strict-100+30 evaluator v2；checkpoint齐全后
+只重评一次并按`docs/20_FINAL_ROUTE_DECISION_20260829.md`自动进入M部署或S单seed停止判断。
 
 ## Parallel work
 

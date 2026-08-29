@@ -1,5 +1,29 @@
 # Latest experiment
 
+## 2026-08-29 EfficientAD-M ongoing checkpoint batch and protocol audit
+
+The current batch is
+`reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23`. At the
+2026-08-29 17:27 CST snapshot it had 26/45 `metrics.json`, zero current
+`failure.json`, nine of fifteen categories represented and ten EvoInspect CUDA
+workers running on GPUs 0--3. The current files are diagnostic only and are not
+an accepted strict-100+30 quality result.
+
+The audit found that the baseline runner does not consume the 30
+`support_anomaly` rows, uses additional development anomalies for thresholding,
+uses the 99.5th percentile of the anomaly map instead of upstream EfficientAD's
+fixed `amax` image score, and cannot aggregate `unseen=null` for the single-type
+toothbrush category. The 26-run diagnostic macro values are Overall F1
+0.872878, eligible-run Unseen F1 0.779026 and Image AUROC 0.945544. Under this
+superseded scorer, even perfect AUROC on all 19 remaining runs would yield at
+most 0.968537 over 45 runs, below the frozen 0.97 gate.
+
+The final bounded route, evidence restrictions and stop decisions are frozen in
+`docs/20_FINAL_ROUTE_DECISION_20260829.md`. Continue producing checkpoints,
+implement strict-100+30 evaluator v2 in parallel, and evaluate all fixed
+checkpoints once. Do not use these partial values in the abstract, slides or
+model selection.
+
 Updated 2026-08-27 15:14 CST. The latest completed evidence includes the formal revised RCBR smoke:
 12/12 runs completed, but the preregistered gate failed. RCBR performance expansion is stopped;
 the report route is fixed PatchCore plus the system/deployment evidence.
