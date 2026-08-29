@@ -63,6 +63,7 @@ code { font-family: monospace; font-size: 9pt; }
 <p>OpenCV 成功解码 5 段 1080×1920、约 98.13 秒的固定机位实拍视频。前端采用 ArUco 优先、简单组件检测 fallback，FSM 以“水瓶→杯子→鼠标”为预期顺序，输出 skip、repeat、reorder、missing、unknown 及时间区间。该结果只证明视频输入和规则链路可运行，不代表工业识别准确率或跨场景泛化。</p>
 <h3>反馈回放</h3>
 <p>GuardedAdapt-v1 在15类5 seeds、75个冻结 PatchCore 真实分数流上完成离线反馈回放。GuardedAdapt-Risk进一步完成219次冻结回放：50个有害v1候选全部被阻断、219次回滚完全一致，但219个候选全部被拒绝，接受率0低于40%预注册门槛，故判定失败。本文不把该结果写成生产准确率提高或正向核心创新。</p>
+<table><tr><td><img src="assets/guarded_risk_pareto.png" style="width:100%"><br>图1 冻结回放的收益—有害更新率关系</td><td><img src="assets/guarded_risk_release_flow.png" style="width:100%"><br>图2 风险发布链与实际失败结论</td></tr></table>
 <h3>性能与部署</h3>
 <p>2500×2500 基准固定 batch=1、预热100次、重复1000次，分别报告 model-only 和 end-to-end p50/p95/p99。只有真实 GTX 2060 设备的报告才能进入硬件声明。当前没有真实 2060 结果，因此不声称达到 200 ms。</p>
 <h2>3.3 计划和分工</h2>
