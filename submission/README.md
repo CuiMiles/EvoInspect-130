@@ -4,5 +4,8 @@
 单人分工已经登记；正式上传前仍须确认参赛组别并按官方规则重命名。任何 GTX 2060 性能数字只能在真实
 设备运行 `scripts/benchmark_efficientad_latency.py` 后写入。
 
+GuardedAdapt-Risk 已完成219次预注册回放但因接受率为0未通过质量门；提交材料只把它写成
+安全机制负结果，不得写成核心创新、在线学习收益或生产准确率提高。
+
 机器约束验收记录写入 `evidence/submission_artifact_validation.json`；生成源文件保留在本目录，
 避免只保存不可修改的二进制成品。

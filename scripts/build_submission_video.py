@@ -113,7 +113,7 @@ def main() -> int:
                 [
                     "Accuracy Engine：冻结 PatchCore 强基线",
                     "Edge Engine：EfficientAD-M 复现中，S 为速度 fallback",
-                    "GuardedAdapt：有害更新门禁与可回滚反馈闭环",
+                    "GuardedAdapt：安全门禁与回滚；Risk扩展冻结为负结果",
                     "视频：真实解码、组件检测、装配顺序 FSM",
                 ],
             ),
@@ -149,9 +149,9 @@ def main() -> int:
                 "证据边界与待完成项",
                 [
                     "MVTec AD PatchCore：Overall F1 0.9224，Image AUROC 0.9817",
-                    "GuardedAdapt：75 个冻结真实分数流反馈回放已完成",
+                    "GuardedAdapt-Risk：219次回放完成，因接受率0未过门",
                     "RCBR 未通过预注册门禁，仅保留为研究负结果",
-                    "EfficientAD-M 质量门与真实 GTX 2060 时延仍待完成",
+                    "EfficientAD-M：36/45严格重评；2060实测仍待完成",
                 ],
             ),
             8.0,
