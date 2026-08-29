@@ -19,3 +19,21 @@ def test_strict_calibration_uses_only_held_out_normals_and_support_anomalies() -
     assert [row["sample_id"] for row in normals] == [f"n-{index}" for index in range(80, 100)]
     assert len(anomalies) == 30
     assert all(row["role"] != "development" for row in [*normals, *anomalies])
+
+
+def test_strict_calibration_supports_frozen_reduced_category_counts() -> None:
+    rows = [
+        *(
+            {"sample_id": f"n-{index}", "role": "support_normal", "label": "normal"}
+            for index in range(48)
+        ),
+        *(
+            {"sample_id": f"a-{index}", "role": "support_anomaly", "label": "anomaly"}
+            for index in range(22)
+        ),
+        {"sample_id": "dev", "role": "development", "label": "anomaly"},
+    ]
+    normals, anomalies = strict_calibration_rows(rows, 38)
+    assert [row["sample_id"] for row in normals] == [f"n-{index}" for index in range(38, 48)]
+    assert len(anomalies) == 22
+    assert all(row["role"] != "development" for row in [*normals, *anomalies])

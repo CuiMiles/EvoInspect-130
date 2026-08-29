@@ -1,5 +1,5 @@
-schema_version: 2
-protocol_id: efficientad_strict_100_30_evaluator_v2
+schema_version: 2.1
+protocol_id: efficientad_strict_100_30_evaluator_v2_1
 source_training_config: configs/baselines/efficientad_m_100_30.yaml
 source_training_config_hash: eed10d9b7159f32634a054b90be94c3ea26195ff5257612a7ad03d7c0404526d
 checkpoint_policy:
@@ -9,7 +9,8 @@ checkpoint_policy:
 map_normalization:
   recompute_after_checkpoint_load: true
   rows: support_normal_calibration_only
-  count: 20
+  nominal_count_max: 20
+  reduced_category_policy: reuse_frozen_training_holdout_counts
 threshold:
   normal_rows: support_normal_calibration_only
   anomaly_rows: all_available_support_anomaly

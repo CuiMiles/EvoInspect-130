@@ -118,10 +118,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         raise RuntimeError("training record points to a different checkpoint")
     adaptation_path = args.run_dir / "adaptation.csv"
     adaptation = read_csv(adaptation_path)
-    normal_rows, anomaly_rows = strict_calibration_rows(
-        adaptation, int(training_config["normal_support_train"])
-    )
-    expected_normal = int(evaluator["map_normalization"]["count"])
+    frozen_calibration = old_metrics["calibration"]
+    frozen_train_count = int(frozen_calibration["normal_train_count"])
+    expected_normal = int(frozen_calibration["normal_calibration_count"])
+    normal_rows, anomaly_rows = strict_calibration_rows(adaptation, frozen_train_count)
+    nominal_max = int(evaluator["map_normalization"]["nominal_count_max"])
+    if expected_normal > nominal_max:
+        raise RuntimeError(
+            f"frozen calibration count {expected_normal} exceeds nominal maximum {nominal_max}"
+        )
     if len(normal_rows) != expected_normal:
         raise RuntimeError(
             f"expected {expected_normal} calibration normals, found {len(normal_rows)}"
@@ -214,6 +219,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "git_commit": commit,
         "dirty": dirty,
         "calibration": {
+            "normal_train_count": frozen_train_count,
             "normal_count": len(normal_rows),
             "support_anomaly_count": len(anomaly_rows),
             "development_count": 0,
