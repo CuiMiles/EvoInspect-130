@@ -1,17 +1,27 @@
 # STATUS
 
-updated_at: 2026-08-29T17:27:00+08:00
+updated_at: 2026-08-29T21:01:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: FINAL_ROUTE_DECIDED_EFFICIENTAD_EVALUATOR_V2_REQUIRED
+overall_status: GUARDED_RISK_FAILED_EFFICIENTAD_M_36_OF_45_STRICT_V2_1_COMPLETE
 
 ## One-sentence truth
 
-RCBR 已冻结为正式负结果，PatchCore 固定为 Accuracy Engine；EfficientAD-M 当前批次26/45、
-0个当前failure，但runner未使用30张`support_anomaly`、图像分数偏离上游`amax`且toothbrush
-的unseen为空，现有数字只能作为诊断；最终路线已固定为保留checkpoint、立即实现strict-100+30
-evaluator v2并只重评一次，通过后上真实GTX2060，失败后仅允许一次S单seed Pareto筛查。
+GuardedAdapt-Risk 已按预注册完成219次回放但因接受率为0%正式失败，不能承担核心创新；
+EfficientAD-M checkpoint 当前36/45、0个当前failure，已完成36份零泄漏 strict-100+30
+evaluator v2.1 结果，剩余9份训练结束后只补评并执行45/45冻结质量门。
 
 ## Freeze completion snapshot
+
+- GuardedAdapt-Risk 已按 commit `342ac7a`、冻结划分哈希
+  `28cc1dcb86bf6ac481ee323133227689ee409151d169fafe48b7436e1803c2f4` 完成：旧75次
+  分数回放 + 72次真实图像漂移 + 72次10%确定性错误反馈，共219次、0泄漏。Risk阻断
+  50/50个有害v1候选、harmful-update rate=0、rollback=219/219，但拒绝219/219个更新，
+  accepted-update rate=0（门槛≥0.40），被接受更新收益与三组风险UCB不可计算；总质量门
+  `passed=false`。该路线冻结为负结果，不调参、不恢复第二创新路线。
+- EfficientAD strict evaluator 已修复少样本类别边界：toothbrush 沿用冻结训练划分
+  38个正常训练 + 10个正常校准，并使用22个support anomaly；不使用development/test定阈值。
+  协议缺陷产生的33份旧结果已可恢复归档，commit `7272064`下统一重评当前36个checkpoint，
+  36/36成功、dirty=false、泄漏事件0；最终质量结论仍须等待45/45。
 
 - 导师冻结决定已固化：`docs/18_PRELIMINARY_SUBMISSION_FREEZE.md`。
 - RCBR 不再修改/扫参/进入摘要或主创新；HeteroMemory、GuardedFusion、MaskedPrototype、
@@ -164,13 +174,14 @@ evaluator v2并只重评一次，通过后上真实GTX2060，失败后仅允许�
 ## Running now
 
 EfficientAD-M checkpoint补齐是当前唯一允许的长训练。45任务batch当前在GPU0--3分片执行；
-当前metrics仅为诊断，不是strict-100+30正式证据。不得改训练配置、重复启动、启动S或恢复
-其他冻结路线；CPU侧必须并行实现evaluator v2。
+当前36个checkpoint已有strict-v2.1正式单run证据，但未完成45/45前不得形成M质量结论。
+剩余transistor、wood、zipper各3个任务运行在GPU0--2；不得改训练配置、重复启动、启动S
+或恢复其他冻结路线。GuardedAdapt-Risk已失败冻结。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M当前26/45产生诊断metrics、0 failure；strict-100+30 evaluator v2尚未实现，
-  因此正式质量门仍未知。S fallback尚未启动。
+- EfficientAD-M当前36/45 checkpoint完成、0当前failure；36份strict-v2.1单run重评完成且泄漏0，
+  但正式45/45质量门仍未知。S fallback尚未启动。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
@@ -224,8 +235,8 @@ EfficientAD-M checkpoint补齐是当前唯一允许的长训练。45任务batch�
 
 ## Next primary action
 
-不中断当前M checkpoint生产，立即实现并冻结strict-100+30 evaluator v2；checkpoint齐全后
-只重评一次并按`docs/20_FINAL_ROUTE_DECISION_20260829.md`自动进入M部署或S单seed停止判断。
+不中断当前M checkpoint生产；剩余9项结束后立即补做strict-v2.1并执行45/45冻结质量门，
+再按`docs/20_FINAL_ROUTE_DECISION_20260829.md`自动进入M部署或S单seed停止判断。
 
 ## Parallel work
 
