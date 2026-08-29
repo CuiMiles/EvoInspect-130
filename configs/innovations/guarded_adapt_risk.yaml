@@ -1,0 +1,76 @@
+schema_version: 1
+method_id: guarded-adapt-risk-v1-preregistered
+scope: mvtec_real_image_drift_and_corrupted_feedback_replay
+source_batch: reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160
+legacy_source_pack: evidence/guarded_adapt_replay_input.jsonl.gz
+categories: [bottle, cable, capsule, carpet, transistor, wood]
+seeds: [133, 134, 135]
+strategies: [NoUpdate, NaiveUpdate, BoundedThreshold, GuardedAdapt-v1, GuardedAdapt-Risk]
+drifts:
+  brightness:
+    factor: 1.20
+  color_temperature:
+    red_factor: 1.10
+    green_factor: 1.00
+    blue_factor: 0.90
+  gaussian_blur:
+    radius: 1.50
+  jpeg:
+    quality: 55
+drift_trigger:
+  reference_normal_samples: 32
+  window_size: 32
+  p_value_max: 0.01
+  median_shift_iqr_fraction: 0.25
+  consecutive_windows: 2
+feedback:
+  normal_train: 16
+  normal_validation: 16
+  anomaly_train: 8
+  anomaly_validation: 7
+  shadow_normal: 25
+  shadow_anomaly: 7
+  corrupted_label_fraction: 0.10
+  corruption_rule: sample_id_sha256_lowest_first
+threshold_update:
+  max_shift_iqr_fraction: 0.25
+memory_update:
+  max_replace_fraction: 0.05
+  max_new_patch_features: 256
+  candidate_pool_multiplier: 4
+  selection: farthest_from_champion_then_greedy_diversity
+  removal: smallest_second_neighbour_distance_redundancy
+  backbone_finetuning: false
+risk_gate:
+  bootstrap_draws: 2000
+  confidence: 0.95
+  multiple_testing: bonferroni
+  multiplicity: 4
+  target_f1_gain_lcb_min: 0.0
+  historical_normal_fpr_ucb_max: 0.01
+  seen_anomaly_fnr_ucb_max: 0.01
+  unseen_anomaly_fnr_ucb_max: 0.02
+shadow:
+  samples: 32
+  exact_rollback_required: true
+partition:
+  manifest: evidence/guarded_adapt_risk_partitions.json
+  construction: label_visibility_then_sample_id_sha256_round_robin
+  roles: [target, gate_anchor, audit_anchor]
+quality_gate:
+  minimum_total_replays: 200
+  harmful_update_rate_max: 0.015
+  harmful_relative_reduction_vs_v1_min: 0.50
+  accepted_update_rate_min: 0.40
+  accepted_target_f1_gain_min: 0.01
+  normal_fpr_regression_ucb_max: 0.01
+  seen_fnr_regression_ucb_max: 0.01
+  unseen_fnr_regression_ucb_max: 0.02
+  harmful_candidate_block_rate_min: 0.80
+  rollback_success_rate: 1.0
+  leakage_events_max: 0
+claims:
+  production_user_study: false
+  production_accuracy_gain: false
+  incremental_memory_is_first_or_novel: false
+  allowed_if_gate_passes: bounded_risk_controlled_offline_replay_result
