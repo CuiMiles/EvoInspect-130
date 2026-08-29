@@ -2,8 +2,9 @@
 
 EvoInspect-130（智检演化130）是面向工业组装图像/视频的离线 AOI 研究原型。当前处于
 `PRELIMINARY-SUBMISSION FREEZE`：PatchCore 固定为 Accuracy Engine；EfficientAD-M 正在按
-同一 MVTec AD 100+30 隔离协议复现，EfficientAD-S 仅作为速度 fallback；GuardedAdapt 是唯一
-主要系统创新。RCBR 已正式失败并冻结，只保留为研究决策负结果。
+同一 MVTec AD 100+30 隔离协议复现，EfficientAD-S 仅作为速度 fallback。GuardedAdapt-Risk
+已完成预注册实验但因拒绝全部更新未通过正向门，不能作为核心创新；RCBR 同样已正式失败并冻结。
+两者只保留为研究决策负结果和工程安全边界。
 
 本仓库不保证奖项，不声称未实测的 GTX 2060/CPU 时延，也不使用测试标签调阈值、挑模型或
 早停。允许/禁止声明以 `evidence/claim_ledger.csv` 和 `STATUS.md` 为准。
@@ -17,8 +18,10 @@ EvoInspect-130（智检演化130）是面向工业组装图像/视频的离线 A
   missing/unknown 词汇和时间区间；固定机位桌面演示，不是工业 benchmark。
 - GuardedAdapt：15 类五种子、75 个冻结 PatchCore 真实分数流离线反馈回放；不是生产用户研究，
   也不把 target gain 宣称为生产准确率提高。
-- 四件初赛材料已有约束合格的草稿；团队元数据、正式命名、EfficientAD-M 与 GTX 2060 仍是
-  最终上传阻断项。
+- GuardedAdapt-Risk：旧75次分数回放、72次真实图像漂移和72次10%错误反馈共219次；阻断
+  50/50个有害v1候选且219次回滚一致，但接受率为0，未通过40%门槛，冻结为负结果。
+- 四件初赛材料已有约束合格的草稿；参赛组别、正式命名、EfficientAD-M、视频GT与 GTX 2060
+  仍是最终上传阻断项。
 
 机器证据入口见 `docs/18_PRELIMINARY_SUBMISSION_FREEZE.md`。
 
@@ -78,6 +81,14 @@ scripts/run_efficientad_frozen_8gpu.sh s
 
 M 质量线固定为 Overall F1 ≥0.89、Unseen F1 ≥0.83、Image AUROC ≥0.97、15 类任务完整、
 test-label leakage=0。失败后不得无边界调参。
+
+训练 checkpoint 完成后使用 strict evaluator v2.1 重评；阈值只读取冻结的支持正常校准切片和
+全部可用 `support_anomaly`，预测与决策全部写盘后才打开测试真值：
+
+```bash
+scripts/run_efficientad_strict_v2.sh \
+  reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23
+```
 
 ## 2500×2500 与 GTX 2060
 
