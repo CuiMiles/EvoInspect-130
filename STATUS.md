@@ -1,16 +1,25 @@
 # STATUS
 
-updated_at: 2026-08-30T08:40:09+08:00
+updated_at: 2026-08-30T14:03:03+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: GUARDED_RISK_AND_EFFICIENTAD_M_FAILED_S_SINGLE_SEED_RUNNING
+overall_status: PRE_2060_ALGORITHM_WORK_COMPLETE_ALL_NEW_ROUTES_FAILED
 
 ## One-sentence truth
 
 GuardedAdapt-Risk 与 EfficientAD-M 均已完成冻结实验并正式失败：M的45/45 strict-v2.1
 Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过线；0 failure、
-0泄漏。按冻结决策不调M，只运行一次EfficientAD-S的15类seed143 Pareto筛查。
+0泄漏。EfficientAD-S唯一一次15类seed143筛查也已完成：Overall F1=0.890785通过，但
+Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S均停止，不再
+训练第三种检测模型；2060与视频GT前的冻结算法工作已经完成。
 
 ## Freeze completion snapshot
+
+- EfficientAD-S 15/15 checkpoint与strict-v2.1重评已完成，15类齐全、14个eligible unseen
+  run、toothbrush 1个run明确N/A、0 failure、0 test-label leakage。Overall F1=0.890785
+  （门槛0.89，通过），eligible Unseen F1=0.798847（门槛0.83，失败），Image AUROC=0.963851
+  （门槛0.97，失败），总门`passed=false`。S的RTX 3090、256x256模型段诊断p50/p95均值为
+  6.877/17.624 ms，相比M的14.721/34.758 ms更快，但不是GTX2060或2500端到端证据；S只
+  保留为速度Pareto负结果/硬件诊断候选，不扩展seed、不调参。
 
 - EfficientAD-M 45/45 checkpoint与strict-v2.1重评全部完成，15类齐全、42个eligible unseen
   run、toothbrush 3个run明确N/A、0 failure、0 test-label leakage。Overall F1=0.903604
@@ -182,15 +191,13 @@ Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过�
 
 ## Running now
 
-EfficientAD-S唯一一次15类seed143筛查已于2026-08-30 08:40:09+08:00启动，batch为
-`efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3`。仅使用GPU0--3，每卡3个并发槽，
-共12个首波任务；每任务1个数据worker、1个CPU线程、显存比例上限0.15。启动复核时每卡
-约2.4GB显存、GPU利用率93%--97%，GPU4--7其他用户进程未触碰。不得扩展seed144--145，
-除非S单seed通过相同质量门且具有明确速度价值；不得恢复其他冻结路线。
+当前无本项目EfficientAD训练或strict评测进程。S批次于13:15完成正式聚合；算法路线已按
+冻结决策收敛。不得扩展S seed144--145、调M/S或恢复其他检测模型。下一阶段只允许真实
+GTX2060工程基准、视频GT、提交材料闭环与必要修复。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M 45/45已完成但质量门失败；S fallback的15类seed143正在运行，尚无正式指标。
+- EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
@@ -236,16 +243,16 @@ EfficientAD-S唯一一次15类seed143筛查已于2026-08-30 08:40:09+08:00启动
 
 ## Blockers / remaining work
 
-- GPU 2已出现安全空闲窗口；长任务运行中仍须监控是否出现其他用户进程。
+- EfficientAD-M/S与GuardedAdapt-Risk均未通过冻结正向门，当前核心创新与Edge质量证据不足。
 - 无远程GTX2060主机/IP、SSH端口、用户名、认证方式和工作目录。
-- EfficientAD-M质量门、冻结checkpoint与2500时延尚无结果。
+- M/S checkpoint已冻结，但GTX2060上的2500时延尚无结果。
 - 参赛组别未知，提交草稿尚不能最终定稿。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
 
 ## Next primary action
 
-立即在GPU0--3运行唯一一次EfficientAD-S 15类seed143筛查，完成后用S专用strict-v2.1
-聚合并按同一质量门决定停止，或在速度/质量Pareto有价值时才允许扩展。
+连接真实GTX2060，按冻结交接分别测M与S的2500x2500 model-only和end-to-end
+p50/p95/p99；结果只能作为工程Pareto证据，不能消除M/S已经失败的质量门结论。
 
 ## Parallel work
 

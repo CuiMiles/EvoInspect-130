@@ -210,3 +210,19 @@ Unseen F1=0.820986低于0.83，Image AUROC=0.956915低于0.97；15类完整、0 
 
 机器证据：
 `reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/strict-quality-gate-v2.json`。
+
+## 十、EfficientAD-S单seed停止结论（2026-08-30）
+
+EfficientAD-S已按冻结决策完成15类seed143唯一一次筛查和15/15 strict-v2.1重评：Overall
+F1=0.890785通过0.89门槛，eligible Unseen F1=0.798847低于0.83，Image AUROC=0.963851
+低于0.97；15类完整、0 failure、0测试标签泄漏，总门`passed=false`。S在RTX 3090、
+256x256模型段诊断中比M更快，但该诊断不是GTX2060或2500x2500端到端证据，不能抵消质量
+失败。按预注册决策，S停止，不扩展seed、不调参，也不尝试第三种检测模型。
+
+因此，2060与视频GT前的冻结算法任务已经全部结束，但结论不容乐观：PatchCore仍是唯一通过
+现有精度证据的Accuracy Engine；没有通过冻结质量门的Edge Engine；GuardedAdapt-Risk也未
+通过正向创新门。项目可继续完成2060、视频GT和提交闭环，但材料必须把M、S和Risk写为负结果，
+不得宣称已有合格实时引擎或国奖保障。
+
+机器证据：
+`reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3/strict-quality-gate-v2.json`。

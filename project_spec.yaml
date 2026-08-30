@@ -75,7 +75,9 @@ preliminary_submission_freeze:
   decision_doc: docs/18_PRELIMINARY_SUBMISSION_FREEZE.md
   accuracy_engine: PatchCore
   edge_engine_primary_candidate: EfficientAD-M
+  edge_engine_primary_status: failed_frozen_quality_gate
   edge_engine_speed_fallback: EfficientAD-S
+  edge_engine_speed_fallback_status: failed_frozen_quality_gate_speed_diagnostic_only
   edge_latency_representative: "EfficientAD-M bottle seed143, predeclared before training"
   remote_handoff: docs/19_REMOTE_2060_HANDOFF.md
   efficientad_m_quality_gate:
@@ -84,7 +86,7 @@ preliminary_submission_freeze:
     image_auroc_min: 0.97
     all_15_categories_complete: true
     test_label_leakage_max: 0
-  frozen_negative_only: [RCBR, GuardedAdapt-Risk, EfficientAD-M]
+  frozen_negative_only: [RCBR, GuardedAdapt-Risk, EfficientAD-M, EfficientAD-S]
   stopped_research: [HeteroMemory, GuardedFusion, MaskedPrototype, TriSynth]
   paused_until_submission_closure:
     - DAGM_2007
