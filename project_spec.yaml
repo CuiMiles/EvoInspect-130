@@ -61,7 +61,9 @@ research_thesis:
   deployment: "通过统一InferenceEngine显式切换Accuracy/Edge，冻结模型后在真实GTX2060上测量2500x2500 model-only与end-to-end时延。"
   self_learning: "GuardedAdapt-v1保留为离线安全机制；GuardedAdapt-Risk预注册实验因接受率为0失败，不再承担正向核心创新。"
   video_functional_validation: "五段固定机位桌面视频，冻结cup->bottle->mouse工序；v1.1 GT事件Micro F1=0.947368，不外推工业泛化。"
-  final_sprint: "HeteroCal-130已完成45/45并未通过预注册门；算法工作硬停止，剩余工作只做最终交付。"
+  final_sprint: "HeteroCal-130已完成45/45并未通过预注册门；三种EfficientAD-S推理变体与HeteroResidual-S六类seed143探索均为负结果；随后仅注册一轮EfficientAD-S384六类seed143训练筛选，submission/final保持不变。"
+  user_requested_exploratory_screen: "2026-08-31起在不修改submission/final保底包的前提下，按parallel_screening_20260831.yaml、heteroresidual_screen_20260831.yaml与efficientad_s_384_screen_20260831.yaml执行六类seed143筛选；结果仅作探索，需独立审阅后才可晋升。"
+  exploratory_screen_results: "parallel-screening三变体18/18完成但均劣于冻结S-256六类基线；HeteroResidual-S 6/6完成且与基线均值相同；均零测试标签泄漏，不进入提交材料。"
 
 primary_innovations:
   - id: I3

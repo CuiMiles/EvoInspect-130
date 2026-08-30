@@ -1,0 +1,38 @@
+schema_version: 1
+experiment_id: heteroresidual_screen_20260831
+status: exploratory_pre_registered
+purpose: "Six-category seed-143 screen of a frozen EfficientAD-S four-head residual fusion."
+source_protocol: efficientad_strict_100_30_evaluator_v2_1
+categories: [cable, capsule, screw, carpet, transistor, wood]
+seed: 143
+variant:
+  id: heteroresidual_s
+  backbone_frozen: true
+  input_resolution: [256, 256]
+  forward: one_get_maps_call
+  head_count: 4
+features:
+  definition: "base fused maximum plus four nonnegative residual evidence heads"
+  top_fractions: [0.001, 0.005, 0.01]
+  normalized_map_area_threshold: 0.1
+calibrator:
+  residual_delta: 0.35
+  l2: 0.02
+  learning_rate: 0.03
+  iterations: 800
+  normal_scale_floor: 0.001
+selection:
+  method: leave_one_defect_type_out
+  minimum_defect_types: 2
+  require_mean_heldout_auroc_gain_gt: 0.0
+  require_mean_heldout_f1_gain_gt: 0.0
+  maximum_normal_fpr_increase: 0.0
+  failed_selection_fallback: base_fused_score
+quality_context_only:
+  edge_overall_f1: 0.905
+  edge_unseen_f1: 0.840
+  edge_image_auroc: 0.970
+leakage_policy:
+  test_labels_used_for_training: 0
+  test_labels_used_for_threshold: 0
+  test_labels_used_for_selection: 0

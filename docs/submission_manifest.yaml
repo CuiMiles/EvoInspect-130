@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-30T23:20:00+08:00"
+last_readiness_audit_at: "2026-08-31T01:02:00+08:00"
 overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -81,6 +81,13 @@ technical_limitations_not_upload_blockers:
   - guarded_adapt_risk_core_innovation_gate_failed
   - gtx2060_speed_pass_does_not_override_failed_edge_quality_gate
   - heterocal_130_failed_preregistered_quality_gate
+exploratory_screening:
+  status: s384_training_screen_active_final_package_unchanged
+  final_package_unchanged: true
+  parallel_screening_summary: reports/experiments/parallel-screening-20260831/screening-summary.json
+  heteroresidual_summary: reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json
+  s384_training_batch: reports/experiments/efficientad-s384-screen-20260831
+  note: "Two train-free screens completed negative on GPUs 5--7; S384 training screen is queued on idle GPUs 4--7 and cannot change the machine-validated submission/final package automatically."
 completed_closure_evidence:
   clean_directory_environment_reproduction: evidence/clean_reproduction_20260828.json
   final_freeze_clean_reproduction: evidence/final_clean_reproduction_20260829.json

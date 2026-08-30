@@ -1,0 +1,36 @@
+schema_version: 2.1
+protocol_id: efficientad_s_384_screen_100_30_evaluator_v2_1
+source_training_config: configs/baselines/efficientad_s_384_screen_20260831.yaml
+source_training_config_hash: d37546800dd1beb242143d4062a5d02bb22b5a2d57c7f59f5be20093b5d9dba3
+checkpoint_policy:
+  reuse_fixed_final_weights: false
+  retraining_allowed: true
+  verify_against_training_metrics_sha256: true
+map_normalization:
+  recompute_after_checkpoint_load: true
+  rows: support_normal_calibration_only
+  nominal_count_max: 20
+  reduced_category_policy: reuse_frozen_training_holdout_counts
+threshold:
+  normal_rows: support_normal_calibration_only
+  anomaly_rows: all_available_support_anomaly
+  development_rows_allowed: false
+  selector: maximum_support_f1_with_deterministic_tie_break
+image_score:
+  reduction: amax
+  upstream_file: third_party/anomalib-2.3.0/src/anomalib/models/image/efficient_ad/torch_model.py
+  upstream_line_semantics: pred_score_equals_amax_anomaly_map_spatial_dimensions
+test_policy:
+  predictions_and_decisions_fixed_before_truth_open: true
+  output_directory_name: strict_result_v2
+  overwrite_existing: false
+unseen_policy:
+  eligible_only_if_final_test_has_normal_and_unseen_anomaly: true
+quality_gate:
+  exploratory_only: true
+  expected_runs: 6
+  required_categories: 6
+  overall_f1_min: 0.905
+  unseen_f1_min: 0.840
+  image_auroc_min: 0.970
+  test_label_leakage_max: 0

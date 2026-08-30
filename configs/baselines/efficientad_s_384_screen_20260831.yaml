@@ -1,0 +1,37 @@
+schema_version: 1
+model_id: efficientad-s-384-screen-anomalib-2.3.0
+upstream:
+  repository: https://github.com/open-edge-platform/anomalib
+  tag: v2.3.0
+  commit: 091ca6aca92c8d0e416394f79e52f5a3cea3db73
+  license: Apache-2.0
+model_size: small
+imagenette_dir: /home/CuiMinghao/models/evoinspect/imagenette
+input_resolution: [384, 384]
+train_input_resolution: [384, 384]
+normal_support_train: 80
+normal_support_calibration: 20
+training:
+  max_steps: 70000
+  max_epochs: 1000
+  validation_every_n_epochs: 20
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  train_batch_size: 1
+  eval_batch_size: 1
+  num_workers: 1
+  precision: 32-true
+inference:
+  batch_size: 1
+  final_map_resolution: [384, 384]
+  score_quantile: 0.995
+  no_backbone_finetuning_on_defects: true
+quality_gate:
+  exploratory_only: true
+  overall_f1_min: 0.905
+  unseen_f1_min: 0.840
+  image_auroc_min: 0.970
+  test_label_leakage_max: 0
+downloads:
+  pretrained_teacher_sha256: c09aeaa2b33f244b3261a5efdaeae8f8284a949470a4c5a526c61275fe62684a
+  imagenette_sha256: 6cbfac238434d89fe99e651496f0812ebc7a10fa62bd42d6874042bf01de4efd

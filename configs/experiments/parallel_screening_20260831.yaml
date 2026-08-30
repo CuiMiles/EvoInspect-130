@@ -1,0 +1,46 @@
+schema_version: 1
+experiment_id: parallel_screening_20260831
+status: exploratory_pre_registered
+purpose: "Six-category, seed-143 screening of deterministic EfficientAD resolution and tile variants."
+source_protocol: efficientad_strict_100_30_evaluator_v2_1
+categories: [cable, capsule, screw, carpet, transistor, wood]
+seed: 143
+variants:
+  - id: efficientad_s_384
+    model_family: efficientad-s
+    source_batch: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3
+    input_resolution: [384, 384]
+    inference: global_single_forward
+  - id: efficientad_s_512
+    model_family: efficientad-s
+    source_batch: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3
+    input_resolution: [512, 512]
+    inference: global_single_forward
+  - id: static_tile_efficientad_s
+    model_family: efficientad-s
+    source_batch: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3
+    input_resolution: [256, 256]
+    inference: global_plus_fixed_2x2_tiles
+    tiles: 4
+selection:
+  first_screen_only: true
+  expansion_allowed_after_screen: false
+  no_test_driven_selection: true
+  edge_targets_for_context_only:
+    overall_f1: 0.905
+    image_auroc: 0.970
+    unseen_f1: 0.840
+  kill_if_both_below:
+    delta_image_auroc: 0.005
+    delta_unseen_f1: 0.010
+resource_budget:
+  max_concurrent_processes_per_gpu: 2
+  max_gpu_memory_fraction: 0.30
+  max_cpu_threads_per_process: 1
+  task_timeout: 2h
+  monitor_interval_seconds: 1800
+gpu_policy:
+  allowed_gpu_ids: [0, 1, 2, 3, 4, 5, 6, 7]
+  require_free_memory_mb: 4096
+  require_utilization_percent_at_most: 5
+  never_kill_unowned_processes: true

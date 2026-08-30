@@ -1,16 +1,61 @@
 # STATUS
 
-updated_at: 2026-08-30T23:20:00+08:00
-current_phase: FINAL_DELIVERABLE_REBUILD
-overall_status: HETEROCAL_FAILED_ALGORITHM_STOPPED_POSITIVE_DELIVERABLES_REBUILT
+updated_at: 2026-08-31T01:08:00+08:00
+current_phase: EXPLORATORY_S384_TRAINING_SCREEN_ACTIVE_FINAL_FALLBACK_PRESERVED
+overall_status: S384_TRAINING_SCREEN_ACTIVE_FINAL_DELIVERABLES_PRESERVED
+
+## User-requested parallel screening (2026-08-31)
+
+The previously machine-validated `submission/final/` package remains the immutable fallback. A
+new, explicitly exploratory screen was started from `configs/experiments/parallel_screening_20260831.yaml`
+after the user requested a six-route/parallel sprint. The implemented first screen is deliberately
+limited to three train-free EfficientAD-S variants on six categories (`cable`, `capsule`, `screw`,
+`carpet`, `transistor`, `wood`) at seed 143: S-384, S-512, and fixed non-overlapping 2x2 tile-S.
+It reuses completed checkpoints and strict support/test manifests; it does not retrain or alter the
+frozen final materials. The GPU supervisor is `scripts/monitor_parallel_screening.py`, samples
+`nvidia-smi` every 30 seconds (so the log contains many more than half-hourly snapshots), allows at
+most two processes per startable GPU, requires >=4 GiB free and <=5% utilization, and never kills a
+process it did not launch. At launch, only GPU5 was
+startable; GPUs 0--4 and 6--7 had other-user compute activity. No screening result is eligible for
+the abstract or final package until an explicit aggregate review.
+
+## Exploratory screen results (2026-08-31)
+
+The first screen is complete: all 18 pre-registered runs (three EfficientAD-S variants times six
+categories at seed 143) exited successfully with zero test-label leakage. The means are:
+
+- S-384: Overall F1 `0.736895`, eligible Unseen F1 `0.575690`, Image AUROC `0.755735`, model p95
+  `17.928 ms`.
+- S-512: Overall F1 `0.716230`, eligible Unseen F1 `0.529432`, Image AUROC `0.674494`, model p95
+  `27.630 ms`.
+- StaticTile-S: Overall F1 `0.723587`, eligible Unseen F1 `0.562900`, Image AUROC `0.689808`,
+  model p95 `39.515 ms`.
+
+The corresponding frozen S-256 six-category mean is Overall F1 `0.820185`, eligible Unseen F1
+`0.677041`, and Image AUROC `0.936540`; all three train-free variants therefore degrade and are
+not promoted. The machine-readable aggregate is
+`reports/experiments/parallel-screening-20260831/screening-summary.json`.
+
+The HeteroResidual-S six-category screen also completed 6/6 with zero leakage. Its aggregate is
+Overall F1 `0.820185`, eligible Unseen F1 `0.677041`, Image AUROC `0.936540`, and model p95
+`8.026 ms`; it equals the frozen base because the fixed leave-one-defect-type-out rule rejected
+five heads (one category accepted a head without changing the six-category mean). It is a negative
+exploration and is not exported or placed in submission materials. Evidence is
+`reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json`.
+
+SuperSimpleNet, AHL/DRA, DINO and GLASS do not have a registered 100+30 evaluator in this checkout,
+so they are not launched. A separately registered EfficientAD-S384 training screen is now queued on
+idle GPUs 4--7: six categories, seed 143, 384x384 training, 70,000 steps, strict support-only
+evaluation, one task per GPU and 30-second polling. GPUs 0--3 continue to be left untouched when
+occupied by other users. Its preregistration is `docs/25_EFFICIENTAD_S384_SCREEN_20260831_PREREGISTRATION.md`.
 
 ## One-sentence truth
 
 GuardedAdapt-Risk 与 EfficientAD-M 均已完成冻结实验并正式失败：M的45/45 strict-v2.1
 Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过线；0 failure、
 0泄漏。EfficientAD-S唯一一次15类seed143筛查也已完成：Overall F1=0.890785通过，但
-Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S均停止，不再
-训练第三种检测模型。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
+Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S冻结质量门结论仍保留；
+S384训练只是用户追加的一轮有界探索，不改变冻结结果或提交材料。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
 151.343/166.165 ms，速度均过200 ms目标；但两者冻结质量门仍失败，所以没有合格Edge Engine。
 
 HeteroCal-130已按预注册协议完成45/45五组消融：完整方法Overall F1=0.898108、eligible
@@ -30,13 +75,13 @@ support类型留一选择，零测试标签泄漏，总门`passed=false`。按12
   （门槛0.89，通过），eligible Unseen F1=0.798847（门槛0.83，失败），Image AUROC=0.963851
   （门槛0.97，失败），总门`passed=false`。S的RTX 3090、256x256模型段诊断p50/p95均值为
   6.877/17.624 ms，相比M的14.721/34.758 ms更快，但不是GTX2060或2500端到端证据；S只
-  保留为速度Pareto负结果/硬件诊断候选，不扩展seed、不调参。
+  保留为速度Pareto负结果/硬件诊断候选；本次S384训练筛选另行记录，不覆盖该冻结结论。
 
 - EfficientAD-M 45/45 checkpoint与strict-v2.1重评全部完成，15类齐全、42个eligible unseen
   run、toothbrush 3个run明确N/A、0 failure、0 test-label leakage。Overall F1=0.903604
   （门槛0.89，通过），eligible Unseen F1=0.820986（门槛0.83，失败），Image AUROC=0.956915
   （门槛0.97，失败），总门`passed=false`。M冻结为负结果，不修改学习率、分辨率、步数、
-  seed或阈值策略；只允许S的15类seed143一次筛查。
+  seed或阈值策略；本轮S384训练是独立的六类seed143探索。
 
 - GuardedAdapt-Risk 已按 commit `342ac7a`、冻结划分哈希
   `28cc1dcb86bf6ac481ee323133227689ee409151d169fafe48b7436e1803c2f4` 完成：旧75次

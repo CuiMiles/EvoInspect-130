@@ -161,12 +161,19 @@ def train_efficientad(
         val_split_mode="same_as_test",
         seed=seed,
     )
-    model = EfficientAd(
-        imagenet_dir=Path(config["imagenette_dir"]),
-        model_size=model_size,
-        lr=float(training["learning_rate"]),
-        weight_decay=float(training["weight_decay"]),
-    )
+    model_kwargs: dict[str, Any] = {
+        "imagenet_dir": Path(config["imagenette_dir"]),
+        "model_size": model_size,
+        "lr": float(training["learning_rate"]),
+        "weight_decay": float(training["weight_decay"]),
+    }
+    train_resolution = config.get("train_input_resolution")
+    if train_resolution is not None:
+        train_shape = tuple(int(value) for value in train_resolution)
+        if len(train_shape) != 2 or min(train_shape) < 64:
+            raise RuntimeError("train_input_resolution must contain two dimensions >= 64")
+        model_kwargs["pre_processor"] = EfficientAd.configure_pre_processor(train_shape)
+    model = EfficientAd(**model_kwargs)
     engine = Engine(
         max_steps=int(training["max_steps"]),
         max_epochs=int(training["max_epochs"]),
