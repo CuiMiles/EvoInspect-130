@@ -1,0 +1,46 @@
+schema_version: 1
+protocol_id: heterocal_130_preregistered_v1
+source_batch: reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23
+source_evaluator: configs/evaluation/efficientad_strict_100_30_v2.yaml
+model_policy:
+  backbone_frozen: true
+  checkpoint_retraining_allowed: false
+  test_driven_selection_allowed: false
+  expected_runs: 45
+  required_categories: 15
+features:
+  top_fractions: [0.001, 0.005, 0.01]
+  normalized_map_area_threshold: 0.1
+  horizontal_flip: true
+calibrator:
+  residual_delta: 0.35
+  l2: 0.02
+  learning_rate: 0.03
+  iterations: 800
+  nonnegative_evidence_weights: true
+  normal_scale_floor: 0.001
+selection:
+  method: leave_one_defect_type_out
+  minimum_defect_types: 2
+  require_mean_heldout_auroc_gain_gt: 0.0
+  require_mean_heldout_f1_gain_gt: 0.0
+  maximum_normal_fpr_increase: 0.0
+  failed_selection_fallback: upstream_baseline
+ablations:
+  - efficientad_m
+  - dual_map_fixed
+  - defect_type_loo_calibration
+  - flip_consistency
+  - heterocal_130
+quality_gate:
+  overall_f1_min: 0.90
+  unseen_f1_min: 0.83
+  image_auroc_min: 0.97
+  test_label_leakage_max: 0
+  worst_category_f1_drop_max: 0.01
+  support_loo_must_be_positive: true
+latency_gate:
+  gtx2060_end_to_end_p95_ms_lt: 200
+  repeats: 1000
+  warmup: 100
+

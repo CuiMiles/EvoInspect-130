@@ -61,6 +61,7 @@ research_thesis:
   deployment: "通过统一InferenceEngine显式切换Accuracy/Edge，冻结模型后在真实GTX2060上测量2500x2500 model-only与end-to-end时延。"
   self_learning: "GuardedAdapt-v1保留为离线安全机制；GuardedAdapt-Risk预注册实验因接受率为0失败，不再承担正向核心创新。"
   video_functional_validation: "五段固定机位桌面视频，冻结cup->bottle->mouse工序；v1.1 GT事件Micro F1=0.947368，不外推工业泛化。"
+  final_sprint: "只允许HeteroCal-130冻结校准实验与最终交付入口；12小时硬停止，不恢复其他检测模型。"
 
 primary_innovations:
   - id: I3
@@ -70,6 +71,13 @@ primary_innovations:
     mandatory_ablation: true
     status: failed_preregistered_positive_gate
     claim_role: engineering_safety_and_negative_result_only
+  - id: I4
+    name: "HeteroCal-130"
+    zh: "冻结EfficientAD双异常图、缺陷类型留一与翻转一致性的有界少样本校准器"
+    type: incremental_algorithm
+    mandatory_ablation: true
+    status: preregistered_not_yet_evaluated
+    claim_role: forbidden_until_quality_and_latency_gates_pass
 
 preliminary_submission_freeze:
   effective_date: "2026-08-27"

@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-30T20:41:55+08:00
-current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: GTX2060_OPTIMIZED_SPEED_PASS_EDGE_QUALITY_FAIL_VIDEO_GT_NEXT
+updated_at: 2026-08-30T21:15:00+08:00
+current_phase: FINAL_SPRINT_HETEROCAL_PREREGISTERED
+overall_status: HETEROCAL_PREREGISTERED_NOT_YET_EVALUATED_DELIVERABLE_REWRITE_PENDING
 
 ## One-sentence truth
 
@@ -12,6 +12,11 @@ Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过�
 Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S均停止，不再
 训练第三种检测模型。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
 151.343/166.165 ms，速度均过200 ms目标；但两者冻结质量门仍失败，所以没有合格Edge Engine。
+
+2026-08-30最终冲刺只新增HeteroCal-130：冻结全部EfficientAD-M checkpoint，以support-only
+缺陷类型留一门决定双图/翻转小型非负校准头是否发布；测试标签不得参与拟合、阈值、门禁或
+回退。协议已在任何HeteroCal测试指标产生前写入`docs/22_HETEROCAL_130_PREREGISTRATION.md`
+和`configs/innovations/heterocal_130.yaml`；当前无结果，不允许正向声明。
 
 ## Freeze completion snapshot
 
@@ -268,10 +273,11 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 ## Next primary action
 
-人工打开`submission/final/`四件文件审阅内容，然后在官方平台上传。
+在GPU5安全串行执行HeteroCal-130的45个冻结checkpoint五组消融，并在第12小时按预注册门
+一次性停止或进入2060复测。
 
 ## Parallel work
 
-- 审校正式PDF/MP4并上传。
+- 将PDF、视频和辅助ZIP从研究审计稿重构为正向竞赛交付稿；HeteroCal结果未通过前不得写入。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
 - 清洁复现已完成；代码或依赖发生实质修改后需重新执行。
