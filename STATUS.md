@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-30T08:35:00+08:00
+updated_at: 2026-08-30T08:40:09+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: GUARDED_RISK_AND_EFFICIENTAD_M_FAILED_S_SINGLE_SEED_NEXT
+overall_status: GUARDED_RISK_AND_EFFICIENTAD_M_FAILED_S_SINGLE_SEED_RUNNING
 
 ## One-sentence truth
 
@@ -182,13 +182,15 @@ Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过�
 
 ## Running now
 
-当前无M训练或strict评测进程。GPU0--3物理查询为空闲，GPU4--7为其他用户任务；准备仅在
-GPU0--3启动EfficientAD-S 15类seed143一次筛查。不得扩展seed144--145，除非S单seed通过
-相同质量门且具有明确速度价值；不得恢复其他冻结路线。
+EfficientAD-S唯一一次15类seed143筛查已于2026-08-30 08:40:09+08:00启动，batch为
+`efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3`。仅使用GPU0--3，每卡3个并发槽，
+共12个首波任务；每任务1个数据worker、1个CPU线程、显存比例上限0.15。启动复核时每卡
+约2.4GB显存、GPU利用率93%--97%，GPU4--7其他用户进程未触碰。不得扩展seed144--145，
+除非S单seed通过相同质量门且具有明确速度价值；不得恢复其他冻结路线。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M 45/45已完成但质量门失败；S fallback的15类seed143尚未启动。
+- EfficientAD-M 45/45已完成但质量门失败；S fallback的15类seed143正在运行，尚无正式指标。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
