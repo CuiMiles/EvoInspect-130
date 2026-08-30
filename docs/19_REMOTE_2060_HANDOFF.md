@@ -77,3 +77,12 @@ M和S现均已完成冻结质量门并失败。为了获得真实2060工程Paret
 `--allow-failed-gate-diagnostic`分别打包M/S；默认路径仍拒绝失败模型。此模式生成的manifest
 固定写入`diagnostic_only=true`、`claim_eligible=false`，不得据此声称Edge Engine质量通过。
 两种网络均固定使用bottle/seed143，只比较同构网络的硬件代价，不按测试指标挑checkpoint。
+
+## 实机执行结果（2026-08-30）
+
+实例49225420已通过端口46781连接并确认是6 GiB NVIDIA GeForce RTX 2060。M/S诊断包均在
+独立远端环境完成PyTorch FP32和ONNX Runtime CUDA FP16基准，结束后GPU无计算进程。FP32
+端到端p95分别为S 327.922 ms、M 331.273 ms；ONNX FP16端到端p95分别为S 151.343 ms、
+M 166.165 ms，model-only p95分别为8.205/19.355 ms。完整环境、协议、哈希、数值保真和
+质量边界见`evidence/remote_gtx2060_benchmark_20260830.json`。M/S质量门均失败，因此只允许
+写成实际硬件速度诊断，不得称合格Edge Engine。

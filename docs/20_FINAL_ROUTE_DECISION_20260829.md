@@ -226,3 +226,16 @@ F1=0.890785通过0.89门槛，eligible Unseen F1=0.798847低于0.83，Image AURO
 
 机器证据：
 `reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3/strict-quality-gate-v2.json`。
+
+## 十一、真实GTX2060速度闭环（2026-08-30）
+
+实例49225420已实机确认使用6 GiB NVIDIA GeForce RTX 2060。按冻结协议使用2500×2500
+重采样输入、batch=1、warmup=100、repeats=1000测量：PyTorch FP32的EfficientAD-S/M
+端到端p95分别为327.922/331.273 ms，均未达到200 ms；ONNX Runtime CUDA FP16优化后的
+S/M model-only p95分别为8.205/19.355 ms，端到端p95分别为151.343/166.165 ms，均达到
+200 ms速度目标。优化模型在固定代表输入上的二值决策均与PyTorch参考一致。
+
+该结果只闭环真实GTX2060速度：输入会缩放到模型固定256×256尺寸，不构成原生2500×2500
+异常质量验证；S/M的冻结质量门仍然失败，因此不得据此称合格Edge Engine。机器证据为
+`evidence/remote_gtx2060_benchmark_20260830.json`，原始结果保存在
+`reports/experiments/remote-gtx2060-20260830-instance49225420/`。

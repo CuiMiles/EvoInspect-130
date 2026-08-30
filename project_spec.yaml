@@ -1,5 +1,5 @@
 spec_version: "2.1"
-updated_at: "2026-08-28"
+updated_at: "2026-08-30"
 project:
   name_zh: "智检演化130"
   name_en: "EvoInspect-130"
@@ -79,6 +79,9 @@ preliminary_submission_freeze:
   edge_engine_speed_fallback: EfficientAD-S
   edge_engine_speed_fallback_status: failed_frozen_quality_gate_speed_diagnostic_only
   edge_latency_representative: "EfficientAD-M bottle seed143, predeclared before training"
+  edge_hardware_benchmark_status: optimized_speed_pass_but_quality_gate_failed
+  edge_hardware_evidence: evidence/remote_gtx2060_benchmark_20260830.json
+  edge_hardware_result: "GTX2060 ONNX FP16 S/M end-to-end p95=151.343/166.165ms; neither candidate passed the frozen quality gate"
   remote_handoff: docs/19_REMOTE_2060_HANDOFF.md
   efficientad_m_quality_gate:
     overall_f1_min: 0.89

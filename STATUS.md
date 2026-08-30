@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-30T14:20:36+08:00
+updated_at: 2026-08-30T14:58:52+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: PRE_2060_ALGORITHM_WORK_COMPLETE_ALL_NEW_ROUTES_FAILED
+overall_status: GTX2060_OPTIMIZED_SPEED_PASS_EDGE_QUALITY_FAIL_VIDEO_GT_NEXT
 
 ## One-sentence truth
 
@@ -10,7 +10,8 @@ GuardedAdapt-Risk 与 EfficientAD-M 均已完成冻结实验并正式失败：M�
 Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过线；0 failure、
 0泄漏。EfficientAD-S唯一一次15类seed143筛查也已完成：Overall F1=0.890785通过，但
 Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S均停止，不再
-训练第三种检测模型；2060与视频GT前的冻结算法工作已经完成。
+训练第三种检测模型。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
+151.343/166.165 ms，速度均过200 ms目标；但两者冻结质量门仍失败，所以没有合格Edge Engine。
 
 ## Freeze completion snapshot
 
@@ -33,6 +34,11 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
   50/50个有害v1候选、harmful-update rate=0、rollback=219/219，但拒绝219/219个更新，
   accepted-update rate=0（门槛≥0.40），被接受更新收益与三组风险UCB不可计算；总质量门
   `passed=false`。该路线冻结为负结果，不调参、不恢复第二创新路线。
+- 实例49225420已实机确认是6 GiB NVIDIA GeForce RTX 2060。固定2500×2500、batch=1、
+  warmup=100、repeats=1000下，PyTorch FP32的S/M端到端p95为327.922/331.273 ms，均失败；
+  ONNX Runtime CUDA FP16的S/M端到端p95为151.343/166.165 ms，model-only p95为
+  8.205/19.355 ms，均通过200 ms速度目标，单样本二值决策与PyTorch参考一致。该证据只证明
+  实际硬件速度与数值保真，不推翻M/S质量门失败，也不证明原生2500分辨率异常检测精度。
 - EfficientAD strict evaluator 已修复少样本类别边界：toothbrush 沿用冻结训练划分
   38个正常训练 + 10个正常校准，并使用22个support anomaly；不使用development/test定阈值。
   协议缺陷产生的33份旧结果已可恢复归档，commit `7272064`下统一重评当前36个checkpoint，
@@ -191,27 +197,17 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 ## Running now
 
-当前无本项目EfficientAD训练或strict评测进程。S批次于13:15完成正式聚合；算法路线已按
-冻结决策收敛。不得扩展S seed144--145、调M/S或恢复其他检测模型。下一阶段只允许真实
-GTX2060工程基准、视频GT、提交材料闭环与必要修复。
-
-GTX2060实例`49225420`的动态地址`70.68.84.2:46999`已完成只读网络探测：TCP可达，SSH
-banner为Ubuntu OpenSSH 8.9，服务端主机密钥指纹已保存。当前本机唯一公钥对
-`root/ubuntu/user/vastai`均未获授权，远端声明支持publickey/password；尚缺平台提供的
-SSH用户名及密码或已授权私钥，因此未能执行`nvidia-smi`，也未启动上传、安装或基准。
-已在本机生成该实例专用ED25519身份，公钥指纹为
-`SHA256:FSSXA798RqeSbqt/5fnXNYpUrGKS63uE7mZFnsgxNUE`；私钥不进入仓库。等待用户在实例平台
-添加对应公钥并给出SSH用户名。
-认证等待期间已生成M/S两个diagnostic-only自包含包，SHA-256和大小写入
-`evidence/remote_2060_diagnostic_bundles_20260830.json`。两个manifest均明确
-`quality_gate_passed=false`、`diagnostic_only=true`、`claim_eligible=false`；默认打包路径
-仍拒绝质量门失败模型。包未提交Git，认证完成后可直接上传并依次运行。
+当前无本项目EfficientAD训练、strict评测或远端GPU计算进程。实例`49225420`已通过端口
+46781认证，M/S的FP32与ONNX FP16四项实机基准均完成，结果已下载并聚合到
+`evidence/remote_gtx2060_benchmark_20260830.json`。远端GPU在实验结束后无计算进程。
+算法和2060速度路线均已按冻结决策收敛；不得扩展seed、调M/S或恢复其他检测模型。下一阶段
+只允许视频GT、提交材料闭环与必要修复。
 
 ## Not run or not yet accepted
 
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
-- GTX2060 IP和端口已验证可达，但认证信息和实测结果缺失；不得写200ms达标。
-- 2500 EfficientAD frozen checkpoint benchmark尚未运行。
+- GTX2060实机基准已完成；允许精确报告ONNX FP16速度过线，但不得称M/S质量合格或已形成
+  合格Edge Engine。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
 
 ## Existing verified metrics (unchanged)
@@ -243,12 +239,15 @@ SSH用户名及密码或已授权私钥，因此未能执行`nvidia-smi`，也�
 - OpenCV 5段实拍视频的解码、组件事件和FSM功能结果，但必须标注桌面功能验证而非工业benchmark。
 - GuardedAdapt 75-run离线MVTec真实分数replay的有害更新率、接受率、回滚率和CPU适应时延，
   但不得描述为生产准确率提高或真实用户研究。
+- 可报告真实GTX2060、2500×2500重采样输入、batch=1、100 warmup/1000 repeats下的精确
+  速度：ONNX FP16 S/M的model-only p95为8.205/19.355 ms，端到端p95为
+  151.343/166.165 ms；必须同时说明FP32端到端失败、质量门失败和不代表原生2500精度。
 - 四件提交物“草稿已生成且格式/大小约束通过”，不能说“正式可上传”。
 
 ## Claims forbidden today
 
 - RCBR 已经提升 AUPRO/F1、已经实时、优于 PatchCore、满足 200ms 或可作为最终模型。
-- EfficientAD-M已通过质量门、Edge Engine已冻结、GTX2060<200ms、CPU<2s或原生2500精度。
+- EfficientAD-M/S已通过质量门、合格Edge Engine已冻结、CPU<2s或原生2500精度。
 - 真实视频工业准确率/泛化；GuardedAdapt生产准确率提高或完全阻断有害更新。
 - 四件材料已完成正式元数据、命名、人工审校并可直接上传。
 - “首次”“首创”“SOTA”“国际领先”“全面超越”或任何获奖保证。
@@ -256,19 +255,17 @@ SSH用户名及密码或已授权私钥，因此未能执行`nvidia-smi`，也�
 ## Blockers / remaining work
 
 - EfficientAD-M/S与GuardedAdapt-Risk均未通过冻结正向门，当前核心创新与Edge质量证据不足。
-- GTX2060主机和端口已可达；仍缺SSH用户名、密码或授权密钥，以及远程工作目录。
-- M/S checkpoint已冻结，但GTX2060上的2500时延尚无结果。
+- GTX2060速度已闭环，但不能抵消M/S质量门失败；当前只有“速度达标的失败质量候选”。
 - 参赛组别未知，提交草稿尚不能最终定稿。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
 
 ## Next primary action
 
-连接真实GTX2060，按冻结交接分别测M与S的2500x2500 model-only和end-to-end
-p50/p95/p99；结果只能作为工程Pareto证据，不能消除M/S已经失败的质量门结论。
+完成5段视频人工GT、±0.5秒事件匹配和Precision/Recall/F1；结果只作为桌面功能验证，随后
+立即更新PDF、简介、视频和辅助ZIP的证据边界。
 
 ## Parallel work
 
-- 获取GTX2060用户名、密码或授权密钥和远程工作目录；随后立即执行只读GPU核查。
 - 确认参赛组别，审校PDF/MP4并执行正式命名。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
 - 清洁复现已完成；代码或依赖发生实质修改后需重新执行。

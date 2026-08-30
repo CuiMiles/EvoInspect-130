@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-30T14:58:52+08:00",
+  "instance": {
+    "provider_instance_id": "49225420",
+    "host": "70.68.84.2",
+    "ssh_port": 46781,
+    "gpu": "NVIDIA GeForce RTX 2060",
+    "gpu_memory_mib": 6144,
+    "driver_version": "610.43.02",
+    "compute_capability": "7.5"
+  },
+  "environment": {
+    "python": "3.12",
+    "torch": "2.6.0+cu124",
+    "torchvision": "0.21.0",
+    "anomalib": "2.3.0",
+    "onnx": "1.22.0",
+    "onnxruntime_gpu": "1.22.0",
+    "onnx_execution_provider": "CUDAExecutionProvider"
+  },
+  "protocol": {
+    "batch_size": 1,
+    "source_input_hw": [2500, 2500],
+    "model_input_hw": [256, 256],
+    "warmup": 100,
+    "repeats": 1000,
+    "timing_sections": [
+      "decode",
+      "preprocess_and_transfer",
+      "model_only",
+      "postprocess_and_serialize",
+      "end_to_end"
+    ],
+    "input_note": "The frozen representative source image was encoded at 2500x2500 and decoded for each end-to-end repeat.",
+    "git_commit": "43602ea0a2569e6d87f5a1db49783882edc76ea3"
+  },
+  "results": {
+    "efficientad_s": {
+      "quality_gate": {
+        "passed": false,
+        "overall_f1": 0.890785,
+        "eligible_unseen_f1": 0.798847,
+        "image_auroc": 0.963851,
+        "test_label_leakage": 0
+      },
+      "checkpoint_sha256": "f41310e12895715c86aa350374720972b04a2a0038cfaad5dbabf7a4e3860ef7",
+      "pytorch_fp32": {
+        "model_only_ms": {"p50": 21.72372513450682, "p95": 35.834487329702824, "p99": 47.228446900844574},
+        "end_to_end_ms": {"p50": 291.20688408147544, "p95": 327.9224306461401, "p99": 349.8756034462712},
+        "end_to_end_p95_under_200ms": false,
+        "raw_result_sha256": "63b4174bfbaf75a8d9adea87b5e54abd39da00b177824b58d4712daff64dc0dd"
+      },
+      "onnx_fp16": {
+        "model_only_ms": {"p50": 8.089747047051787, "p95": 8.204604685306549, "p99": 8.283834198955446},
+        "end_to_end_ms": {"p50": 148.296806961298, "p95": 151.34270798880607, "p99": 159.37087842728943, "max": 184.97305712662637},
+        "decode_p95_ms": 141.41443491680548,
+        "preprocess_and_transfer_p95_ms": 1.267934136558324,
+        "throughput_fps": 6.715916804443414,
+        "end_to_end_p95_under_200ms": true,
+        "onnx_sha256": "d4664e719c26f5ef4cf1394b35f2f46062e419ad4cc9f98857425e1ead1e710d",
+        "onnx_bytes": 16160713,
+        "fidelity": {
+          "candidate_score": 0.229736328125,
+          "reference_score": 0.23056413233280182,
+          "absolute_score_difference": 0.0008278042078018188,
+          "map_max_absolute_difference": 0.0029503442347049713,
+          "map_mean_absolute_difference": 0.0003505671047605574,
+          "binary_decision_match": true
+        },
+        "raw_result_sha256": "ddbde3fbe580c1e1e64de482ad47cc8470ec01daf323fdf50cfaffe65f613a3f"
+      }
+    },
+    "efficientad_m": {
+      "quality_gate": {
+        "passed": false,
+        "overall_f1": 0.903604,
+        "eligible_unseen_f1": 0.820986,
+        "image_auroc": 0.956915,
+        "test_label_leakage": 0
+      },
+      "checkpoint_sha256": "30b8665469dbc83831c3e5025e8ecf993d9816016c21f067f54f72df59410205",
+      "pytorch_fp32": {
+        "model_only_ms": {"p50": 55.10385846719146, "p95": 62.909095489885644, "p99": 73.50930573418735},
+        "end_to_end_ms": {"p50": 289.7014574846253, "p95": 331.2730804085731, "p99": 356.2864948506467},
+        "end_to_end_p95_under_200ms": false,
+        "raw_result_sha256": "aa58f320943c8376bf824ba0c69e02c9369a110e42b3936a531ad022642641ca"
+      },
+      "onnx_fp16": {
+        "model_only_ms": {"p50": 19.0351769560948, "p95": 19.3553124088794, "p99": 19.518317247275263},
+        "end_to_end_ms": {"p50": 162.03223506454378, "p95": 166.1646000109613, "p99": 169.82727053575218, "max": 189.71290299668908},
+        "decode_p95_ms": 145.3126234584488,
+        "preprocess_and_transfer_p95_ms": 1.3276315876282752,
+        "throughput_fps": 6.154053648446164,
+        "end_to_end_p95_under_200ms": true,
+        "onnx_sha256": "6894ef8132f41f8aad69e904bde241f2d59a95e752d680b986db9b2b08048f41",
+        "onnx_bytes": 41524109,
+        "fidelity": {
+          "candidate_score": 0.18033751845359802,
+          "reference_score": 0.18114198744297028,
+          "absolute_score_difference": 0.0008044689893722534,
+          "map_max_absolute_difference": 0.002463817596435547,
+          "map_mean_absolute_difference": 0.00009346658771391958,
+          "binary_decision_match": true
+        },
+        "raw_result_sha256": "490371e112efd5756043db32ce51c428604bc94d708d841b84f73c2b1970130f"
+      }
+    }
+  },
+  "conclusions": {
+    "actual_gtx2060_verified": true,
+    "pytorch_fp32_end_to_end_target_passed": false,
+    "onnx_fp16_end_to_end_target_passed_for_s_and_m": true,
+    "frozen_quality_gate_passed_for_any_edge_candidate": false,
+    "qualified_edge_engine_available": false
+  },
+  "claim_boundary": "This is actual GTX 2060 speed and numerical-fidelity evidence for frozen diagnostic checkpoints. It does not override either model's failed frozen quality gate and must not be described as a qualified Edge Engine or as native 2500x2500 anomaly-quality validation.",
+  "raw_artifact_root": "reports/experiments/remote-gtx2060-20260830-instance49225420"
+}
