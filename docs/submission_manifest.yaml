@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-30T19:24:13+08:00"
+last_readiness_audit_at: "2026-08-30T20:41:55+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -16,15 +16,17 @@ artifacts:
     max_chinese_characters: 300
     template_required: false
     filename_pattern: "{team}_{project}_参赛作品简介.pdf"
-    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
+    status: final_named_file_generated_validation_not_rerun
     path: submission/drafts/works_intro.pdf
+    final_path: submission/final/Cuisine_智检演化130_参赛作品简介.pdf
     source: submission/works_intro.txt
   - id: project_document
     format: pdf
     template_required: true
     filename_pattern: "{team}_{project}_项目文档.pdf"
-    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
+    status: final_named_file_generated_validation_not_rerun
     path: submission/drafts/project_document.pdf
+    final_path: submission/final/Cuisine_智检演化130_项目文档.pdf
     source: submission/project_document.html
     pages: 6
     size_bytes: 1773555
@@ -33,32 +35,35 @@ artifacts:
     max_duration_seconds: 300
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_项目视频.mp4"
-    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
+    status: final_named_file_generated_validation_not_rerun
     path: submission/drafts/project_video.mp4
+    final_path: submission/final/Cuisine_智检演化130_项目视频.mp4
     duration_seconds: 122.13333333333334
     size_bytes: 28887378
   - id: auxiliary_material
     format: zip
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_其他.zip"
-    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
+    status: final_named_file_generated_validation_not_rerun
     path: submission/drafts/auxiliary_material.zip
+    final_path: submission/final/Cuisine_智检演化130_其他.zip
     size_status: validated_under_200_mib
 validation:
   path: evidence/submission_artifact_validation.json
   constraints_passed: true
   final_upload_ready: false
-metadata_blockers:
-  - competition_group
+  final_named_artifacts_validation_rerun: false
+  note: "Final named files generated after group confirmation; full validation intentionally not rerun per user request."
+metadata_blockers: []
 metadata_completed:
   source: submission/metadata.yaml
   team_name: Cuisine
+  competition_group: 企业赛题组
   leader: 崔明浩
   members: [崔明浩]
   school: 西安交通大学
   division_of_work: "单人团队；全部工作由崔明浩独立完成。"
-packaging_blockers:
-  - official_filenames_not_applied
+packaging_blockers: []
 technical_blockers:
   - efficientad_m_failed_unseen_f1_and_image_auroc
   - efficientad_s_failed_unseen_f1_and_image_auroc

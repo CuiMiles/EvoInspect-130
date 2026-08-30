@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-30T19:24:13+08:00
+updated_at: 2026-08-30T20:41:55+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: GTX2060_OPTIMIZED_SPEED_PASS_EDGE_QUALITY_FAIL_VIDEO_GT_NEXT
 
@@ -206,14 +206,15 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 46781认证，M/S的FP32与ONNX FP16四项实机基准均完成，结果已下载并聚合到
 `evidence/remote_gtx2060_benchmark_20260830.json`。远端GPU在实验结束后无计算进程。
 算法、2060速度和视频GT路线均已按冻结决策收敛；不得扩展seed、调M/S或恢复其他检测模型。
-当前四件草稿已重建并通过格式约束；只允许正式命名、人工审校、许可确认和必要修复。
+参赛组别已由用户确认为企业赛题组；四件正式命名文件已生成到`submission/final/`。按用户
+要求，本轮未重复执行完整性、哈希、全仓测试或最终上传校验；仍需人工审阅后上传。
 
 ## Not run or not yet accepted
 
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
 - GTX2060实机基准已完成；允许精确报告ONNX FP16速度过线，但不得称M/S质量合格或已形成
   合格Edge Engine。
-- 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
+- 企业赛题组和四件正式文件名已填写；最终文件已生成，但本轮按用户要求未重新执行完整校验。
 
 ## Existing verified metrics (unchanged)
 
@@ -262,15 +263,15 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 - EfficientAD-M/S与GuardedAdapt-Risk均未通过冻结正向门，当前核心创新与Edge质量证据不足。
 - GTX2060速度已闭环，但不能抵消M/S质量门失败；当前只有“速度达标的失败质量候选”。
-- 参赛组别未知，提交草稿尚不能最终定稿。
+- 正式文件需要用户人工打开审阅并上传；本轮未重复运行完整性和哈希校验。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
 
 ## Next primary action
 
-获取参赛组别，应用四件正式文件名并执行上传前人工审校；在此之前不得声称可直接上传。
+人工打开`submission/final/`四件文件审阅内容，然后在官方平台上传。
 
 ## Parallel work
 
-- 确认参赛组别，审校PDF/MP4并执行正式命名。
+- 审校正式PDF/MP4并上传。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
 - 清洁复现已完成；代码或依赖发生实质修改后需重新执行。
