@@ -123,6 +123,7 @@ def main() -> int:
             upstream,
             root / "third_party/anomalib-2.3.0",
             ignore=shutil.ignore_patterns(".git"),
+            dirs_exist_ok=True,
         )
         payload = root / "deployment_payload"
         payload.mkdir()
