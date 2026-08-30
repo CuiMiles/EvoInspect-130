@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-31T01:08:00+08:00
-current_phase: EXPLORATORY_S384_TRAINING_SCREEN_ACTIVE_FINAL_FALLBACK_PRESERVED
-overall_status: S384_TRAINING_SCREEN_ACTIVE_FINAL_DELIVERABLES_PRESERVED
+updated_at: 2026-08-31T06:45:00+08:00
+current_phase: EXPLORATORY_S384_TRAINING_SCREEN_COMPLETED_FINAL_FALLBACK_PRESERVED
+overall_status: S384_TRAINING_SCREEN_COMPLETED_NEGATIVE_FINAL_DELIVERABLES_PRESERVED
 
 ## User-requested parallel screening (2026-08-31)
 
@@ -44,10 +44,26 @@ exploration and is not exported or placed in submission materials. Evidence is
 `reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json`.
 
 SuperSimpleNet, AHL/DRA, DINO and GLASS do not have a registered 100+30 evaluator in this checkout,
-so they are not launched. A separately registered EfficientAD-S384 training screen is now queued on
+so they are not launched. The separately registered EfficientAD-S384 training screen was queued on
 idle GPUs 4--7: six categories, seed 143, 384x384 training, 70,000 steps, strict support-only
-evaluation, one task per GPU and 30-second polling. GPUs 0--3 continue to be left untouched when
-occupied by other users. Its preregistration is `docs/25_EFFICIENTAD_S384_SCREEN_20260831_PREREGISTRATION.md`.
+evaluation, one task per GPU and 30-second polling. GPUs 0--3 continued to be left untouched when
+occupied by other users. The supervisor automatically started `transistor` and `wood` after the
+first four tasks released GPUs; all six tasks exited successfully. Its preregistration is
+`docs/25_EFFICIENTAD_S384_SCREEN_20260831_PREREGISTRATION.md`.
+
+## EfficientAD-S384 training screen result (2026-08-31)
+
+The six pre-registered S384 runs completed 6/6 with zero test-label leakage. Under the same strict
+support-only evaluator as the frozen S-256 comparison, means were Overall F1 `0.865589`, eligible
+Unseen F1 `0.709348`, Image AUROC `0.932945`, and model p95 `10.375 ms`. The frozen S-256 six-class
+means were Overall F1 `0.820185`, eligible Unseen F1 `0.677041`, and Image AUROC `0.936540`.
+S384 therefore improved F1 (+4.54 percentage points) and Unseen F1 (+3.23 points) but reduced
+Image AUROC (-0.36 points), with weak per-category generalization (cable Unseen F1 `0.095238`).
+It does not pass the frozen quality gates and does not beat the comparison on all registered
+dimensions; it is recorded as a mixed/negative exploration and is not promoted. No further
+EfficientAD resolution training is started under the preregistered stop rule, and
+`submission/final/` remains unchanged. The machine-readable aggregate is
+`reports/experiments/efficientad-s384-screen-20260831/s384-summary.json`.
 
 ## One-sentence truth
 
@@ -55,7 +71,7 @@ GuardedAdapt-Risk 与 EfficientAD-M 均已完成冻结实验并正式失败：M�
 Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过线；0 failure、
 0泄漏。EfficientAD-S唯一一次15类seed143筛查也已完成：Overall F1=0.890785通过，但
 Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S冻结质量门结论仍保留；
-S384训练只是用户追加的一轮有界探索，不改变冻结结果或提交材料。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
+S384训练筛选已完成6/6，Overall F1=0.865589、eligible Unseen F1=0.709348、Image AUROC=0.932945，F1有所提升但AUROC下降，未通过质量门，不改变冻结结果或提交材料。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
 151.343/166.165 ms，速度均过200 ms目标；但两者冻结质量门仍失败，所以没有合格Edge Engine。
 
 HeteroCal-130已按预注册协议完成45/45五组消融：完整方法Overall F1=0.898108、eligible

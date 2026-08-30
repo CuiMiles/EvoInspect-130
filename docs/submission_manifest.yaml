@@ -82,12 +82,13 @@ technical_limitations_not_upload_blockers:
   - gtx2060_speed_pass_does_not_override_failed_edge_quality_gate
   - heterocal_130_failed_preregistered_quality_gate
 exploratory_screening:
-  status: s384_training_screen_active_final_package_unchanged
+  status: s384_training_screen_completed_negative_final_package_unchanged
   final_package_unchanged: true
   parallel_screening_summary: reports/experiments/parallel-screening-20260831/screening-summary.json
   heteroresidual_summary: reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json
   s384_training_batch: reports/experiments/efficientad-s384-screen-20260831
-  note: "Two train-free screens completed negative on GPUs 5--7; S384 training screen is queued on idle GPUs 4--7 and cannot change the machine-validated submission/final package automatically."
+  s384_summary: reports/experiments/efficientad-s384-screen-20260831/s384-summary.json
+  note: "S384 six-category training screen completed 6/6 with zero leakage; F1 improved over the frozen S-256 six-category mean but AUROC decreased and quality gates were not met. Exploratory only; the machine-validated submission/final package is unchanged and no further resolution training is started."
 completed_closure_evidence:
   clean_directory_environment_reproduction: evidence/clean_reproduction_20260828.json
   final_freeze_clean_reproduction: evidence/final_clean_reproduction_20260829.json
