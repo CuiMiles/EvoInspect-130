@@ -19,6 +19,7 @@ export CUDA_VISIBLE_DEVICES="${gpu}"
 export EVOINSPECT_PHYSICAL_GPU="${gpu}"
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
+export PYTHONPATH="${repo_root}${PYTHONPATH:+:${PYTHONPATH}}"
 
 completed=0
 for run_dir in "${batch_root}"/runs/*; do
@@ -42,4 +43,3 @@ done
   --batch-root "${batch_root}" \
   --config "${repo_root}/configs/innovations/heterocal_130.yaml" \
   --output "${batch_root}/heterocal-quality-gate.json"
-
