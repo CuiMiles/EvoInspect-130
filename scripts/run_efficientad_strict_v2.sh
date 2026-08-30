@@ -5,9 +5,24 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${repo_root}"
 
 batch_root="${1:-reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23}"
+size="${2:-m}"
 python_bin="${EVOINSPECT_EFFICIENTAD_PYTHON:-/home/CuiMinghao/envs/evoinspect-efficientad/bin/python}"
-training_config="configs/baselines/efficientad_m_100_30.yaml"
-evaluator_config="configs/evaluation/efficientad_strict_100_30_v2.yaml"
+case "${size}" in
+  m)
+    training_config="configs/baselines/efficientad_m_100_30.yaml"
+    evaluator_config="configs/evaluation/efficientad_strict_100_30_v2.yaml"
+    expected_runs=45
+    ;;
+  s)
+    training_config="configs/baselines/efficientad_s_100_30.yaml"
+    evaluator_config="configs/evaluation/efficientad_strict_100_30_s_v2.yaml"
+    expected_runs=15
+    ;;
+  *)
+    echo "usage: $0 BATCH_ROOT {m|s}" >&2
+    exit 2
+    ;;
+esac
 read -r -a gpus <<< "${EVOINSPECT_EFFICIENTAD_V2_GPUS:-0 1 2 3}"
 
 mapfile -t run_dirs < <(find "${batch_root}/runs" -mindepth 1 -maxdepth 1 -type d | sort)
@@ -17,8 +32,8 @@ for run_dir in "${run_dirs[@]}"; do
     checkpoint_count=$((checkpoint_count + 1))
   fi
 done
-if [[ ${checkpoint_count} -ne 45 ]]; then
-  echo "strict evaluator requires 45 completed checkpoints; found ${checkpoint_count}" >&2
+if [[ ${checkpoint_count} -ne ${expected_runs} ]]; then
+  echo "strict evaluator requires ${expected_runs} completed checkpoints; found ${checkpoint_count}" >&2
   exit 2
 fi
 if [[ ${#gpus[@]} -eq 0 ]]; then

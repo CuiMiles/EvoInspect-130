@@ -200,3 +200,13 @@ checkpoint 齐全后只重评一次并按上述决策树自动收敛。**
 
 可并行但不得阻塞主动作：准备 2060 SSH 信息；确认参赛组别；人工审阅 PDF/MP4；完成许可证
 签核和正式文件名。除此之外不再启动新研究任务。
+
+## 九、冻结执行结果更新（2026-08-30）
+
+EfficientAD-M已完成45/45 strict-v2.1重评：Overall F1=0.903604通过0.89门槛，eligible
+Unseen F1=0.820986低于0.83，Image AUROC=0.956915低于0.97；15类完整、0 failure、0测试
+标签泄漏，总门`passed=false`。因此进入本文件决策树B：M正式冻结为负结果，不再调参；只运行
+一次EfficientAD-S的15类seed143相同协议筛查。
+
+机器证据：
+`reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/strict-quality-gate-v2.json`。

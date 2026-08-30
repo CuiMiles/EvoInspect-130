@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-29T21:01:00+08:00"
+last_readiness_audit_at: "2026-08-30T08:35:00+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -58,7 +58,8 @@ metadata_completed:
 packaging_blockers:
   - official_filenames_not_applied
 technical_blockers:
-  - efficientad_m_remaining_9_and_final_strict_v2_1_quality_gate
+  - efficientad_m_failed_unseen_f1_and_image_auroc
+  - efficientad_s_single_seed_pareto_screen
   - guarded_adapt_risk_core_innovation_gate_failed
   - actual_gtx2060_2500_latency
 completed_closure_evidence:

@@ -59,7 +59,7 @@ official_problem:
 research_thesis:
   core: "冻结PatchCore精度引擎，并以相同100+30隔离协议复现EfficientAD-M边缘候选；M不要求超过PatchCore，但必须通过预注册质量线。"
   deployment: "通过统一InferenceEngine显式切换Accuracy/Edge，冻结模型后在真实GTX2060上测量2500x2500 model-only与end-to-end时延。"
-  self_learning: "GuardedAdapt是唯一主要系统创新：反馈更新可逆，候选阈值或模型必须通过反馈收益和锚定回归门禁，并量化有害更新、接受率和回滚。"
+  self_learning: "GuardedAdapt-v1保留为离线安全机制；GuardedAdapt-Risk预注册实验因接受率为0失败，不再承担正向核心创新。"
 
 primary_innovations:
   - id: I3
@@ -67,6 +67,8 @@ primary_innovations:
     zh: "带回放门禁、影子验证和回滚的可信反馈闭环"
     type: system
     mandatory_ablation: true
+    status: failed_preregistered_positive_gate
+    claim_role: engineering_safety_and_negative_result_only
 
 preliminary_submission_freeze:
   effective_date: "2026-08-27"
@@ -82,7 +84,7 @@ preliminary_submission_freeze:
     image_auroc_min: 0.97
     all_15_categories_complete: true
     test_label_leakage_max: 0
-  frozen_negative_only: [RCBR]
+  frozen_negative_only: [RCBR, GuardedAdapt-Risk, EfficientAD-M]
   stopped_research: [HeteroMemory, GuardedFusion, MaskedPrototype, TriSynth]
   paused_until_submission_closure:
     - DAGM_2007

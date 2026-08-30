@@ -1,16 +1,22 @@
 # STATUS
 
-updated_at: 2026-08-29T21:01:00+08:00
+updated_at: 2026-08-30T08:35:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
-overall_status: GUARDED_RISK_FAILED_EFFICIENTAD_M_36_OF_45_STRICT_V2_1_COMPLETE
+overall_status: GUARDED_RISK_AND_EFFICIENTAD_M_FAILED_S_SINGLE_SEED_NEXT
 
 ## One-sentence truth
 
-GuardedAdapt-Risk 已按预注册完成219次回放但因接受率为0%正式失败，不能承担核心创新；
-EfficientAD-M checkpoint 当前36/45、0个当前failure，已完成36份零泄漏 strict-100+30
-evaluator v2.1 结果，剩余9份训练结束后只补评并执行45/45冻结质量门。
+GuardedAdapt-Risk 与 EfficientAD-M 均已完成冻结实验并正式失败：M的45/45 strict-v2.1
+Overall F1=0.903604通过，但Unseen F1=0.820986和Image AUROC=0.956915未过线；0 failure、
+0泄漏。按冻结决策不调M，只运行一次EfficientAD-S的15类seed143 Pareto筛查。
 
 ## Freeze completion snapshot
+
+- EfficientAD-M 45/45 checkpoint与strict-v2.1重评全部完成，15类齐全、42个eligible unseen
+  run、toothbrush 3个run明确N/A、0 failure、0 test-label leakage。Overall F1=0.903604
+  （门槛0.89，通过），eligible Unseen F1=0.820986（门槛0.83，失败），Image AUROC=0.956915
+  （门槛0.97，失败），总门`passed=false`。M冻结为负结果，不修改学习率、分辨率、步数、
+  seed或阈值策略；只允许S的15类seed143一次筛查。
 
 - GuardedAdapt-Risk 已按 commit `342ac7a`、冻结划分哈希
   `28cc1dcb86bf6ac481ee323133227689ee409151d169fafe48b7436e1803c2f4` 完成：旧75次
@@ -176,15 +182,13 @@ evaluator v2.1 结果，剩余9份训练结束后只补评并执行45/45冻结�
 
 ## Running now
 
-EfficientAD-M checkpoint补齐是当前唯一允许的长训练。45任务batch当前在GPU0--3分片执行；
-当前36个checkpoint已有strict-v2.1正式单run证据，但未完成45/45前不得形成M质量结论。
-剩余transistor、wood、zipper各3个任务运行在GPU0--2；不得改训练配置、重复启动、启动S
-或恢复其他冻结路线。GuardedAdapt-Risk已失败冻结。
+当前无M训练或strict评测进程。GPU0--3物理查询为空闲，GPU4--7为其他用户任务；准备仅在
+GPU0--3启动EfficientAD-S 15类seed143一次筛查。不得扩展seed144--145，除非S单seed通过
+相同质量门且具有明确速度价值；不得恢复其他冻结路线。
 
 ## Not run or not yet accepted
 
-- EfficientAD-M当前36/45 checkpoint完成、0当前failure；36份strict-v2.1单run重评完成且泄漏0，
-  但正式45/45质量门仍未知。S fallback尚未启动。
+- EfficientAD-M 45/45已完成但质量门失败；S fallback的15类seed143尚未启动。
 - 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
@@ -238,8 +242,8 @@ EfficientAD-M checkpoint补齐是当前唯一允许的长训练。45任务batch�
 
 ## Next primary action
 
-不中断当前M checkpoint生产；剩余9项结束后立即补做strict-v2.1并执行45/45冻结质量门，
-再按`docs/20_FINAL_ROUTE_DECISION_20260829.md`自动进入M部署或S单seed停止判断。
+立即在GPU0--3运行唯一一次EfficientAD-S 15类seed143筛查，完成后用S专用strict-v2.1
+聚合并按同一质量门决定停止，或在速度/质量Pareto有价值时才允许扩展。
 
 ## Parallel work
 
