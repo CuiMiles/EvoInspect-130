@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-30T14:20:36+08:00",
+  "git_commit": "5f9636f9c482d14555a38fe76f16939d2e9904b1",
+  "diagnostic_only": true,
+  "claim_eligible": false,
+  "representative_category": "bottle",
+  "representative_seed": 143,
+  "bundles": {
+    "efficientad_m": {
+      "path": "artifacts/evoinspect-2060-m-diagnostic.tar.gz",
+      "bytes": 214685674,
+      "sha256": "ca409f6a822870fb930321646129de9e01f1799db46c5f44eca4d675869cfa9e",
+      "quality_gate_passed": false
+    },
+    "efficientad_s": {
+      "path": "artifacts/evoinspect-2060-s-diagnostic.tar.gz",
+      "bytes": 115052511,
+      "sha256": "94c79d47d2e9c09a52e823486c1bb9b7473ba56646165628c61ad4360711e325",
+      "quality_gate_passed": false
+    }
+  },
+  "validation": {
+    "tar_listing_readable": true,
+    "bundle_manifest_readable": true,
+    "default_failed_gate_rejection_preserved": true
+  },
+  "scope": "Actual GTX2060 M/S hardware comparison only; not a deployment quality claim."
+}

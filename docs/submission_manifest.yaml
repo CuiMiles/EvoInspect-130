@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-30T14:15:00+08:00"
+last_readiness_audit_at: "2026-08-30T14:20:36+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -71,6 +71,7 @@ completed_closure_evidence:
   efficientad_m_negative_result: reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/strict-quality-gate-v2.json
   efficientad_s_negative_result: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3/strict-quality-gate-v2.json
   remote_gtx2060_network_probe: evidence/remote_2060_connection_probe_20260830.json
+  remote_gtx2060_diagnostic_bundles: evidence/remote_2060_diagnostic_bundles_20260830.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement

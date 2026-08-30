@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-30T14:15:00+08:00
+updated_at: 2026-08-30T14:20:36+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: PRE_2060_ALGORITHM_WORK_COMPLETE_ALL_NEW_ROUTES_FAILED
 
@@ -199,6 +199,13 @@ GTX2060实例`49225420`的动态地址`70.68.84.2:46999`已完成只读网络探
 banner为Ubuntu OpenSSH 8.9，服务端主机密钥指纹已保存。当前本机唯一公钥对
 `root/ubuntu/user/vastai`均未获授权，远端声明支持publickey/password；尚缺平台提供的
 SSH用户名及密码或已授权私钥，因此未能执行`nvidia-smi`，也未启动上传、安装或基准。
+已在本机生成该实例专用ED25519身份，公钥指纹为
+`SHA256:FSSXA798RqeSbqt/5fnXNYpUrGKS63uE7mZFnsgxNUE`；私钥不进入仓库。等待用户在实例平台
+添加对应公钥并给出SSH用户名。
+认证等待期间已生成M/S两个diagnostic-only自包含包，SHA-256和大小写入
+`evidence/remote_2060_diagnostic_bundles_20260830.json`。两个manifest均明确
+`quality_gate_passed=false`、`diagnostic_only=true`、`claim_eligible=false`；默认打包路径
+仍拒绝质量门失败模型。包未提交Git，认证完成后可直接上传并依次运行。
 
 ## Not run or not yet accepted
 

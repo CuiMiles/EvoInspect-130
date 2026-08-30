@@ -25,7 +25,12 @@
     ],
     "authenticated": false
   },
+  "dedicated_identity_prepared": {
+    "algorithm": "ED25519",
+    "public_key_fingerprint": "SHA256:FSSXA798RqeSbqt/5fnXNYpUrGKS63uE7mZFnsgxNUE",
+    "installed_on_remote": false
+  },
   "gpu_identity_verified": false,
   "benchmark_started": false,
-  "blocker": "SSH username plus instance password or an authorized private key is required."
+  "blocker": "Add the prepared public key to the instance and provide its SSH username, or provide an alternative authorized identity."
 }
