@@ -1,0 +1,86 @@
+{
+  "dataset_metadata": {
+    "dataset_name": "Physical_Desktop_Assembly_Testbed",
+    "version": "1.1_frozen",
+    "scope": "functional_demo_only",
+    "benchmark_claim_allowed": false,
+    "standard_pipeline": ["cup", "bottle", "mouse"],
+    "allowed_event_types": ["step_completed", "skip", "reorder", "repeat", "missing", "unknown"],
+    "matching_tolerance_seconds": 0.5,
+    "annotation_mode": "manual_user_supplied_after_system_review",
+    "model_assisted": true,
+    "annotation_note": "Physical sequences and semantics were supplied and corrected by the user; timings were frozen from the supplied manual intervals. This is not a blinded industrial benchmark.",
+    "remove_actions_in_primary_f1": false
+  },
+  "clips": [
+    {
+      "clip_id": "clip_01",
+      "file_name": "1.mp4",
+      "title": "Normal Process: Cup -> Bottle -> Mouse",
+      "duration_sec": 16.566,
+      "source_sha256": "fc43c58d7fc4853fd730d40f158841ef25c090b0523bedcb8da377d3f6953a8b",
+      "ground_truth_label": "PASS",
+      "ground_truth_events": [
+        {"event_id": 1, "gt_start": 2.0, "gt_end": 5.0, "component": "cup", "event_type": "step_completed"},
+        {"event_id": 2, "gt_start": 8.0, "gt_end": 11.0, "component": "bottle", "event_type": "step_completed"},
+        {"event_id": 3, "gt_start": 13.5, "gt_end": 16.0, "component": "mouse", "event_type": "step_completed"}
+      ]
+    },
+    {
+      "clip_id": "clip_02",
+      "file_name": "2.mp4",
+      "title": "Order Violation: Bottle Before Cup",
+      "duration_sec": 18.234,
+      "source_sha256": "f27cbffb7dcae8662e695323b44fc7836a7aacae48cd3db69596b522b693a6d1",
+      "ground_truth_label": "ANOMALY",
+      "ground_truth_events": [
+        {"event_id": 1, "gt_start": 3.0, "gt_end": 5.5, "component": "cup", "event_type": "skip"},
+        {"event_id": 2, "gt_start": 3.0, "gt_end": 5.5, "component": "bottle", "event_type": "reorder"},
+        {"event_id": 3, "gt_start": 7.0, "gt_end": 10.0, "component": "cup", "event_type": "reorder"},
+        {"event_id": 4, "gt_start": 13.0, "gt_end": 17.0, "component": "mouse", "event_type": "step_completed"}
+      ]
+    },
+    {
+      "clip_id": "clip_03",
+      "file_name": "3.mp4",
+      "title": "Missing Component: Mouse Absent at End",
+      "duration_sec": 14.466,
+      "source_sha256": "48c55518ab642d12788aea9be733fab57c3c7388d5ec146a541365283951b4a8",
+      "ground_truth_label": "ANOMALY",
+      "ground_truth_events": [
+        {"event_id": 1, "gt_start": 3.0, "gt_end": 5.5, "component": "cup", "event_type": "step_completed"},
+        {"event_id": 2, "gt_start": 8.0, "gt_end": 10.5, "component": "bottle", "event_type": "step_completed"},
+        {"event_id": 3, "gt_start": 10.5, "gt_end": 14.466, "component": "mouse", "event_type": "missing"}
+      ]
+    },
+    {
+      "clip_id": "clip_04",
+      "file_name": "4.mp4",
+      "title": "Repeated Assembly: Bottle Removed and Replaced",
+      "duration_sec": 24.666,
+      "source_sha256": "78ad58d9f76ea26903a2c1f0cc3e943e6208aa4e5c954b0027d194c4882877b2",
+      "ground_truth_label": "ANOMALY",
+      "ground_truth_events": [
+        {"event_id": 1, "gt_start": 3.0, "gt_end": 5.5, "component": "cup", "event_type": "step_completed"},
+        {"event_id": 2, "gt_start": 8.0, "gt_end": 10.5, "component": "bottle", "event_type": "step_completed"},
+        {"event_id": 3, "gt_start": 16.0, "gt_end": 18.5, "component": "bottle", "event_type": "repeat"},
+        {"event_id": 4, "gt_start": 20.0, "gt_end": 23.0, "component": "mouse", "event_type": "step_completed"}
+      ]
+    },
+    {
+      "clip_id": "clip_05",
+      "file_name": "5.mp4",
+      "title": "Rework: Early Bottle Removed, Then Correct Sequence",
+      "duration_sec": 24.199,
+      "source_sha256": "ab13f9d0eece31844ac6305c3e232f41b46fb6cce8e5e80dd8d6471c37ef3805",
+      "ground_truth_label": "ANOMALY",
+      "ground_truth_events": [
+        {"event_id": 1, "gt_start": 3.0, "gt_end": 5.5, "component": "cup", "event_type": "skip"},
+        {"event_id": 2, "gt_start": 3.0, "gt_end": 5.5, "component": "bottle", "event_type": "reorder"},
+        {"event_id": 3, "gt_start": 10.0, "gt_end": 13.0, "component": "cup", "event_type": "step_completed"},
+        {"event_id": 4, "gt_start": 15.0, "gt_end": 18.0, "component": "bottle", "event_type": "repeat"},
+        {"event_id": 5, "gt_start": 20.0, "gt_end": 23.5, "component": "mouse", "event_type": "step_completed"}
+      ]
+    }
+  ]
+}

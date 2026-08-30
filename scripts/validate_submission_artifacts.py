@@ -119,19 +119,20 @@ def main() -> int:
     blockers = []
     if missing_metadata:
         blockers.append("missing metadata: " + ", ".join(missing_metadata))
-    blockers.extend(
-        [
-            "official filename placeholders have not been replaced",
-            "EfficientAD-M final gate, video GT, and actual GTX 2060 benchmark are incomplete",
-            "GuardedAdapt-Risk failed its preregistered positive-innovation gate",
-        ]
-    )
+    blockers.append("official filename placeholders have not been replaced")
+    research_limitations = [
+        "EfficientAD-M and S failed their frozen quality gates despite passing "
+        "optimized GTX 2060 speed",
+        "GuardedAdapt-Risk failed its preregistered positive-innovation gate",
+        "video event GT covers five fixed-camera functional-demo clips only",
+    ]
     report = {
         "schema_version": 1,
         "created_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "constraints_passed": constraints_passed,
         "final_upload_ready": False,
         "final_upload_blockers": blockers,
+        "research_limitations": research_limitations,
         "metadata": metadata,
         "missing_metadata": missing_metadata,
         "artifacts": {

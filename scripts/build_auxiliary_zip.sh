@@ -11,6 +11,7 @@ zip -q -r "${output}" \
   AGENTS.md README.md STATUS.md project_spec.yaml pyproject.toml \
   src scripts configs docs evidence \
   artifacts/model_registry.yaml data/dataset_registry.yaml \
+  data/derived/video/desktop_assembly_gt_v1.1_frozen.json \
   submission/README.md submission/metadata.yaml submission/works_intro.txt submission/works_intro.html \
   submission/project_document.html submission/assets \
   reports/experiments/upstream-patchcore-100-30-mvtec15-5seed-8gpu-20260823T235656Z-29160/aggregate.json \
@@ -20,7 +21,7 @@ zip -q -r "${output}" \
   reports/experiments/rcbr-smoke-20260824T164000Z-rcbr-rawfusion-70k-gpu4-7/smoke-gate.json \
   reports/experiments/guarded-adapt-replay-20260827T194500-cpu/report.json \
   reports/experiments/guarded-adapt-risk-20260829-preregistered-e17419c/report.json \
-  reports/experiments/video-demo-20260827T194000-cpu-annotated/report.json \
+  reports/experiments/video-demo-gt-v1.1-final-20260830/report.json \
   -x '*/__pycache__/*' '*.pyc' '*.ckpt' '*.npz' '*.faiss' '*.lock' \
      'reports/experiments/*/annotated/*' 'data/video/*' \
      'evidence/submission_artifact_validation.json'

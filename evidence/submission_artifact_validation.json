@@ -1,12 +1,16 @@
 {
   "schema_version": 1,
-  "created_at": "2026-08-28T09:16:11+00:00",
+  "created_at": "2026-08-30T11:25:54+00:00",
   "constraints_passed": true,
   "final_upload_ready": false,
   "final_upload_blockers": [
     "missing metadata: competition group",
-    "official filename placeholders have not been replaced",
-    "EfficientAD-M gate and actual GTX 2060 benchmark are incomplete"
+    "official filename placeholders have not been replaced"
+  ],
+  "research_limitations": [
+    "EfficientAD-M and S failed their frozen quality gates despite passing optimized GTX 2060 speed",
+    "GuardedAdapt-Risk failed its preregistered positive-innovation gate",
+    "video event GT covers five fixed-camera functional-demo clips only"
   ],
   "metadata": {
     "schema_version": 1,
@@ -25,27 +29,27 @@
   "artifacts": {
     "entry_summary": {
       "path": "submission/drafts/works_intro.pdf",
-      "size_bytes": 48138,
-      "sha256": "71c7863c6ea9bcff1546ef3977a648a9e722d59d0cc15aec5e4759b7833c1a26",
+      "size_bytes": 41920,
+      "sha256": "5a3d22957df41affa77172880f96cb4219d9ce5b57fc15f1fb78ec6c1d388c44",
       "pages": 1,
       "valid_pdf": true,
       "source_path": "submission/works_intro.txt",
-      "chinese_characters": 169,
-      "non_whitespace_characters": 268,
+      "chinese_characters": 129,
+      "non_whitespace_characters": 252,
       "within_300_chinese_characters": true,
       "within_300_non_whitespace_characters": true
     },
     "project_document": {
       "path": "submission/drafts/project_document.pdf",
-      "size_bytes": 912049,
-      "sha256": "be53ec986e9a059c569453047cd72f006f76036dae44ec1093a47fea7606438e",
-      "pages": 5,
+      "size_bytes": 1773555,
+      "sha256": "98cbfdcb882ab0dbd3eae155e0e5068f5fe02e3d79c3c3b2baaba096cf21a178",
+      "pages": 6,
       "valid_pdf": true
     },
     "project_video": {
       "path": "submission/drafts/project_video.mp4",
-      "size_bytes": 25724846,
-      "sha256": "21d46d420a5c5a1d8f3e2d363bf65a109e340c847f4d40a797807b2c70fa3494",
+      "size_bytes": 28887378,
+      "sha256": "e46d6c0bc58f50c993ee4e61fe5ca359f3c6b261c8ffcacd549250d8d973c6ed",
       "fps": 30.0,
       "frames": 3664,
       "duration_seconds": 122.13333333333334,
@@ -56,9 +60,9 @@
     },
     "auxiliary_material": {
       "path": "submission/drafts/auxiliary_material.zip",
-      "size_bytes": 449772,
-      "sha256": "120f6f939ac8d596c2e9fb5d8fcdd01c0cf8181cc033debb9ea02dbe9aa690e0",
-      "members": 146,
+      "size_bytes": 676375,
+      "sha256": "6144ee097b66acea458c6feebe66be597e769d6b75865da64da8a4d5ff4d3aac",
+      "members": 177,
       "corrupt_member": null,
       "valid_zip": true,
       "within_200_mib": true

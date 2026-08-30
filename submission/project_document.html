@@ -18,18 +18,19 @@ code { font-family: monospace; font-size: 9pt; }
 <section class="cover">
 <div class="muted">第八届中国研究生人工智能创新大赛</div>
 <h1>智检演化130<br><span style="font-size:16pt">EvoInspect-130 项目文档</span></h1>
-<p>版本：PRELIMINARY-SUBMISSION FREEZE v1.2</p>
-<p>日期：2026.08.29</p>
+<p>版本：PRELIMINARY-SUBMISSION FREEZE v1.3</p>
+<p>日期：2026.08.30</p>
 <p>团队名称：Cuisine　参赛组别：[待确认]</p>
 <p>队长：崔明浩　学校：西安交通大学</p>
-<div class="warning">本稿严格保留未验证项。清洁环境复现已通过；GTX 2060和EfficientAD-M质量门尚未完成。</div>
+<div class="warning">本稿严格保留证据边界：GTX 2060优化速度与视频GT已完成；EfficientAD-M/S质量门和GuardedAdapt-Risk正向门均失败。</div>
 </section>
 
 <h1 class="first">记录更改历史</h1>
 <table><tr><th>序号</th><th>更改原因</th><th>版本</th><th>作者</th><th>日期</th></tr>
 <tr><td>1</td><td>初赛提交冻结，移除未验证主张并同步机器证据</td><td>v1</td><td>崔明浩</td><td>2026-08-27</td></tr>
 <tr><td>2</td><td>填写团队信息并登记清洁环境复现</td><td>v1.1</td><td>崔明浩</td><td>2026-08-28</td></tr>
-<tr><td>3</td><td>登记GuardedAdapt-Risk预注册负结果与EfficientAD严格评测进度</td><td>v1.2</td><td>崔明浩</td><td>2026-08-29</td></tr></table>
+<tr><td>3</td><td>登记GuardedAdapt-Risk预注册负结果与EfficientAD严格评测进度</td><td>v1.2</td><td>崔明浩</td><td>2026-08-29</td></tr>
+<tr><td>4</td><td>登记EfficientAD最终负结果、真实GTX2060速度和视频GT指标</td><td>v1.3</td><td>崔明浩</td><td>2026-08-30</td></tr></table>
 
 <h1>1 项目概况</h1>
 <h2>1.1 背景和基础</h2>
@@ -37,7 +38,7 @@ code { font-family: monospace; font-size: 9pt; }
 <h2>1.2 场景和价值</h2>
 <p>目标场景是桌面装配、消费电子与通用工业外观检查。系统输出异常分数、区域、已知/未知类型、置信度、时延分解和模型版本；视频侧输出步骤事件及时间区间。系统采用本地推理，不依赖远程 API 或大语言模型。</p>
 <h2>1.3 所需支持</h2>
-<p>需要公开数据许可复核、最终团队信息、目标 GTX 2060 实机和官方上传/接口口径。当前 3090 服务器为多人共享资源，训练脚本只调度无计算进程、低显存且低利用率的 GPU，不终止其他用户任务。</p>
+<p>仍需公开数据许可复核、参赛组别和官方上传/接口口径。真实 GTX 2060 实测已完成。3090服务器为多人共享资源，训练脚本仅使用经检查可用的GPU，不终止其他用户任务。</p>
 
 <h1>2 项目规划</h1>
 <h2>2.1 整体目标</h2>
@@ -46,7 +47,7 @@ code { font-family: monospace; font-size: 9pt; }
 <h3>GuardedAdapt：带锚定回归门禁的可回滚反馈闭环</h3>
 <p>系统不把操作员反馈直接写入线上主模型。即时阈值/记忆更新可逆；候选更新必须同时满足反馈切片收益与锚定回归限制，拒绝后恢复原版本。v1在75个冻结分数流上提供安全机制证据；进一步加入漂移触发、真实记忆候选、群组统计风险门和影子发布的GuardedAdapt-Risk完成219次预注册回放，但因接受率为0而未通过质量门。因此该项只作为工程安全机制和研究负结果，不承担核心算法创新或准确率提高声明。</p>
 <h3>统一双引擎接口</h3>
-<p>统一 <code>InferenceEngine</code> 显式切换 Accuracy/Edge，不允许静默 fallback，并保持输出、版本与时延字段一致。PatchCore 不承担 GTX 2060 实时目标；EfficientAD 只有通过冻结质量门后才进入部署。</p>
+<p>统一 <code>InferenceEngine</code> 显式切换 Accuracy/Edge，不允许静默 fallback，并保持输出、版本与时延字段一致。PatchCore不承担GTX 2060实时目标；EfficientAD-M/S虽通过优化速度线，但均未通过冻结质量门，故只作为部署候选负结果。</p>
 <h3>研究负结果边界</h3>
 <p>RCBR 正式 70,000-step 四类三种子 smoke 未通过预注册门槛，已停止研发。它只作为研究决策负结果，不进入摘要和主创新；HeteroMemory、GuardedFusion、MaskedPrototype 与 TriSynth 同样停止。</p>
 
@@ -57,20 +58,21 @@ code { font-family: monospace; font-size: 9pt; }
 <h3>图像质量证据</h3>
 <table><tr><th>模型/协议</th><th>Overall F1</th><th>Image AUROC</th><th>Unseen F1</th><th>范围</th></tr>
 <tr><td>PatchCore / MVTec AD 15类5 seeds</td><td>0.9224</td><td>0.9817</td><td>0.8715</td><td>公开数据100+30式协议，非官方隐藏集</td></tr>
-<tr><td>EfficientAD-M</td><td>待45/45聚合</td><td>待45/45聚合</td><td>待45/45聚合</td><td>36/45 checkpoint严格重评完成；未通过前不进入部署</td></tr></table>
+<tr><td>EfficientAD-M / 15类3 seeds</td><td>0.9036</td><td>0.9569</td><td>0.8210</td><td>45/45完成；后两项未过0.97/0.83冻结门</td></tr>
+<tr><td>EfficientAD-S / 15类1 seed</td><td>0.8908</td><td>0.9639</td><td>0.7988</td><td>15/15完成；质量门失败后停止</td></tr></table>
 <p>PatchCore 的全像素 AUROC 为 0.9811、AUPRO@0.30 为 0.9342、AUPRO@0.05 为 0.7241。所有阈值由开发数据固定，不使用测试标签调参、早停或模型选择。</p>
 <h3>视频功能验证</h3>
-<p>OpenCV 成功解码 5 段 1080×1920、约 98.13 秒的固定机位实拍视频。前端采用 ArUco 优先、简单组件检测 fallback，FSM 以“水瓶→杯子→鼠标”为预期顺序，输出 skip、repeat、reorder、missing、unknown 及时间区间。该结果只证明视频输入和规则链路可运行，不代表工业识别准确率或跨场景泛化。</p>
+<p>OpenCV 成功解码 5 段 1080×1920、约 98.13 秒的固定机位实拍视频。前端采用 ArUco 优先、简单组件检测 fallback，FSM 以“杯子→水瓶→鼠标”为预期顺序，输出 step_completed、skip、repeat、reorder、missing、unknown 及时间区间。按冻结人工GT、±0.5秒窗口和一对一二分匹配，19个GT事件中匹配18个，事件级Precision、Recall和F1均为0.9474。该结果只代表五段桌面功能验证，不代表工业准确率或跨场景泛化。</p>
 <h3>反馈回放</h3>
 <p>GuardedAdapt-v1 在15类5 seeds、75个冻结 PatchCore 真实分数流上完成离线反馈回放。GuardedAdapt-Risk进一步完成219次冻结回放：50个有害v1候选全部被阻断、219次回滚完全一致，但219个候选全部被拒绝，接受率0低于40%预注册门槛，故判定失败。本文不把该结果写成生产准确率提高或正向核心创新。</p>
 <table><tr><td><img src="assets/guarded_risk_pareto.png" style="width:100%"><br>图1 冻结回放的收益—有害更新率关系</td><td><img src="assets/guarded_risk_release_flow.png" style="width:100%"><br>图2 风险发布链与实际失败结论</td></tr></table>
 <h3>性能与部署</h3>
-<p>2500×2500 基准固定 batch=1、预热100次、重复1000次，分别报告 model-only 和 end-to-end p50/p95/p99。只有真实 GTX 2060 设备的报告才能进入硬件声明。当前没有真实 2060 结果，因此不声称达到 200 ms。</p>
+<p>在真实6GB GTX 2060上，2500×2500重采样输入、batch=1、预热100次、重复1000次。PyTorch FP32的S/M端到端p95为327.9/331.3ms，均失败；ONNX Runtime CUDA FP16优化后为151.3/166.2ms，model-only p95为8.2/19.4ms，均通过200ms速度线。该结果不抵消质量门失败，也不代表原生2500分辨率精度。</p>
 <h2>3.3 计划和分工</h2>
 <table><tr><th>工作包</th><th>状态</th><th>责任人</th></tr>
-<tr><td>EfficientAD-M 15类3 seeds 与质量门</td><td>36/45完成，剩余9项运行中</td><td>崔明浩</td></tr>
-<tr><td>GTX 2060 2500时延</td><td>等待远程主机连接参数</td><td>崔明浩</td></tr>
-<tr><td>视频与 GuardedAdapt</td><td>功能证据与冻结负结果已生成；视频GT待标注</td><td>崔明浩</td></tr>
+<tr><td>EfficientAD-M/S质量门</td><td>45/45与15/15完成；均冻结为负结果</td><td>崔明浩</td></tr>
+<tr><td>GTX 2060 2500时延</td><td>实测完成；ONNX FP16优化速度通过</td><td>崔明浩</td></tr>
+<tr><td>视频与 GuardedAdapt</td><td>视频GT F1=0.9474；Risk预注册门失败</td><td>崔明浩</td></tr>
 <tr><td>材料审校、命名和上传</td><td>草稿生成，参赛组别待确认</td><td>崔明浩</td></tr></table>
 <p>本项目为单人团队，项目调研、方案设计、代码实现、实验、视频和材料均由崔明浩独立完成。</p>
 

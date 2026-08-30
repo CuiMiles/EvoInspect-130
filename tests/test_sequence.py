@@ -43,6 +43,18 @@ def test_later_step_reports_missing_and_reordered() -> None:
     assert events[-1].step == "cover"
 
 
+def test_late_first_observation_is_reordered_not_repeated() -> None:
+    fsm = AssemblySequenceFSM(SequenceRule(("cup", "bottle", "mouse")))
+    events = fsm.run([observation(0, "bottle"), observation(1, "cup")])
+    assert [event.kind for event in events] == [
+        "missing_step",
+        "reordered_step",
+        "reordered_step",
+        "missing_step",
+    ]
+    assert events[2].step == "cup"
+
+
 def test_repeated_and_unexpected_steps_are_explicit() -> None:
     fsm = AssemblySequenceFSM(SequenceRule(("screen", "battery")))
     events = fsm.run(

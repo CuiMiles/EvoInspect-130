@@ -126,6 +126,7 @@ class AssemblySequenceFSM:
         self._pending_count = 0
         self._pending_start: FrameObservation | None = None
         self._reported_missing: set[int] = set()
+        self._observed_steps: set[str] = set()
         self._active_anomaly_start: FrameObservation | None = None
         self._active_anomaly_last: FrameObservation | None = None
         self._last_committed_step: str | None = None
@@ -211,14 +212,26 @@ class AssemblySequenceFSM:
             ]
 
         if index < self._next_index:
+            if step in self._observed_steps:
+                return [
+                    self._event(
+                        "repeated_step",
+                        start,
+                        observation,
+                        step,
+                        1.0,
+                        f"step {step!r} was already observed before the current expected step",
+                    )
+                ]
+            self._observed_steps.add(step)
             return [
                 self._event(
-                    "repeated_step",
+                    "reordered_step",
                     start,
                     observation,
                     step,
                     1.0,
-                    f"step {step!r} was already completed before the current expected step",
+                    f"previously skipped step {step!r} was observed late for the first time",
                 )
             ]
 
@@ -238,6 +251,7 @@ class AssemblySequenceFSM:
             )
         self._next_index = index + 1
         self._last_committed_step = step
+        self._observed_steps.add(step)
         self._reported_missing.clear()
         events.append(
             self._event(

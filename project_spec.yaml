@@ -60,6 +60,7 @@ research_thesis:
   core: "冻结PatchCore精度引擎，并以相同100+30隔离协议复现EfficientAD-M边缘候选；M不要求超过PatchCore，但必须通过预注册质量线。"
   deployment: "通过统一InferenceEngine显式切换Accuracy/Edge，冻结模型后在真实GTX2060上测量2500x2500 model-only与end-to-end时延。"
   self_learning: "GuardedAdapt-v1保留为离线安全机制；GuardedAdapt-Risk预注册实验因接受率为0失败，不再承担正向核心创新。"
+  video_functional_validation: "五段固定机位桌面视频，冻结cup->bottle->mouse工序；v1.1 GT事件Micro F1=0.947368，不外推工业泛化。"
 
 primary_innovations:
   - id: I3

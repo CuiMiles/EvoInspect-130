@@ -36,7 +36,7 @@ def slide(title: str, lines: list[str]) -> np.ndarray:
         y += 58
     draw.text(
         (84, HEIGHT - 64),
-        "功能验证，不作为工业 benchmark；GTX 2060 性能待实机验证",
+        "功能验证，不作为工业 benchmark；GTX 2060 ONNX FP16 实测速度已达标",
         font=font(20),
         fill=(251, 146, 60),
     )
@@ -58,7 +58,7 @@ def video_panel(frame: np.ndarray, label: str, events: list[dict[str, Any]]) -> 
     cv2.putText(canvas, label, (right, 72), cv2.FONT_HERSHEY_SIMPLEX, 1.05, (174, 230, 241), 2)
     cv2.putText(
         canvas,
-        "Expected: bottle -> cup -> mouse",
+        "Expected: cup -> bottle -> mouse",
         (right, 118),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.63,
@@ -112,9 +112,9 @@ def main() -> int:
                 "智检演化130 · EvoInspect-130",
                 [
                     "Accuracy Engine：冻结 PatchCore 强基线",
-                    "Edge Engine：EfficientAD-M 复现中，S 为速度 fallback",
+                    "Edge候选：M/S优化速度通过，但冻结质量门失败",
                     "GuardedAdapt：安全门禁与回滚；Risk扩展冻结为负结果",
-                    "视频：真实解码、组件检测、装配顺序 FSM",
+                    "视频：5段GT事件F1 0.9474，桌面功能验证",
                 ],
             ),
             6.0,
@@ -125,7 +125,7 @@ def main() -> int:
             repeat_frame(
                 writer,
                 slide(
-                    f"视频 {index}/5",
+                    f"视频 {index}/5 · {item['title']}",
                     [
                         f"时长：{item['duration_seconds']:.2f} 秒",
                         f"FSM 输出：{summary}",
@@ -141,7 +141,7 @@ def main() -> int:
                 ok, frame = capture.read()
                 if not ok:
                     break
-                writer.write(video_panel(frame, f"Video {index}/5", item["events"]))
+                writer.write(video_panel(frame, item["title"], item["events"]))
             capture.release()
         repeat_frame(
             writer,
@@ -151,7 +151,7 @@ def main() -> int:
                     "MVTec AD PatchCore：Overall F1 0.9224，Image AUROC 0.9817",
                     "GuardedAdapt-Risk：219次回放完成，因接受率0未过门",
                     "RCBR 未通过预注册门禁，仅保留为研究负结果",
-                    "EfficientAD-M：36/45严格重评；2060实测仍待完成",
+                    "GTX 2060：ONNX FP16端到端p95 S/M为151.3/166.2ms",
                 ],
             ),
             8.0,

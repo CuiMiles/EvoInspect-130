@@ -59,9 +59,11 @@ def load_config(path: Path) -> tuple[VideoDetectorConfig, dict[str, Any]]:
     return config, raw
 
 
-def annotate(frame: Any, present: tuple[str, ...], events: list[dict[str, Any]]) -> Any:
+def annotate(
+    frame: Any, present: tuple[str, ...], events: list[dict[str, Any]], *, title: str
+) -> Any:
     output = frame.copy()
-    lines = [f"Present: {', '.join(present) if present else 'none'}"]
+    lines = [title, f"Present: {', '.join(present) if present else 'none'}"]
     lines.extend(
         f"{event['public_kind'] or event['kind']}: {event['step']} @ {event['start_time_s']:.2f}s"
         for event in events[-4:]
@@ -83,7 +85,13 @@ def annotate(frame: Any, present: tuple[str, ...], events: list[dict[str, Any]])
 
 
 def evaluate_video(
-    source: Path, destination: Path, config: VideoDetectorConfig, *, write_video: bool
+    source: Path,
+    destination: Path,
+    config: VideoDetectorConfig,
+    *,
+    write_video: bool,
+    clip_id: str,
+    title: str,
 ) -> dict[str, Any]:
     capture = cv2.VideoCapture(str(source))
     if not capture.isOpened():
@@ -142,7 +150,7 @@ def evaluate_video(
                     events.append(item)
             if writer is not None:
                 resized = cv2.resize(frame, (config.processing_width, output_height))
-                writer.write(annotate(resized, last_present, events))
+                writer.write(annotate(resized, last_present, events, title=title))
         for event in fsm.finalize():
             item = event.to_dict()
             item["public_kind"] = public_kind(event)
@@ -153,6 +161,8 @@ def evaluate_video(
             writer.release()
     elapsed = time.perf_counter() - started
     return {
+        "clip_id": clip_id,
+        "title": title,
         "source": str(source),
         "source_sha256": sha256(source),
         "source_size_bytes": source.stat().st_size,
@@ -189,8 +199,20 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=False)
     results = []
     for source in sources:
-        destination = args.output_dir / "annotated" / source.name
-        results.append(evaluate_video(source, destination, config, write_video=not args.no_video))
+        clip = raw_config.get("clips", {}).get(source.name)
+        if not isinstance(clip, dict):
+            raise RuntimeError(f"missing clip metadata for {source.name}")
+        destination = args.output_dir / "annotated" / str(clip["output_name"])
+        results.append(
+            evaluate_video(
+                source,
+                destination,
+                config,
+                write_video=not args.no_video,
+                clip_id=str(clip["clip_id"]),
+                title=str(clip["title"]),
+            )
+        )
     report = {
         "schema_version": 1,
         "created_at": datetime.now(UTC).replace(microsecond=0).isoformat(),

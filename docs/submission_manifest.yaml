@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-30T14:58:52+08:00"
+last_readiness_audit_at: "2026-08-30T19:24:13+08:00"
 overall_status: draft_constraints_passed_final_upload_not_ready
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -23,9 +23,11 @@ artifacts:
     format: pdf
     template_required: true
     filename_pattern: "{team}_{project}_项目文档.pdf"
-    status: draft_generated_constraints_passed_competition_group_results_and_filename_blocked
+    status: draft_generated_constraints_passed_competition_group_and_filename_blocked
     path: submission/drafts/project_document.pdf
     source: submission/project_document.html
+    pages: 6
+    size_bytes: 1773555
   - id: project_video
     format: mp4
     max_duration_seconds: 300
@@ -34,7 +36,7 @@ artifacts:
     status: draft_generated_constraints_passed_competition_group_and_filename_blocked
     path: submission/drafts/project_video.mp4
     duration_seconds: 122.13333333333334
-    size_bytes: 25724846
+    size_bytes: 28887378
   - id: auxiliary_material
     format: zip
     max_size_bytes: 209715200
@@ -72,6 +74,7 @@ completed_closure_evidence:
   remote_gtx2060_network_probe: evidence/remote_2060_connection_probe_20260830.json
   remote_gtx2060_diagnostic_bundles: evidence/remote_2060_diagnostic_bundles_20260830.json
   remote_gtx2060_actual_benchmark: evidence/remote_gtx2060_benchmark_20260830.json
+  video_event_gt_evaluation: evidence/video_event_evaluation_20260830.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement

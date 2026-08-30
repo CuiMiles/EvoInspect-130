@@ -14,14 +14,14 @@ EvoInspect-130（智检演化130）是面向工业组装图像/视频的离线 A
 - 固定上游 PatchCore，MVTec AD 15 类、seeds 133–137、100+30 式隔离协议：Overall F1
   0.9224、Image AUROC 0.9817、Unseen F1 0.8715；非官方隐藏集。
 - RCBR 70,000-step 四类三种子正式 smoke：12/12 完成但 gate 失败，禁止作为正向创新。
-- OpenCV 真实视频功能链路：5/5 视频、2944/2944 帧解码，FSM 输出 skip/repeat/reorder/
-  missing/unknown 词汇和时间区间；固定机位桌面演示，不是工业 benchmark。
+- OpenCV 真实视频功能链路：5/5 视频、2944/2944 帧解码；按冻结GT、±0.5秒窗口和一对一
+  匹配，事件Micro Precision/Recall/F1均为0.9474；固定机位桌面演示，不是工业benchmark。
 - GuardedAdapt：15 类五种子、75 个冻结 PatchCore 真实分数流离线反馈回放；不是生产用户研究，
   也不把 target gain 宣称为生产准确率提高。
 - GuardedAdapt-Risk：旧75次分数回放、72次真实图像漂移和72次10%错误反馈共219次；阻断
   50/50个有害v1候选且219次回滚一致，但接受率为0，未通过40%门槛，冻结为负结果。
-- 四件初赛材料已有约束合格的草稿；参赛组别、正式命名、EfficientAD-M、视频GT与 GTX 2060
-  仍是最终上传阻断项。
+- 四件初赛材料已有约束合格的草稿；GTX 2060实测和视频GT已完成。M/S优化速度通过但冻结
+  质量门失败；当前上传阻塞为参赛组别、正式命名和人工最终审校。
 
 机器证据入口见 `docs/18_PRELIMINARY_SUBMISSION_FREEZE.md`。
 
@@ -53,6 +53,11 @@ PYTHONPATH=src .venv/bin/python scripts/evaluate_guarded_adapt_replay.py \
 PYTHONPATH=src .venv/bin/python scripts/evaluate_video_demo.py \
   --input-dir data/video/video_5 \
   --output-dir /tmp/evoinspect-video-demo
+
+PYTHONPATH=src .venv/bin/python scripts/evaluate_video_events.py \
+  --predictions /tmp/evoinspect-video-demo/report.json \
+  --ground-truth data/derived/video/desktop_assembly_gt_v1.1_frozen.json \
+  --output /tmp/evoinspect-video-event-evaluation.json
 ```
 
 ## EfficientAD-M/S 冻结实验

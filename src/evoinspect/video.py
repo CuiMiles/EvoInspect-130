@@ -17,7 +17,7 @@ DetectorMode = Literal["aruco", "simple"]
 
 @dataclass(frozen=True)
 class VideoDetectorConfig:
-    expected_steps: tuple[str, ...] = ("bottle", "cup", "mouse")
+    expected_steps: tuple[str, ...] = ("cup", "bottle", "mouse")
     marker_to_component: tuple[tuple[int, str], ...] = ((0, "bottle"), (1, "cup"), (2, "mouse"))
     processing_width: int = 540
     sample_every_frames: int = 3

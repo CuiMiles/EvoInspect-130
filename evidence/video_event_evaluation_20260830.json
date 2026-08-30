@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-30T09:11:37+00:00",
+  "scope": "fixed_camera_desktop_functional_demo_only",
+  "benchmark_claim_allowed": false,
+  "predictions_path": "reports/experiments/video-demo-gt-v1.1-final-20260830/report.json",
+  "ground_truth_path": "data/derived/video/desktop_assembly_gt_v1.1_frozen.json",
+  "protocol": {
+    "matching": "maximum-cardinality bipartite",
+    "event_identity": [
+      "event_type",
+      "component"
+    ],
+    "instantaneous_tolerance_seconds": 0.5,
+    "missing_window": "[gt_start, decoded_video_duration + tolerance]",
+    "one_to_one": true
+  },
+  "clips": [
+    {
+      "metrics": {
+        "true_positive": 3,
+        "predicted": 3,
+        "ground_truth": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "matches": [
+        {
+          "prediction": {
+            "prediction_index": 0,
+            "time": 3.4998591549295774,
+            "component": "cup",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 1,
+            "gt_start": 2.0,
+            "gt_end": 5.0,
+            "component": "cup",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 1,
+            "time": 8.099674044265592,
+            "component": "bottle",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 2,
+            "gt_start": 8.0,
+            "gt_end": 11.0,
+            "component": "bottle",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 2,
+            "time": 13.599452716297787,
+            "component": "mouse",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 3,
+            "gt_start": 13.5,
+            "gt_end": 16.0,
+            "component": "mouse",
+            "event_type": "step_completed"
+          }
+        }
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "clip_id": "clip_01",
+      "file_name": "1.mp4",
+      "title": "Normal Process: Cup -> Bottle -> Mouse",
+      "source_sha256": "fc43c58d7fc4853fd730d40f158841ef25c090b0523bedcb8da377d3f6953a8b"
+    },
+    {
+      "metrics": {
+        "true_positive": 4,
+        "predicted": 4,
+        "ground_truth": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "matches": [
+        {
+          "prediction": {
+            "prediction_index": 0,
+            "time": 3.3001206581352833,
+            "component": "cup",
+            "event_type": "skip"
+          },
+          "ground_truth": {
+            "event_id": 1,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "cup",
+            "event_type": "skip"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 1,
+            "time": 3.3001206581352833,
+            "component": "bottle",
+            "event_type": "reorder"
+          },
+          "ground_truth": {
+            "event_id": 2,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "bottle",
+            "event_type": "reorder"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 2,
+            "time": 9.20033638025594,
+            "component": "cup",
+            "event_type": "reorder"
+          },
+          "ground_truth": {
+            "event_id": 3,
+            "gt_start": 7.0,
+            "gt_end": 10.0,
+            "component": "cup",
+            "event_type": "reorder"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 3,
+            "time": 16.100588665447898,
+            "component": "mouse",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 4,
+            "gt_start": 13.0,
+            "gt_end": 17.0,
+            "component": "mouse",
+            "event_type": "step_completed"
+          }
+        }
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "clip_id": "clip_02",
+      "file_name": "2.mp4",
+      "title": "Order Violation: Bottle Before Cup",
+      "source_sha256": "f27cbffb7dcae8662e695323b44fc7836a7aacae48cd3db69596b522b693a6d1"
+    },
+    {
+      "metrics": {
+        "true_positive": 3,
+        "predicted": 3,
+        "ground_truth": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "matches": [
+        {
+          "prediction": {
+            "prediction_index": 0,
+            "time": 3.3998433179723504,
+            "component": "cup",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 1,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "cup",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 1,
+            "time": 8.699599078341015,
+            "component": "bottle",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 2,
+            "gt_start": 8.0,
+            "gt_end": 10.5,
+            "component": "bottle",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 2,
+            "time": 14.399336405529954,
+            "component": "mouse",
+            "event_type": "missing"
+          },
+          "ground_truth": {
+            "event_id": 3,
+            "gt_start": 10.5,
+            "gt_end": 14.466,
+            "component": "mouse",
+            "event_type": "missing"
+          }
+        }
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "clip_id": "clip_03",
+      "file_name": "3.mp4",
+      "title": "Missing Component: Mouse Absent at End",
+      "source_sha256": "48c55518ab642d12788aea9be733fab57c3c7388d5ec146a541365283951b4a8"
+    },
+    {
+      "metrics": {
+        "true_positive": 4,
+        "predicted": 4,
+        "ground_truth": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "matches": [
+        {
+          "prediction": {
+            "prediction_index": 0,
+            "time": 3.4999054054054057,
+            "component": "cup",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 1,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "cup",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 1,
+            "time": 9.399745945945947,
+            "component": "bottle",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 2,
+            "gt_start": 8.0,
+            "gt_end": 10.5,
+            "component": "bottle",
+            "event_type": "step_completed"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 2,
+            "time": 16.799545945945948,
+            "component": "bottle",
+            "event_type": "repeat"
+          },
+          "ground_truth": {
+            "event_id": 3,
+            "gt_start": 16.0,
+            "gt_end": 18.5,
+            "component": "bottle",
+            "event_type": "repeat"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 3,
+            "time": 22.299397297297297,
+            "component": "mouse",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 4,
+            "gt_start": 20.0,
+            "gt_end": 23.0,
+            "component": "mouse",
+            "event_type": "step_completed"
+          }
+        }
+      ],
+      "false_positives": [],
+      "false_negatives": [],
+      "clip_id": "clip_04",
+      "file_name": "4.mp4",
+      "title": "Repeated Assembly: Bottle Removed and Replaced",
+      "source_sha256": "78ad58d9f76ea26903a2c1f0cc3e943e6208aa4e5c954b0027d194c4882877b2"
+    },
+    {
+      "metrics": {
+        "true_positive": 4,
+        "predicted": 5,
+        "ground_truth": 5,
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1": 0.8000000000000002
+      },
+      "matches": [
+        {
+          "prediction": {
+            "prediction_index": 0,
+            "time": 3.6998471074380164,
+            "component": "cup",
+            "event_type": "skip"
+          },
+          "ground_truth": {
+            "event_id": 1,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "cup",
+            "event_type": "skip"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 1,
+            "time": 3.6998471074380164,
+            "component": "bottle",
+            "event_type": "reorder"
+          },
+          "ground_truth": {
+            "event_id": 2,
+            "gt_start": 3.0,
+            "gt_end": 5.5,
+            "component": "bottle",
+            "event_type": "reorder"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 3,
+            "time": 16.69930991735537,
+            "component": "bottle",
+            "event_type": "repeat"
+          },
+          "ground_truth": {
+            "event_id": 4,
+            "gt_start": 15.0,
+            "gt_end": 18.0,
+            "component": "bottle",
+            "event_type": "repeat"
+          }
+        },
+        {
+          "prediction": {
+            "prediction_index": 4,
+            "time": 22.499070247933883,
+            "component": "mouse",
+            "event_type": "step_completed"
+          },
+          "ground_truth": {
+            "event_id": 5,
+            "gt_start": 20.0,
+            "gt_end": 23.5,
+            "component": "mouse",
+            "event_type": "step_completed"
+          }
+        }
+      ],
+      "false_positives": [
+        {
+          "prediction_index": 2,
+          "time": 12.099499999999999,
+          "component": "cup",
+          "event_type": "reorder"
+        }
+      ],
+      "false_negatives": [
+        {
+          "event_id": 3,
+          "gt_start": 10.0,
+          "gt_end": 13.0,
+          "component": "cup",
+          "event_type": "step_completed"
+        }
+      ],
+      "clip_id": "clip_05",
+      "file_name": "5.mp4",
+      "title": "Rework: Early Bottle Removed, Then Correct Sequence",
+      "source_sha256": "ab13f9d0eece31844ac6305c3e232f41b46fb6cce8e5e80dd8d6471c37ef3805"
+    }
+  ],
+  "aggregate": {
+    "micro": {
+      "true_positive": 18,
+      "predicted": 19,
+      "ground_truth": 19,
+      "precision": 0.9473684210526315,
+      "recall": 0.9473684210526315,
+      "f1": 0.9473684210526315
+    },
+    "by_event_type": {
+      "missing": {
+        "true_positive": 1,
+        "predicted": 1,
+        "ground_truth": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "reorder": {
+        "true_positive": 3,
+        "predicted": 4,
+        "ground_truth": 3,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571
+      },
+      "repeat": {
+        "true_positive": 2,
+        "predicted": 2,
+        "ground_truth": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "skip": {
+        "true_positive": 2,
+        "predicted": 2,
+        "ground_truth": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "step_completed": {
+        "true_positive": 10,
+        "predicted": 10,
+        "ground_truth": 11,
+        "precision": 1.0,
+        "recall": 0.9090909090909091,
+        "f1": 0.9523809523809523
+      }
+    }
+  },
+  "limitations": [
+    "five supplied fixed-camera desktop clips only",
+    "manual GT was finalized after system review and is not a blinded industrial benchmark",
+    "REMOVE actions are outside the current visual-front-end event vocabulary"
+  ]
+}

@@ -13,6 +13,9 @@ data/raw/
 data/video/
 data/derived/*
 !data/derived/.gitkeep
+!data/derived/video/
+data/derived/video/*
+!data/derived/video/desktop_assembly_gt_v1.1_frozen.json
 artifacts/runs/
 artifacts/evoinspect-2060-*-diagnostic.tar.gz
 reports/generated/

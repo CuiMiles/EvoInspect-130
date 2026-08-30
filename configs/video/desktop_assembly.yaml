@@ -1,7 +1,28 @@
 schema_version: 1
 scope: functional_demo_only
 benchmark_claim_allowed: false
-expected_steps: [bottle, cup, mouse]
+expected_steps: [cup, bottle, mouse]
+clips:
+  "1.mp4":
+    clip_id: clip_01
+    title: "Normal Process: Cup -> Bottle -> Mouse"
+    output_name: 01_normal_cup_bottle_mouse.mp4
+  "2.mp4":
+    clip_id: clip_02
+    title: "Order Violation: Bottle Before Cup"
+    output_name: 02_order_violation_bottle_before_cup.mp4
+  "3.mp4":
+    clip_id: clip_03
+    title: "Missing Component: Mouse Absent at End"
+    output_name: 03_missing_mouse.mp4
+  "4.mp4":
+    clip_id: clip_04
+    title: "Repeated Assembly: Bottle Removed and Replaced"
+    output_name: 04_bottle_repeated.mp4
+  "5.mp4":
+    clip_id: clip_05
+    title: "Rework: Early Bottle Removed, Then Correct Sequence"
+    output_name: 05_rework_then_correct_sequence.mp4
 marker_to_component:
   0: bottle
   1: cup

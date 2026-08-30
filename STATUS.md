@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-30T14:58:52+08:00
+updated_at: 2026-08-30T19:24:13+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: GTX2060_OPTIMIZED_SPEED_PASS_EDGE_QUALITY_FAIL_VIDEO_GT_NEXT
 
@@ -39,6 +39,10 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
   ONNX Runtime CUDA FP16的S/M端到端p95为151.343/166.165 ms，model-only p95为
   8.205/19.355 ms，均通过200 ms速度目标，单样本二值决策与PyTorch参考一致。该证据只证明
   实际硬件速度与数值保真，不推翻M/S质量门失败，也不证明原生2500分辨率异常检测精度。
+- 视频真实顺序经素材提供者纠正并冻结为`cup -> bottle -> mouse`。保留原始5段视频及哈希，
+  新增v1.1人工GT、±0.5秒窗口和一对一最大二分匹配；2944/2944帧重放后19个GT事件匹配18个，
+  Micro Precision=Recall=F1=0.947368。前4段F1=1.0，返工视频F1=0.8；唯一错误源于前端不输出
+  REMOVE动作，未通过修改GT消除。该结果只属于固定机位桌面功能验证。
 - EfficientAD strict evaluator 已修复少样本类别边界：toothbrush 沿用冻结训练划分
   38个正常训练 + 10个正常校准，并使用22个support anomaly；不使用development/test定阈值。
   协议缺陷产生的33份旧结果已可恢复归档，commit `7272064`下统一重评当前36个checkpoint，
@@ -94,12 +98,13 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
   `docs/20_FINAL_ROUTE_DECISION_20260829.md`。
 - 2060冻结交接已完成：连接只读检查、通过质量门后构建自包含bundle、远端独立环境安装和
   2500基准脚本均就绪；当前SSH配置仍无目标主机。
-- OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；正常视频无逻辑异常，其他视频
-  产生12个skip/reorder/repeat/missing事件；仅功能验证。
+- OpenCV实拍视频：5/5、2944/2944帧、98.131秒解码完成；修正工序后19个GT事件匹配18个，
+  Micro P/R/F1均为0.947368；仅固定机位桌面功能验证。
 - GuardedAdapt真实分数replay：15类、5 seeds、75 runs；harmful-update rate为0.0267，
   accepted-update rate为0.8533，拒绝更新rollback 11/11；不声称生产准确率提高。
-- 四件草稿约束通过：简介PDF 169中文字符/268非空白字符；项目PDF 5页；MP4 122.133秒、
-  25,724,846字节；ZIP小于1MB且完整。团队、队长、学校和单人分工已填写，参赛组别与正式
+- 四件草稿已按最终视频GT和2060结果重建并通过约束：简介PDF 129中文字符/252非空白字符；
+  项目PDF 6页；MP4 122.133秒、28,887,378字节；ZIP 676,204字节且完整。团队、队长、学校
+  和单人分工已填写，参赛组别与正式
   命名仍缺。
 - 从commit `44d6b0c`的全新目录和全新venv完成README复现：pytest 60/60、ruff、mypy、
   GuardedAdapt重放、提交校验、45任务dry-run和pip check全部通过，未使用GPU。
@@ -200,8 +205,8 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 当前无本项目EfficientAD训练、strict评测或远端GPU计算进程。实例`49225420`已通过端口
 46781认证，M/S的FP32与ONNX FP16四项实机基准均完成，结果已下载并聚合到
 `evidence/remote_gtx2060_benchmark_20260830.json`。远端GPU在实验结束后无计算进程。
-算法和2060速度路线均已按冻结决策收敛；不得扩展seed、调M/S或恢复其他检测模型。下一阶段
-只允许视频GT、提交材料闭环与必要修复。
+算法、2060速度和视频GT路线均已按冻结决策收敛；不得扩展seed、调M/S或恢复其他检测模型。
+当前四件草稿已重建并通过格式约束；只允许正式命名、人工审校、许可确认和必要修复。
 
 ## Not run or not yet accepted
 
@@ -236,7 +241,8 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 - 可报告 5000-step wood checkpoint 在 RTX 3090 上的合成 2500×2500 时延分解，但必须明确
   checkpoint、GPU、输入重采样和不代表 GTX 2060/官方 200 ms。
 - 六种对照、数据隔离、门控、回退和 GPU 安全代码已经存在并通过 CPU/静态测试。
-- OpenCV 5段实拍视频的解码、组件事件和FSM功能结果，但必须标注桌面功能验证而非工业benchmark。
+- 可报告5段实拍桌面视频的事件级Micro Precision=Recall=F1=0.947368（18/19，一对一
+  ±0.5秒匹配）；必须注明GT在系统审查后由用户确认、固定机位功能验证和非工业benchmark。
 - GuardedAdapt 75-run离线MVTec真实分数replay的有害更新率、接受率、回滚率和CPU适应时延，
   但不得描述为生产准确率提高或真实用户研究。
 - 可报告真实GTX2060、2500×2500重采样输入、batch=1、100 warmup/1000 repeats下的精确
@@ -261,8 +267,7 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 ## Next primary action
 
-完成5段视频人工GT、±0.5秒事件匹配和Precision/Recall/F1；结果只作为桌面功能验证，随后
-立即更新PDF、简介、视频和辅助ZIP的证据边界。
+获取参赛组别，应用四件正式文件名并执行上传前人工审校；在此之前不得声称可直接上传。
 
 ## Parallel work
 

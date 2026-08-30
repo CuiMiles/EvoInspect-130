@@ -80,23 +80,25 @@ EfficientAD-M bottle/seed143；质量门不通过时打包器拒绝生成部署�
 原始素材为 `data/video/video_5/1.mp4` 至 `5.mp4`，均由 OpenCV 成功打开；五段均为
 1080×1920、约30fps，总计2944帧、98.131秒。输入原件未修改。
 
-实现采用 ArUco 优先、固定机位简单组件检测 fallback，预期装配顺序冻结为
-`bottle -> cup -> mouse`，再由 FSM 输出公开词汇 skip/repeat/reorder/missing/unknown 和时间
-区间。最终无标注重放结果：
+实现采用 ArUco 优先、固定机位简单组件检测 fallback。经素材提供者复核，真实预期装配顺序
+冻结为`cup -> bottle -> mouse`，再由 FSM 输出公开词汇
+step_completed/skip/repeat/reorder/missing/unknown 和时间区间。原始文件和哈希未修改，派生视频
+使用可读标题。基于v1.1冻结人工GT和±0.5秒、一对一最大二分匹配的最终结果：
 
 | 视频 | 检测到的步骤/逻辑结果 |
 |---|---|
-| 1.mp4 | cup先出现：skip bottle、reorder cup；随后 bottle repeat；mouse完成 |
-| 2.mp4 | bottle、cup、mouse 正常完成，无逻辑异常 |
-| 3.mp4 | cup先出现、bottle后出现，结尾 missing mouse |
-| 4.mp4 | cup先出现，bottle出现并再次出现，随后mouse完成 |
-| 5.mp4 | bottle、cup、bottle repeat、mouse完成 |
+| 1.mp4 | 正常：cup、bottle、mouse；事件F1=1.0 |
+| 2.mp4 | 错序：bottle与cup顺序反转；事件F1=1.0 |
+| 3.mp4 | cup、bottle后结尾缺mouse；事件F1=1.0 |
+| 4.mp4 | cup后放bottle，移走并再次放入bottle；事件F1=1.0 |
+| 5.mp4 | 先放并移走bottle，再从cup开始返工；事件F1=0.8 |
 
-机器报告：
-`reports/experiments/video-demo-20260827T194000-cpu-annotated/report.json`。带事件水印的五段
-视频共约21 MiB。该 detector 是桌面功能演示适配器，没有人工逐帧标注精度指标，不得声称
-工业准确率、跨场景泛化或官方视频 benchmark 已通过。unknown 输出由 ArUco 未登记 marker/
-FSM unexpected step 和单元 fixture 支持，但本次五段实拍没有 unknown 真值样例。
+Micro Precision=Recall=F1=0.947368（18/19事件匹配）。唯一剩余错误在5.mp4：当前前端不输出
+REMOVE动作，因而将返工后的cup记为reorder而非GT的step_completed。机器报告：
+`evidence/video_event_evaluation_20260830.json`；GT：
+`data/derived/video/desktop_assembly_gt_v1.1_frozen.json`。该结果是五段固定机位桌面功能验证，
+GT在系统审查后由用户确认，不是盲法工业benchmark，不得声称跨场景泛化。unknown由单元测试
+支持，但本次五段实拍没有unknown真值样例。
 
 ## 6. GuardedAdapt 真实分数反馈回放
 
