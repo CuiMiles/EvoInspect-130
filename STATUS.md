@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-08-30T14:03:03+08:00
+updated_at: 2026-08-30T14:15:00+08:00
 current_phase: PRELIMINARY_SUBMISSION_FREEZE
 overall_status: PRE_2060_ALGORITHM_WORK_COMPLETE_ALL_NEW_ROUTES_FAILED
 
@@ -195,10 +195,15 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 冻结决策收敛。不得扩展S seed144--145、调M/S或恢复其他检测模型。下一阶段只允许真实
 GTX2060工程基准、视频GT、提交材料闭环与必要修复。
 
+GTX2060实例`49225420`的动态地址`70.68.84.2:46999`已完成只读网络探测：TCP可达，SSH
+banner为Ubuntu OpenSSH 8.9，服务端主机密钥指纹已保存。当前本机唯一公钥对
+`root/ubuntu/user/vastai`均未获授权，远端声明支持publickey/password；尚缺平台提供的
+SSH用户名及密码或已授权私钥，因此未能执行`nvidia-smi`，也未启动上传、安装或基准。
+
 ## Not run or not yet accepted
 
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
-- 真实 GTX2060连接参数和实测结果缺失；不得写200ms达标。
+- GTX2060 IP和端口已验证可达，但认证信息和实测结果缺失；不得写200ms达标。
 - 2500 EfficientAD frozen checkpoint benchmark尚未运行。
 - 提交草稿仅缺参赛组别和官方文件名；其余团队元数据已填写。
 
@@ -244,7 +249,7 @@ GTX2060工程基准、视频GT、提交材料闭环与必要修复。
 ## Blockers / remaining work
 
 - EfficientAD-M/S与GuardedAdapt-Risk均未通过冻结正向门，当前核心创新与Edge质量证据不足。
-- 无远程GTX2060主机/IP、SSH端口、用户名、认证方式和工作目录。
+- GTX2060主机和端口已可达；仍缺SSH用户名、密码或授权密钥，以及远程工作目录。
 - M/S checkpoint已冻结，但GTX2060上的2500时延尚无结果。
 - 参赛组别未知，提交草稿尚不能最终定稿。
 - MVTec 许可/赛事用途、预训练权重分发、组织方标注/接口/时延口径仍需人工或书面确认。
@@ -256,7 +261,7 @@ p50/p95/p99；结果只能作为工程Pareto证据，不能消除M/S已经失败
 
 ## Parallel work
 
-- 获取GTX2060主机/IP、SSH端口、用户名、认证方式和远程工作目录。
+- 获取GTX2060用户名、密码或授权密钥和远程工作目录；随后立即执行只读GPU核查。
 - 确认参赛组别，审校PDF/MP4并执行正式命名。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
 - 清洁复现已完成；代码或依赖发生实质修改后需重新执行。

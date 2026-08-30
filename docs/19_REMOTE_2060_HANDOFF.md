@@ -70,3 +70,10 @@ manifest；只有这些机器证据审计通过后才能更新 claim ledger。
 
 若 M 质量门失败，不构建 M 部署包；保存失败证据后只评估一次 S 的质量/速度 Pareto，不能
 为了 2060 结果无边界调参。
+
+## 质量门失败后的冻结诊断路径（2026-08-30）
+
+M和S现均已完成冻结质量门并失败。为了获得真实2060工程Pareto证据，可以显式使用
+`--allow-failed-gate-diagnostic`分别打包M/S；默认路径仍拒绝失败模型。此模式生成的manifest
+固定写入`diagnostic_only=true`、`claim_eligible=false`，不得据此声称Edge Engine质量通过。
+两种网络均固定使用bottle/seed143，只比较同构网络的硬件代价，不按测试指标挑checkpoint。

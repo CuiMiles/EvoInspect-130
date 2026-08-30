@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-08-30T14:15:00+08:00",
+  "instance_id": "49225420",
+  "public_ip": "70.68.84.2",
+  "ssh_port": 46999,
+  "tcp_reachable": true,
+  "ssh_reachable": true,
+  "ssh_banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.16",
+  "server_host_key_fingerprints": {
+    "ecdsa_sha256": "SHA256:aEnlE22GAhU2kGzLQFKYegX4svIh+s30jg9/v7czEe8",
+    "ed25519_sha256": "SHA256:PwdRzUXUH4vcpEwep5tWowbT5ex+EDTxA4RMM+PMw/E"
+  },
+  "authentication_methods_advertised": [
+    "publickey",
+    "password"
+  ],
+  "batch_public_key_probes": {
+    "identity_fingerprint": "SHA256:ZnydxfOeswt2bmi/Q7J1h0IE6s5yf6aRhricPfw4QSc",
+    "users": [
+      "root",
+      "ubuntu",
+      "user",
+      "vastai"
+    ],
+    "authenticated": false
+  },
+  "gpu_identity_verified": false,
+  "benchmark_started": false,
+  "blocker": "SSH username plus instance password or an authorized private key is required."
+}
