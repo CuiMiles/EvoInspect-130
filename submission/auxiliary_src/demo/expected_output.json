@@ -1,0 +1,9 @@
+{
+  "decision": "normal",
+  "expected_score_approx": 0.18033751845359802,
+  "score_tolerance": 0.01,
+  "threshold": 0.3533891588449478,
+  "reference_device": "NVIDIA GeForce RTX 2060",
+  "reference_provider": "CUDAExecutionProvider",
+  "note": "Exact latency and floating-point score depend on provider and image decode path."
+}

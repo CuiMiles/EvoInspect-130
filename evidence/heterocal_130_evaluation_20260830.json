@@ -1,0 +1,122 @@
+{
+  "ablations": {
+    "defect_type_loo_calibration": {
+      "eligible_unseen_runs": 42,
+      "image_auroc": 0.9575372096752551,
+      "overall_f1": 0.8967049749086049,
+      "unseen_f1": 0.8117501402369417
+    },
+    "dual_map_fixed": {
+      "eligible_unseen_runs": 42,
+      "image_auroc": 0.9506509997537004,
+      "overall_f1": 0.8971683473393028,
+      "unseen_f1": 0.801887464566558
+    },
+    "efficientad_m": {
+      "eligible_unseen_runs": 42,
+      "image_auroc": 0.9569149551736902,
+      "overall_f1": 0.8972890955676494,
+      "unseen_f1": 0.818925736789806
+    },
+    "flip_consistency": {
+      "eligible_unseen_runs": 42,
+      "image_auroc": 0.8813128323918196,
+      "overall_f1": 0.8337065659504234,
+      "unseen_f1": 0.7418128425463736
+    },
+    "heterocal_130": {
+      "eligible_unseen_runs": 42,
+      "image_auroc": 0.9570351606387233,
+      "overall_f1": 0.8981077526863827,
+      "unseen_f1": 0.8183946585093671
+    }
+  },
+  "categories": {
+    "mvtec_ad_bottle": 3,
+    "mvtec_ad_cable": 3,
+    "mvtec_ad_capsule": 3,
+    "mvtec_ad_carpet": 3,
+    "mvtec_ad_grid": 3,
+    "mvtec_ad_hazelnut": 3,
+    "mvtec_ad_leather": 3,
+    "mvtec_ad_metal_nut": 3,
+    "mvtec_ad_pill": 3,
+    "mvtec_ad_screw": 3,
+    "mvtec_ad_tile": 3,
+    "mvtec_ad_toothbrush": 3,
+    "mvtec_ad_transistor": 3,
+    "mvtec_ad_wood": 3,
+    "mvtec_ad_zipper": 3
+  },
+  "checks": {
+    "all_categories_present": true,
+    "all_expected_runs_completed": true,
+    "image_auroc": false,
+    "overall_f1": false,
+    "support_loo_positive": true,
+    "test_label_leakage": true,
+    "unseen_f1": false,
+    "worst_category_f1_drop": true
+  },
+  "completed_runs": 45,
+  "config": "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/configs/innovations/heterocal_130.yaml",
+  "config_sha256": "1f099fd5e5bba1d114ff144e2cb29a7b13bd8e8f760971d9b7653fd4e1dba70b",
+  "created_at": "2026-08-30T15:17:40+00:00",
+  "metric_paths": [
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-bottle-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-bottle-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-bottle-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-cable-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-cable-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-cable-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-capsule-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-capsule-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-capsule-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-carpet-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-carpet-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-carpet-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-grid-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-grid-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-grid-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-hazelnut-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-hazelnut-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-hazelnut-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-leather-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-leather-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-leather-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-metal_nut-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-metal_nut-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-metal_nut-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-pill-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-pill-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-pill-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-screw-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-screw-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-screw-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-tile-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-tile-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-tile-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-toothbrush-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-toothbrush-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-toothbrush-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-transistor-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-transistor-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-transistor-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-wood-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-wood-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-wood-s145-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-zipper-s143-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-zipper-s144-20260828T095200Z-shared23/heterocal_result/metrics.json",
+    "/home/CuiMinghao/projects/AOI2026/EvoInspect_130_Research_Kit/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-zipper-s145-20260828T095200Z-shared23/heterocal_result/metrics.json"
+  ],
+  "passed": false,
+  "schema_version": 1,
+  "status": "heterocal_130_preregistered_quality_gate",
+  "support_loo": {
+    "accepted_rate_all_runs": 0.06666666666666667,
+    "accepted_runs": 3,
+    "eligible_runs": 42
+  },
+  "test_label_leakage_events": 0,
+  "worst_category_f1_drop": 0.0
+}

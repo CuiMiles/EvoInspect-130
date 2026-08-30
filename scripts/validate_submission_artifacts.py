@@ -41,6 +41,7 @@ def pdf(path: Path) -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--draft-dir", type=Path, default=Path("submission/drafts"))
+    parser.add_argument("--final-named", action="store_true")
     parser.add_argument("--intro", type=Path, default=Path("submission/works_intro.txt"))
     parser.add_argument("--metadata", type=Path, default=Path("submission/metadata.yaml"))
     parser.add_argument("--output", type=Path, required=True)
@@ -55,12 +56,25 @@ def main() -> int:
         "school": "school",
         "division_of_work": "division of work",
     }
-    missing_metadata = [
-        label for key, label in required_metadata.items() if not metadata.get(key)
-    ]
+    missing_metadata = [label for key, label in required_metadata.items() if not metadata.get(key)]
     chinese = len(re.findall(r"[\u3400-\u9fff]", intro_text))
     non_whitespace = len(re.sub(r"\s", "", intro_text))
-    intro = pdf(args.draft_dir / "works_intro.pdf")
+    if args.final_named:
+        prefix = f"{metadata['team_name']}_智检演化130_"
+        filenames = {
+            "intro": prefix + "参赛作品简介.pdf",
+            "document": prefix + "项目文档.pdf",
+            "video": prefix + "项目视频.mp4",
+            "auxiliary": prefix + "其他.zip",
+        }
+    else:
+        filenames = {
+            "intro": "works_intro.pdf",
+            "document": "project_document.pdf",
+            "video": "project_video.mp4",
+            "auxiliary": "auxiliary_material.zip",
+        }
+    intro = pdf(args.draft_dir / filenames["intro"])
     intro.update(
         {
             "source_path": str(args.intro),
@@ -70,8 +84,8 @@ def main() -> int:
             "within_300_non_whitespace_characters": non_whitespace <= 300,
         }
     )
-    document = pdf(args.draft_dir / "project_document.pdf")
-    video_path = args.draft_dir / "project_video.mp4"
+    document = pdf(args.draft_dir / filenames["document"])
+    video_path = args.draft_dir / filenames["video"]
     capture = cv2.VideoCapture(str(video_path))
     if not capture.isOpened():
         raise RuntimeError("project video cannot be opened")
@@ -92,10 +106,21 @@ def main() -> int:
         "within_300_seconds": frames / fps <= 300,
         "within_200_mib": video_path.stat().st_size <= LIMIT,
     }
-    zip_path = args.draft_dir / "auxiliary_material.zip"
+    zip_path = args.draft_dir / filenames["auxiliary"]
     with zipfile.ZipFile(zip_path) as archive:
         corrupt = archive.testzip()
         members = len(archive.infolist())
+        names = {Path(name).name for name in archive.namelist()}
+    required_zip_members = {
+        "README_FIRST.md",
+        "README_FIRST.pdf",
+        "run_demo.sh",
+        "run_demo.py",
+        "efficientad_m_fp16.onnx",
+        "main_results.json",
+        "checksums.sha256",
+    }
+    missing_zip_members = sorted(required_zip_members - names)
     auxiliary = {
         "path": str(zip_path),
         "size_bytes": zip_path.stat().st_size,
@@ -104,6 +129,8 @@ def main() -> int:
         "corrupt_member": corrupt,
         "valid_zip": corrupt is None,
         "within_200_mib": zip_path.stat().st_size <= LIMIT,
+        "required_members_present": not missing_zip_members,
+        "missing_required_members": missing_zip_members,
     }
     constraints_passed = bool(
         intro["valid_pdf"]
@@ -111,15 +138,18 @@ def main() -> int:
         and intro["within_300_chinese_characters"]
         and intro["within_300_non_whitespace_characters"]
         and document["valid_pdf"]
+        and document["pages"] == 6
         and video["within_300_seconds"]
         and video["within_200_mib"]
         and auxiliary["valid_zip"]
         and auxiliary["within_200_mib"]
+        and auxiliary["required_members_present"]
     )
     blockers = []
     if missing_metadata:
         blockers.append("missing metadata: " + ", ".join(missing_metadata))
-    blockers.append("official filename placeholders have not been replaced")
+    if not args.final_named:
+        blockers.append("official filename placeholders have not been replaced")
     research_limitations = [
         "EfficientAD-M and S failed their frozen quality gates despite passing "
         "optimized GTX 2060 speed",
@@ -130,9 +160,10 @@ def main() -> int:
         "schema_version": 1,
         "created_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "constraints_passed": constraints_passed,
-        "final_upload_ready": False,
+        "final_upload_ready": constraints_passed and not blockers,
         "final_upload_blockers": blockers,
         "research_limitations": research_limitations,
+        "final_named_artifacts": args.final_named,
         "metadata": metadata,
         "missing_metadata": missing_metadata,
         "artifacts": {

@@ -1,0 +1,15 @@
+schema_version: 1
+engine: EfficientAD-M
+model_file: models/efficientad_m_fp16.onnx
+representative_category: bottle
+representative_seed: 143
+input_resolution: [2500, 2500]
+model_input_resolution: [256, 256]
+batch_size: 1
+precision: ONNX_internal_FP16_FP32_IO
+score_reduction: quantile_0.995
+score_quantile: 0.995
+threshold: 0.3533891588449478
+provider_order: [CUDAExecutionProvider, CPUExecutionProvider]
+claim_boundary: representative_demo_model_not_15_category_universal_checkpoint
+

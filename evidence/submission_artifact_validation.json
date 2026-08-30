@@ -1,21 +1,19 @@
 {
   "schema_version": 1,
-  "created_at": "2026-08-30T11:25:54+00:00",
+  "created_at": "2026-08-30T15:22:17+00:00",
   "constraints_passed": true,
-  "final_upload_ready": false,
-  "final_upload_blockers": [
-    "missing metadata: competition group",
-    "official filename placeholders have not been replaced"
-  ],
+  "final_upload_ready": true,
+  "final_upload_blockers": [],
   "research_limitations": [
     "EfficientAD-M and S failed their frozen quality gates despite passing optimized GTX 2060 speed",
     "GuardedAdapt-Risk failed its preregistered positive-innovation gate",
     "video event GT covers five fixed-camera functional-demo clips only"
   ],
+  "final_named_artifacts": true,
   "metadata": {
     "schema_version": 1,
     "team_name": "Cuisine",
-    "competition_group": null,
+    "competition_group": "企业赛题组",
     "leader": "崔明浩",
     "members": [
       "崔明浩"
@@ -23,49 +21,49 @@
     "school": "西安交通大学",
     "division_of_work": "单人团队；项目调研、方案设计、代码实现、实验、视频和材料均由崔明浩独立完成。"
   },
-  "missing_metadata": [
-    "competition group"
-  ],
+  "missing_metadata": [],
   "artifacts": {
     "entry_summary": {
-      "path": "submission/drafts/works_intro.pdf",
-      "size_bytes": 41920,
-      "sha256": "5a3d22957df41affa77172880f96cb4219d9ce5b57fc15f1fb78ec6c1d388c44",
+      "path": "submission/final/Cuisine_智检演化130_参赛作品简介.pdf",
+      "size_bytes": 36651,
+      "sha256": "57f01e979d59fa11a52b27e759d8f7c365dec3c9cadf53d6896ddd0e19db9821",
       "pages": 1,
       "valid_pdf": true,
       "source_path": "submission/works_intro.txt",
-      "chinese_characters": 129,
-      "non_whitespace_characters": 252,
+      "chinese_characters": 92,
+      "non_whitespace_characters": 254,
       "within_300_chinese_characters": true,
       "within_300_non_whitespace_characters": true
     },
     "project_document": {
-      "path": "submission/drafts/project_document.pdf",
-      "size_bytes": 1773555,
-      "sha256": "98cbfdcb882ab0dbd3eae155e0e5068f5fe02e3d79c3c3b2baaba096cf21a178",
+      "path": "submission/final/Cuisine_智检演化130_项目文档.pdf",
+      "size_bytes": 211613,
+      "sha256": "d3b0e68f03c0aad65b95ad059e551370b5c10e80e8ca2428cbdb58e500d6a187",
       "pages": 6,
       "valid_pdf": true
     },
     "project_video": {
-      "path": "submission/drafts/project_video.mp4",
-      "size_bytes": 28887378,
-      "sha256": "e46d6c0bc58f50c993ee4e61fe5ca359f3c6b261c8ffcacd549250d8d973c6ed",
+      "path": "submission/final/Cuisine_智检演化130_项目视频.mp4",
+      "size_bytes": 33226608,
+      "sha256": "82cdc6b4bc3c7630c73e1ac169b40fca5f285e79c661ef4ffcc9469d42a91e4f",
       "fps": 30.0,
-      "frames": 3664,
-      "duration_seconds": 122.13333333333334,
+      "frames": 4766,
+      "duration_seconds": 158.86666666666667,
       "width": 1280,
       "height": 720,
       "within_300_seconds": true,
       "within_200_mib": true
     },
     "auxiliary_material": {
-      "path": "submission/drafts/auxiliary_material.zip",
-      "size_bytes": 676375,
-      "sha256": "6144ee097b66acea458c6feebe66be597e769d6b75865da64da8a4d5ff4d3aac",
-      "members": 177,
+      "path": "submission/final/Cuisine_智检演化130_其他.zip",
+      "size_bytes": 35541909,
+      "sha256": "aebb6aabf756fd7b5d940fd1bf58bd5cb7f9ed990d3f32b45335dec3c86d151e",
+      "members": 38,
       "corrupt_member": null,
       "valid_zip": true,
-      "within_200_mib": true
+      "within_200_mib": true,
+      "required_members_present": true,
+      "missing_required_members": []
     }
   }
 }

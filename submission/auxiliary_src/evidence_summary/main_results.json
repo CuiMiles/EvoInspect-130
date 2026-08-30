@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "project": "EvoInspect-130",
+  "dataset_scope": "MVTec AD public benchmark under project 100+30-style isolation",
+  "accuracy_mode": {
+    "model": "PatchCore",
+    "runs": 75,
+    "overall_f1": 0.922353,
+    "image_auroc": 0.9817,
+    "unseen_f1": 0.8715
+  },
+  "realtime_mode": {
+    "model": "EfficientAD-M",
+    "runs": 45,
+    "overall_f1": 0.903604,
+    "image_auroc": 0.956915,
+    "unseen_f1": 0.820986,
+    "gtx2060_onnx_fp16_end_to_end_p95_ms": 166.1646000109613
+  },
+  "feedback": {
+    "method": "GuardedAdapt-v1",
+    "runs": 75,
+    "harmful_update_rate": 0.02666666666666667,
+    "accepted_update_rate": 0.8533333333333334,
+    "rollback_success_rate": 1.0
+  },
+  "video": {
+    "clips": 5,
+    "gt_events": 19,
+    "matched_events": 18,
+    "micro_f1": 0.9473684210526315
+  },
+  "claim_boundary": "Public benchmark and fixed-camera functional evidence; no award or production guarantee."
+}

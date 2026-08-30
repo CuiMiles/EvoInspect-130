@@ -1,7 +1,7 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-30T20:41:55+08:00"
-overall_status: draft_constraints_passed_final_upload_not_ready
+last_readiness_audit_at: "2026-08-30T23:20:00+08:00"
+overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
   visibility: private
@@ -16,44 +16,54 @@ artifacts:
     max_chinese_characters: 300
     template_required: false
     filename_pattern: "{team}_{project}_参赛作品简介.pdf"
-    status: final_named_file_generated_validation_not_rerun
+    status: final_named_file_machine_validated
     path: submission/drafts/works_intro.pdf
     final_path: submission/final/Cuisine_智检演化130_参赛作品简介.pdf
     source: submission/works_intro.txt
+    pages: 1
+    chinese_characters: 92
+    non_whitespace_characters: 254
+    size_bytes: 36651
+    sha256: 57f01e979d59fa11a52b27e759d8f7c365dec3c9cadf53d6896ddd0e19db9821
   - id: project_document
     format: pdf
     template_required: true
     filename_pattern: "{team}_{project}_项目文档.pdf"
-    status: final_named_file_generated_validation_not_rerun
+    status: final_named_file_machine_validated
     path: submission/drafts/project_document.pdf
     final_path: submission/final/Cuisine_智检演化130_项目文档.pdf
     source: submission/project_document.html
     pages: 6
-    size_bytes: 1773555
+    size_bytes: 211613
+    sha256: d3b0e68f03c0aad65b95ad059e551370b5c10e80e8ca2428cbdb58e500d6a187
   - id: project_video
     format: mp4
     max_duration_seconds: 300
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_项目视频.mp4"
-    status: final_named_file_generated_validation_not_rerun
+    status: final_named_file_machine_validated
     path: submission/drafts/project_video.mp4
     final_path: submission/final/Cuisine_智检演化130_项目视频.mp4
-    duration_seconds: 122.13333333333334
-    size_bytes: 28887378
+    duration_seconds: 158.86666666666667
+    size_bytes: 33226608
+    sha256: 82cdc6b4bc3c7630c73e1ac169b40fca5f285e79c661ef4ffcc9469d42a91e4f
   - id: auxiliary_material
     format: zip
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_其他.zip"
-    status: final_named_file_generated_validation_not_rerun
+    status: final_named_file_machine_validated
     path: submission/drafts/auxiliary_material.zip
     final_path: submission/final/Cuisine_智检演化130_其他.zip
     size_status: validated_under_200_mib
+    size_bytes: 35541909
+    sha256: aebb6aabf756fd7b5d940fd1bf58bd5cb7f9ed990d3f32b45335dec3c86d151e
+    required_demo_members_present: true
 validation:
   path: evidence/submission_artifact_validation.json
   constraints_passed: true
-  final_upload_ready: false
-  final_named_artifacts_validation_rerun: false
-  note: "Final named files generated after group confirmation; full validation intentionally not rerun per user request."
+  final_upload_ready: true
+  final_named_artifacts_validation_rerun: true
+  note: "All four final named files passed machine format, size, duration, page-count and package-member checks; human visual review and platform upload remain external actions."
 metadata_blockers: []
 metadata_completed:
   source: submission/metadata.yaml
@@ -64,12 +74,13 @@ metadata_completed:
   school: 西安交通大学
   division_of_work: "单人团队；全部工作由崔明浩独立完成。"
 packaging_blockers: []
-technical_blockers:
+technical_limitations_not_upload_blockers:
   - efficientad_m_failed_unseen_f1_and_image_auroc
   - efficientad_s_failed_unseen_f1_and_image_auroc
   - no_edge_engine_passed_frozen_quality_gate
   - guarded_adapt_risk_core_innovation_gate_failed
   - gtx2060_speed_pass_does_not_override_failed_edge_quality_gate
+  - heterocal_130_failed_preregistered_quality_gate
 completed_closure_evidence:
   clean_directory_environment_reproduction: evidence/clean_reproduction_20260828.json
   final_freeze_clean_reproduction: evidence/final_clean_reproduction_20260829.json
@@ -80,6 +91,7 @@ completed_closure_evidence:
   remote_gtx2060_diagnostic_bundles: evidence/remote_2060_diagnostic_bundles_20260830.json
   remote_gtx2060_actual_benchmark: evidence/remote_gtx2060_benchmark_20260830.json
   video_event_gt_evaluation: evidence/video_event_evaluation_20260830.json
+  heterocal_130_negative_result: evidence/heterocal_130_evaluation_20260830.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement

@@ -1,8 +1,8 @@
 # STATUS
 
-updated_at: 2026-08-30T21:15:00+08:00
-current_phase: FINAL_SPRINT_HETEROCAL_PREREGISTERED
-overall_status: HETEROCAL_PREREGISTERED_NOT_YET_EVALUATED_DELIVERABLE_REWRITE_PENDING
+updated_at: 2026-08-30T23:20:00+08:00
+current_phase: FINAL_DELIVERABLE_REBUILD
+overall_status: HETEROCAL_FAILED_ALGORITHM_STOPPED_POSITIVE_DELIVERABLES_REBUILT
 
 ## One-sentence truth
 
@@ -13,10 +13,15 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 训练第三种检测模型。真实GTX2060上，ONNX FP16的S/M 2500×2500端到端p95分别为
 151.343/166.165 ms，速度均过200 ms目标；但两者冻结质量门仍失败，所以没有合格Edge Engine。
 
-2026-08-30最终冲刺只新增HeteroCal-130：冻结全部EfficientAD-M checkpoint，以support-only
-缺陷类型留一门决定双图/翻转小型非负校准头是否发布；测试标签不得参与拟合、阈值、门禁或
-回退。协议已在任何HeteroCal测试指标产生前写入`docs/22_HETEROCAL_130_PREREGISTRATION.md`
-和`configs/innovations/heterocal_130.yaml`；当前无结果，不允许正向声明。
+HeteroCal-130已按预注册协议完成45/45五组消融：完整方法Overall F1=0.898108、eligible
+Unseen F1=0.818395、Image AUROC=0.957035，均未达到0.90/0.83/0.97门；只有3/45 run通过
+support类型留一选择，零测试标签泄漏，总门`passed=false`。按12小时硬停止规则，HeteroCal
+不导出、不上2060、不进简介或主视频，不再调参；算法工作结束。
+
+竞赛材料已改为正向证据叙事：简介突出PatchCore、EfficientAD-M真实2060、GuardedAdapt-v1
+和视频GT；项目PDF固定6页且删除封面PRELIMINARY/失败警告；项目视频重构为约158.87秒，
+覆盖图像热力图、双模架构、真实2060、代表视频事件与反馈接受/拒绝/回滚；辅助ZIP重构为
+评委入口、41.5MB ONNX模型、Demo、模型卡和四份证据摘要，不再打包AGENTS/STATUS/旧计划。
 
 ## Freeze completion snapshot
 
@@ -207,19 +212,21 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 ## Running now
 
-当前无本项目EfficientAD训练、strict评测或远端GPU计算进程。实例`49225420`已通过端口
-46781认证，M/S的FP32与ONNX FP16四项实机基准均完成，结果已下载并聚合到
-`evidence/remote_gtx2060_benchmark_20260830.json`。远端GPU在实验结束后无计算进程。
-算法、2060速度和视频GT路线均已按冻结决策收敛；不得扩展seed、调M/S或恢复其他检测模型。
-参赛组别已由用户确认为企业赛题组；四件正式命名文件已生成到`submission/final/`。按用户
-要求，本轮未重复执行完整性、哈希、全仓测试或最终上传校验；仍需人工审阅后上传。
+当前无本项目GPU训练、评测或远端计算进程。HeteroCal-130已完成并按失败门硬停止；不得调参、
+导出或上2060。四件正式命名文件已重建到`submission/final/`并完成机器验收，
+`evidence/submission_artifact_validation.json`记录`constraints_passed=true`和
+`final_upload_ready=true`。全仓pytest 72/72、ruff、mypy 22个源码文件、pip check和全部shell
+语法通过。评委版辅助Demo已在一次性本地ONNX Runtime 1.22.0 CPU环境实跑，代表输入输出
+normal、score=0.188335，模型哈希与2060证据一致；远端2060实例当前端口拒绝连接，不影响已
+完成的硬件证据。尚需人工播放视频/审阅PDF并在官方平台上传。
 
 ## Not run or not yet accepted
 
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
 - GTX2060实机基准已完成；允许精确报告ONNX FP16速度过线，但不得称M/S质量合格或已形成
   合格Edge Engine。
-- 企业赛题组和四件正式文件名已填写；最终文件已生成，但本轮按用户要求未重新执行完整校验。
+- 尚未由参赛者完成人工逐页/逐帧审阅、学校审核、官方平台上传和上传后回下载校验。
+- 项目视频当前为无旁白画面版；机器格式合格，但是否补录讲解音轨需参赛者人工决定。
 
 ## Existing verified metrics (unchanged)
 
@@ -273,11 +280,10 @@ Unseen F1=0.798847和Image AUROC=0.963851未过线；0 failure、0泄漏。M/S�
 
 ## Next primary action
 
-在GPU5安全串行执行HeteroCal-130的45个冻结checkpoint五组消融，并在第12小时按预注册门
-一次性停止或进入2060复测。
+完成正式命名复制、评委版ZIP远端Demo烟测和四件文件最终机器验收，然后只做人工审阅与上传。
 
 ## Parallel work
 
-- 将PDF、视频和辅助ZIP从研究审计稿重构为正向竞赛交付稿；HeteroCal结果未通过前不得写入。
+- 人工打开6页PDF和158.87秒MP4检查文字、画面与声音需求。
 - 人工许可证签核和组织方接口/时延口径书面澄清。
-- 清洁复现已完成；代码或依赖发生实质修改后需重新执行。
+- 最终代码修改后执行一次全新目录复现。

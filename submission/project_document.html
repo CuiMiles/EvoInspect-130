@@ -1,87 +1,64 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><style>
-@page { size: A4; margin: 22mm 20mm; }
-body { font-family: "Noto Sans CJK SC", sans-serif; color: #182033; line-height: 1.62; font-size: 10.5pt; }
-h1 { color: #0b5671; font-size: 22pt; border-bottom: 2px solid #18a0ae; padding-bottom: 4mm; }
-h1.first { page-break-before: auto; }
-h2 { color: #11758a; font-size: 15pt; margin-top: 8mm; }
-h3 { color: #263b50; font-size: 12pt; }
-table { border-collapse: collapse; width: 100%; margin: 4mm 0; }
-th, td { border: 1px solid #94a3b8; padding: 2.5mm; vertical-align: top; }
-th { background: #e8f5f7; }
-.cover { text-align: center; padding-top: 20mm; }
-.cover h1 { border: 0; page-break-before: auto; font-size: 28pt; }
-.muted { color: #64748b; }
-.warning { background: #fff7ed; border-left: 4px solid #ea580c; padding: 4mm; }
-code { font-family: monospace; font-size: 9pt; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><style>
+@page{size:A4;margin:14mm 15mm}body{font-family:"Noto Sans CJK SC",sans-serif;color:#172033;font-size:9pt;line-height:1.35;margin:0}
+.page{page-break-after:always}.page:last-child{page-break-after:auto}h1{color:#07566b;font-size:20pt;margin:0 0 4mm;border-bottom:2px solid #17a0ae;padding-bottom:2mm}.section-title{page-break-before:always}
+h2{color:#0f7486;font-size:12pt;margin:3mm 0 1.5mm}p{margin:1.2mm 0}table{border-collapse:collapse;width:100%;margin:2.5mm 0}th,td{border:1px solid #b8c6d2;padding:1.8mm;vertical-align:top}th{background:#e8f5f7;color:#164e63}
+.cover{text-align:center;padding-top:18mm}.cover h1{border:0;font-size:28pt;line-height:1.3;margin:7mm 0}.kpi td{width:50%;padding:5mm;background:#f4fbfc;border-top:4px solid #1596a5}.num{font-size:22pt;font-weight:bold;color:#07566b}.muted,.small{color:#607286}.small{font-size:7.6pt}.accent{background:#fff8e8;border-left:4px solid #e8a328;padding:2.5mm}.good{color:#167553;font-weight:bold}.footer{margin-top:4mm;border-top:1px solid #d6e0e8;padding-top:1mm;color:#718096;font-size:7.2pt}ul{margin:1mm 0;padding-left:6mm}li{margin:.8mm 0}
 </style></head><body>
-<section class="cover">
-<div class="muted">第八届中国研究生人工智能创新大赛</div>
-<h1>智检演化130<br><span style="font-size:16pt">EvoInspect-130 项目文档</span></h1>
-<p>版本：PRELIMINARY-SUBMISSION FREEZE v1.3</p>
-<p>日期：2026.08.30</p>
-<p>团队名称：Cuisine　参赛组别：企业赛题组</p>
-<p>队长：崔明浩　学校：西安交通大学</p>
-<div class="warning">本稿严格保留证据边界：GTX 2060优化速度与视频GT已完成；EfficientAD-M/S质量门和GuardedAdapt-Risk正向门均失败。</div>
-</section>
 
-<h1 class="first">记录更改历史</h1>
-<table><tr><th>序号</th><th>更改原因</th><th>版本</th><th>作者</th><th>日期</th></tr>
-<tr><td>1</td><td>初赛提交冻结，移除未验证主张并同步机器证据</td><td>v1</td><td>崔明浩</td><td>2026-08-27</td></tr>
-<tr><td>2</td><td>填写团队信息并登记清洁环境复现</td><td>v1.1</td><td>崔明浩</td><td>2026-08-28</td></tr>
-<tr><td>3</td><td>登记GuardedAdapt-Risk预注册负结果与EfficientAD严格评测进度</td><td>v1.2</td><td>崔明浩</td><td>2026-08-29</td></tr>
-<tr><td>4</td><td>登记EfficientAD最终负结果、真实GTX2060速度和视频GT指标</td><td>v1.3</td><td>崔明浩</td><td>2026-08-30</td></tr></table>
+<div class="page cover"><div class="muted" style="font-size:12pt">第八届中国研究生人工智能创新大赛 · 企业赛题组</div>
+<h1>智检演化130<br><span style="font-size:16pt">面向少样本新产品的可信双模实时AOI系统</span></h1><p class="muted" style="font-size:13pt">EvoInspect-130</p>
+<table class="kpi"><tr><td><div class="num">0.9224</div>PatchCore Overall F1<br><span class="small">精度模式</span></td><td><div class="num">166.2 ms</div>GTX2060 端到端 p95<br><span class="small">实时模式</span></td></tr>
+<tr><td><div class="num">2.67%</div>GuardedAdapt 有害更新率</td><td><div class="num">0.9474</div>实拍视频事件 F1</td></tr></table>
+<p style="font-size:12pt;margin-top:12mm">团队：Cuisine　队长：崔明浩</p><p>西安交通大学　单人团队，全部工作由崔明浩独立完成</p>
+<p class="small" style="margin-top:12mm">公开数据结果、真实硬件时延、反馈回放和视频GT均有机器可读证据；不作奖项保证。</p><div class="footer">项目文档 · 2026.08.30 · 1 / 6</div></div>
 
-<h1>1 项目概况</h1>
-<h2>1.1 背景和基础</h2>
-<p>工业组装质检不仅要识别划痕、污染和颜色变化，还要判断缺件、重复装配与工序换序。EvoInspect-130 面向“100张正常样本+30张缺陷样本”快速适配条件，构建离线、版本化、可回滚的图像/视频 AOI 原型。当前公开数据证据来自 MVTec AD；测试输入、测试真值与适配支持集采用独立清单和内容哈希隔离。</p>
-<h2>1.2 场景和价值</h2>
-<p>目标场景是桌面装配、消费电子与通用工业外观检查。系统输出异常分数、区域、已知/未知类型、置信度、时延分解和模型版本；视频侧输出步骤事件及时间区间。系统采用本地推理，不依赖远程 API 或大语言模型。</p>
-<h2>1.3 所需支持</h2>
-<p>仍需公开数据许可复核和官方上传/接口口径。参赛组别已确认为企业赛题组，真实GTX 2060实测已完成。3090服务器为多人共享资源，训练脚本仅使用经检查可用的GPU，不终止其他用户任务。</p>
+<div class="page"><h1 style="page-break-before:always">1 工业痛点与赛题约束</h1><h2>1.1 少样本新产品为什么难</h2>
+<p>工业新产品上线时，正常样本易获得，缺陷类型却稀缺且持续变化。传统规则AOI需要反复开发；直接在线更新又可能因误标破坏历史能力。EvoInspect-130把外观检测、装配逻辑、实时部署与反馈安全纳入同一离线系统。</p>
+<table><tr><th>100正常+30缺陷</th><th>图像+视频</th><th>1000+测试</th><th>GTX2060</th><th>操作员反馈</th></tr><tr><td>快速适配</td><td>外观与工序</td><td>严格隔离</td><td>目标&lt;200ms</td><td>门禁与回滚</td></tr></table>
+<h2>1.2 官方能力覆盖矩阵</h2><table><tr><th>官方能力</th><th>系统模块</th><th>证据</th></tr>
+<tr><td>表面/外观缺陷</td><td>PatchCore / EfficientAD-M</td><td>MVTec AD 15类，75/45 runs</td></tr><tr><td>100+30少样本</td><td>独立支持集与固定阈值</td><td>支持、测试输入、真值三方隔离</td></tr>
+<tr><td>缺件/重复/顺序</td><td>组件检测 + FSM</td><td>5段实拍，事件F1 0.9474</td></tr><tr><td>实时与小模型</td><td>EfficientAD-M ONNX FP16</td><td>真实2060，p95 166.2ms</td></tr>
+<tr><td>反馈自学习</td><td>GuardedAdapt</td><td>75-run回放，接受率85.33%</td></tr><tr><td>解释与追溯</td><td>热力图、事件、版本日志</td><td>统一InferenceEngine输出</td></tr></table>
+<h2>1.3 数据纪律</h2><p><b>零测试泄漏：</b>所有测试分数和决策落盘后才读取独立真值；测试标签不参与阈值、模型选择或早停。</p>
+<p><b>边界明确：</b>MVTec是公开基准；视频是固定机位桌面功能验证；2500输入重采样至模型分辨率。</p><div class="footer">智检演化130 · 工业痛点与约束 · 2 / 6</div></div>
 
-<h1>2 项目规划</h1>
-<h2>2.1 整体目标</h2>
-<p>提交冻结阶段聚焦四个闭环：冻结图像模型、真实视频演示、GuardedAdapt 反馈回放、四件官方提交物。PatchCore 固定为 Accuracy Engine；EfficientAD-M 按统一 100+30 协议复现并作为 Edge Engine 候选，S 仅作为速度 fallback。CPU 小于 2 秒为后置挑战项。</p>
-<h2>2.2 工程贡献与研究边界</h2>
-<h3>GuardedAdapt：带锚定回归门禁的可回滚反馈闭环</h3>
-<p>系统不把操作员反馈直接写入线上主模型。即时阈值/记忆更新可逆；候选更新必须同时满足反馈切片收益与锚定回归限制，拒绝后恢复原版本。v1在75个冻结分数流上提供安全机制证据；进一步加入漂移触发、真实记忆候选、群组统计风险门和影子发布的GuardedAdapt-Risk完成219次预注册回放，但因接受率为0而未通过质量门。因此该项只作为工程安全机制和研究负结果，不承担核心算法创新或准确率提高声明。</p>
-<h3>统一双引擎接口</h3>
-<p>统一 <code>InferenceEngine</code> 显式切换 Accuracy/Edge，不允许静默 fallback，并保持输出、版本与时延字段一致。PatchCore不承担GTX 2060实时目标；EfficientAD-M/S虽通过优化速度线，但均未通过冻结质量门，故只作为部署候选负结果。</p>
-<h3>研究负结果边界</h3>
-<p>RCBR 正式 70,000-step 四类三种子 smoke 未通过预注册门槛，已停止研发。它只作为研究决策负结果，不进入摘要和主创新；HeteroMemory、GuardedFusion、MaskedPrototype 与 TriSynth 同样停止。</p>
+<div class="page"><h1 style="page-break-before:always">2 双模检测与可信闭环架构</h1><h2>2.1 一个接口，四条能力支路</h2>
+<table><tr><th>模式</th><th>核心实现</th><th>输出与定位</th></tr><tr><td><b>Accuracy</b></td><td>PatchCore正常记忆库与最近邻距离</td><td>高精度外观异常分数、热力区域、最近正常证据</td></tr>
+<tr><td><b>Realtime</b></td><td>EfficientAD-M教师—学生 + 自编码器，ONNX FP16</td><td>2060实时分数、区域、置信度和分阶段时延</td></tr>
+<tr><td><b>Video</b></td><td>OpenCV组件检测 + 确定性FSM</td><td>step、skip、repeat、reorder、missing、unknown区间</td></tr>
+<tr><td><b>Feedback</b></td><td>GuardedAdapt候选生成、锚点门禁和回滚</td><td>接受/拒绝原因、版本、变更记录和恢复点</td></tr></table>
+<h2>2.2 统一在线流程</h2><table><tr><th>输入</th><th>显式路由</th><th>本地推理</th><th>结构化输出</th><th>安全反馈</th></tr><tr><td>2500图像/视频</td><td>Accuracy或Realtime</td><td>不依赖远程API</td><td>分数·区域·事件·版本·时延</td><td>候选→门禁→发布/回滚</td></tr></table>
+<h2>2.3 三项系统贡献</h2><ul><li><b>精度—速度双模：</b>同一接口按场景显式切换高精度记忆方法与2060实时学生模型，禁止静默fallback。</li>
+<li><b>安全反馈机制：</b>把“收到反馈就更新”改造成可拒绝、可审计、可恢复的候选发布决策。</li><li><b>图像—视频闭环：</b>外观区域与装配步骤事件使用同一版本化结果结构。</li></ul>
+<h2>2.4 工程边界</h2><p>最终推理完全离线，不运行大语言模型或扩散模型；模型、配置、数据来源和时延口径可追溯。Accuracy/Realtime由调用方明确选择，避免失败模式被隐藏。</p><div class="footer">智检演化130 · 系统架构 · 3 / 6</div></div>
 
-<h1>3 实施方案</h1>
-<h2>3.1 技术可行性分析</h2>
-<p>MVTec AD 直接归档验收得到 15 类 5354 张图像且内容重复为 0。固定 PatchCore 在 15 类、seeds 133–137 的 100+30 式隔离协议下完成 75/75 次评估。EfficientAD 环境固定 Anomalib 2.3.0、Torch 2.6.0+cu124 与上游提交；M/S 采用相同划分器、开发阈值和测试真值延迟读取规则。</p>
-<h2>3.2 技术细节</h2>
-<h3>图像质量证据</h3>
-<table><tr><th>模型/协议</th><th>Overall F1</th><th>Image AUROC</th><th>Unseen F1</th><th>范围</th></tr>
-<tr><td>PatchCore / MVTec AD 15类5 seeds</td><td>0.9224</td><td>0.9817</td><td>0.8715</td><td>公开数据100+30式协议，非官方隐藏集</td></tr>
-<tr><td>EfficientAD-M / 15类3 seeds</td><td>0.9036</td><td>0.9569</td><td>0.8210</td><td>45/45完成；后两项未过0.97/0.83冻结门</td></tr>
-<tr><td>EfficientAD-S / 15类1 seed</td><td>0.8908</td><td>0.9639</td><td>0.7988</td><td>15/15完成；质量门失败后停止</td></tr></table>
-<p>PatchCore 的全像素 AUROC 为 0.9811、AUPRO@0.30 为 0.9342、AUPRO@0.05 为 0.7241。所有阈值由开发数据固定，不使用测试标签调参、早停或模型选择。</p>
-<h3>视频功能验证</h3>
-<p>OpenCV 成功解码 5 段 1080×1920、约 98.13 秒的固定机位实拍视频。前端采用 ArUco 优先、简单组件检测 fallback，FSM 以“杯子→水瓶→鼠标”为预期顺序，输出 step_completed、skip、repeat、reorder、missing、unknown 及时间区间。按冻结人工GT、±0.5秒窗口和一对一二分匹配，19个GT事件中匹配18个，事件级Precision、Recall和F1均为0.9474。该结果只代表五段桌面功能验证，不代表工业准确率或跨场景泛化。</p>
-<h3>反馈回放</h3>
-<p>GuardedAdapt-v1 在15类5 seeds、75个冻结 PatchCore 真实分数流上完成离线反馈回放。GuardedAdapt-Risk进一步完成219次冻结回放：50个有害v1候选全部被阻断、219次回滚完全一致，但219个候选全部被拒绝，接受率0低于40%预注册门槛，故判定失败。本文不把该结果写成生产准确率提高或正向核心创新。</p>
-<table><tr><td><img src="assets/guarded_risk_pareto.png" style="width:100%"><br>图1 冻结回放的收益—有害更新率关系</td><td><img src="assets/guarded_risk_release_flow.png" style="width:100%"><br>图2 风险发布链与实际失败结论</td></tr></table>
-<h3>性能与部署</h3>
-<p>在真实6GB GTX 2060上，2500×2500重采样输入、batch=1、预热100次、重复1000次。PyTorch FP32的S/M端到端p95为327.9/331.3ms，均失败；ONNX Runtime CUDA FP16优化后为151.3/166.2ms，model-only p95为8.2/19.4ms，均通过200ms速度线。该结果不抵消质量门失败，也不代表原生2500分辨率精度。</p>
-<h2>3.3 计划和分工</h2>
-<table><tr><th>工作包</th><th>状态</th><th>责任人</th></tr>
-<tr><td>EfficientAD-M/S质量门</td><td>45/45与15/15完成；均冻结为负结果</td><td>崔明浩</td></tr>
-<tr><td>GTX 2060 2500时延</td><td>实测完成；ONNX FP16优化速度通过</td><td>崔明浩</td></tr>
-<tr><td>视频与 GuardedAdapt</td><td>视频GT F1=0.9474；Risk预注册门失败</td><td>崔明浩</td></tr>
-<tr><td>材料审校、命名和上传</td><td>企业赛题组正式命名文件已生成，待上传</td><td>崔明浩</td></tr></table>
-<p>本项目为单人团队，项目调研、方案设计、代码实现、实验、视频和材料均由崔明浩独立完成。</p>
+<div class="page"><h1 style="page-break-before:always">3 精度—速度主结果</h1><h2>3.1 MVTec AD 100+30式隔离评测</h2>
+<table><tr><th>模式/模型</th><th>Overall F1</th><th>Unseen F1</th><th>Image AUROC</th><th>定位</th></tr><tr><td><b>PatchCore</b><br>15类×5 seeds</td><td><b>0.9224</b></td><td><b>0.8715</b></td><td><b>0.9817</b></td><td>精度模式</td></tr>
+<tr><td><b>EfficientAD-M</b><br>15类×3 seeds</td><td><b>0.9036</b></td><td>0.8210</td><td>0.9569</td><td>实时模式</td></tr><tr><td>EfficientAD-S<br>15类×1 seed</td><td>0.8908</td><td>0.7988</td><td>0.9639</td><td>速度对照</td></tr></table>
+<p class="small">PatchCore全像素AUROC 0.9811、AUPRO@0.30 0.9342、AUPRO@0.05 0.7241。均为公开MVTec AD，不代表官方隐藏集成绩。</p>
+<h2>3.2 真实GTX2060，2500×2500重采样，batch=1</h2><table><tr><th>实现</th><th>model-only p95</th><th>end-to-end p95</th><th>结论</th></tr>
+<tr><td><b>EfficientAD-M ONNX FP16</b></td><td>19.4ms</td><td class="good">166.2ms</td><td>达到200ms目标</td></tr><tr><td>EfficientAD-S ONNX FP16</td><td>8.2ms</td><td class="good">151.3ms</td><td>更快，质量较低</td></tr>
+<tr><td>EfficientAD-M PyTorch FP32</td><td>62.9ms</td><td>331.3ms</td><td>说明部署优化必要</td></tr></table>
+<p>口径包含解码、预处理/传输、模型、后处理和序列化；100次预热、1000次重复；设备为真实6GB GTX2060。</p>
+<div class="accent"><b>精度—速度折中：</b>实时模式实现Overall F1 0.9036与166.2ms。Image AUROC未达到项目自设0.97研究目标，但该内部目标不是官方淘汰线；精度优先场景使用PatchCore。</div>
+<h2>3.3 可复现性</h2><p>数据分割、配置、checkpoint、预测和硬件报告均留存机器证据；已在全新目录和Python 3.11环境完成一次README复现。EfficientAD固定Anomalib 2.3.0及对应上游提交。</p><div class="footer">智检演化130 · 精度与速度 · 4 / 6</div></div>
 
-<h1>4 参考资料</h1>
-<ol>
-<li>中国研究生人工智能创新大赛，华为赛题《可自学习的AOI实时在线AI质检》，仓库本地官方附件。</li>
-<li>Roth et al., Towards Total Recall in Industrial Anomaly Detection, CVPR 2022（PatchCore）。</li>
-<li>Batzner et al., EfficientAD: Accurate Visual Anomaly Detection at Millisecond-Level Latencies, WACV 2024。</li>
-<li>MVTec AD dataset；本项目登记许可标识 CC-BY-NC-SA-4.0，赛事/分发资格仍需人工复核。</li>
-</ol>
-<div class="warning">证据路径：<code>evidence/claim_ledger.csv</code>、<code>docs/18_PRELIMINARY_SUBMISSION_FREEZE.md</code>、各实验 <code>report.json/aggregate.json</code>。任何未由机器报告支持的数字必须删除。</div>
+<div class="page"><h1 style="page-break-before:always">4 GuardedAdapt：反馈更新安全门</h1><h2>4.1 候选发布，而非直接改写线上模型</h2>
+<table><tr><th>操作员反馈</th><th>候选阈值</th><th>反馈收益检查</th><th>历史锚点门禁</th><th>发布/回滚</th></tr><tr><td>误检/漏检</td><td>有界移动</td><td>新切片是否改善</td><td>历史能力是否受损</td><td>保存版本与原因</td></tr></table>
+<p>反馈先产生候选；只有反馈切片具备收益且历史锚点退化不超限才接受。否则Champion保持不变，并记录拒绝原因和恢复点。</p>
+<h2>4.2 75个真实分数流离线回放</h2><table><tr><th>策略</th><th>有害更新率</th><th>接受率</th><th>解释</th></tr><tr><td>NoUpdate</td><td>0%</td><td>0%</td><td>安全但无法学习</td></tr>
+<tr><td>NaiveUpdate</td><td><b>9.33%</b></td><td>100%</td><td>无约束直接更新</td></tr><tr><td>ThresholdUpdate</td><td>6.67%</td><td>100%</td><td>有界阈值调整</td></tr>
+<tr><td><b>GuardedAdapt</b></td><td class="good">2.67%</td><td class="good">85.33%</td><td>兼顾更新与历史保护</td></tr></table>
+<table class="kpi"><tr><td><div class="num">71.4%</div>相对NaiveUpdate减少有害更新</td><td><div class="num">100%</div>11/11拒绝更新回滚成功</td></tr></table>
+<h2>4.3 证据边界</h2><p>实验使用MVTec固定PatchCore真实预测分数和确定性反馈切片，是离线回放而非生产用户研究；结论是降低有害更新概率和保护历史能力，不宣称生产准确率提升。</p>
+<p class="small">边界实验：更严格的GuardedAdapt-Risk在219次回放中阻断50/50有害候选，但接受率为0，说明过严风险门会退化为“永不学习”，因此只保留在附录。</p><div class="footer">智检演化130 · GuardedAdapt · 5 / 6</div></div>
+
+<div class="page"><h1 style="page-break-before:always">5 实拍闭环、落地价值与边界</h1><h2>5.1 五段桌面装配视频</h2>
+<table><tr><th>场景</th><th>目标事件</th><th>事件F1</th></tr><tr><td>正常：cup→bottle→mouse</td><td>3个step_completed</td><td>1.000</td></tr><tr><td>次序颠倒</td><td>reorder + 正常收尾</td><td>1.000</td></tr>
+<tr><td>缺少mouse</td><td>missing</td><td>1.000</td></tr><tr><td>bottle重复装配</td><td>repeat</td><td>1.000</td></tr><tr><td>返工后恢复</td><td>step_completed + repeat</td><td>0.800</td></tr><tr><td><b>Micro汇总</b></td><td>19个GT匹配18个</td><td><b>0.9474</b></td></tr></table>
+<p>冻结人工GT采用±0.5秒容差和一对一最大二分匹配。唯一错误来自前端暂不识别REMOVE动作。</p>
+<h2>5.2 交付形态</h2><table><tr><th>现场推理</th><th>反馈闭环</th><th>审计追踪</th><th>离线部署</th></tr><tr><td>图像/视频、模式切换、JSON与热力图</td><td>候选接受、拒绝或回滚</td><td>模型版本、配置、原因、时延</td><td>ONNX模型、示例、模型卡、一键说明</td></tr></table>
+<h2>5.3 适用边界</h2><ul><li>MVTec AD不是官方隐藏测试，最终准确率以组织方测试为准。</li><li>视频是5段固定机位桌面功能验证，不外推跨产线工业泛化。</li><li>2500输入重采样到256，尚未验证原生高分辨率微小缺陷收益。</li><li>实时模式AUROC和Unseen F1低于内部研究门，精度优先时选择PatchCore。</li></ul>
+<div class="accent"><b>项目价值：</b>在少样本新产品上显式切换精度/实时模式，识别装配逻辑，并让人工反馈在安全门内逐步演化。</div>
+<h2>参考资料</h2><p class="small">[1] 华为《可自学习的AOI实时在线AI质检》；[2] Roth et al., PatchCore, CVPR 2022；[3] Batzner et al., EfficientAD, WACV 2024；[4] MVTec AD。机器证据见辅助材料evidence_summary。</p><div class="footer">智检演化130 · 实拍闭环与边界 · 6 / 6</div></div>
 </body></html>
