@@ -92,6 +92,7 @@ completed_closure_evidence:
   remote_gtx2060_actual_benchmark: evidence/remote_gtx2060_benchmark_20260830.json
   video_event_gt_evaluation: evidence/video_event_evaluation_20260830.json
   heterocal_130_negative_result: evidence/heterocal_130_evaluation_20260830.json
+  final_clean_reproduction_v2: evidence/final_clean_reproduction_20260830.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement

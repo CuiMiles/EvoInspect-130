@@ -220,6 +220,10 @@ support类型留一选择，零测试标签泄漏，总门`passed=false`。按12
 normal、score=0.188335，模型哈希与2060证据一致；远端2060实例当前端口拒绝连接，不影响已
 完成的硬件证据。尚需人工播放视频/审阅PDF并在官方平台上传。
 
+从commit `e9733ad`的全新clone和全新Python 3.11 venv再次按README完成最终复现：pytest
+72/72、ruff、mypy 22个源码文件、pip check、全部shell语法和四件正式命名文件验收均通过；
+证据为`evidence/final_clean_reproduction_20260830.json`。
+
 ## Not run or not yet accepted
 
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "created_at": "2026-08-30T23:30:00+08:00",
+  "tested_commit": "e9733adbe06087ec597d39691a7d14644681d0a6",
+  "clean_root": "/tmp/evoinspect-final-repro-20260830-3FwS1U/repo",
+  "environment": {
+    "type": "new_git_clone_and_new_venv",
+    "python": "3.11.16",
+    "pip": "26.2.1",
+    "install": "venv/bin/python -m pip install -e 'repo[dev,yaml,metrics,images,video,research]'",
+    "pip_check": "no_broken_requirements"
+  },
+  "checks": {
+    "pytest": {"passed": 72, "failed": 0, "duration_seconds": 3.54},
+    "ruff": "passed",
+    "mypy": {"status": "passed", "source_files": 22},
+    "all_shell_scripts_syntax": "passed",
+    "final_named_submission": {
+      "constraints_passed": true,
+      "final_upload_ready": true,
+      "video_duration_seconds": 158.86666666666667,
+      "validation_report_sha256": "04db0f9238c290dc5dc618d3570fae4220d1b887a15033088bd29bf36dd2dc75"
+    },
+    "auxiliary_demo_smoke": {
+      "environment": "temporary local ONNX Runtime 1.22.0 CPU provider",
+      "decision": "normal",
+      "score": 0.1883353888988495,
+      "expected_score": 0.18033751845359802,
+      "absolute_difference": 0.00799787044525148,
+      "allowed_tolerance": 0.01,
+      "model_sha256": "6894ef8132f41f8aad69e904bde241f2d59a95e752d680b986db9b2b08048f41",
+      "passed": true
+    }
+  },
+  "scope": "Fresh clone and fresh Python environment CPU/static reproduction plus separate disposable CPU ONNX demo smoke; no new GPU benchmark."
+}
