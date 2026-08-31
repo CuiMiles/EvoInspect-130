@@ -1,8 +1,17 @@
 # STATUS
 
-updated_at: 2026-09-01T02:17:17+08:00
+updated_at: 2026-09-01T07:41:57+08:00
 current_phase: BOUNDED_FOUR_ROUTE_SCREEN_COMPLETED_ALL_CPU_DIAGNOSTICS
 overall_status: FOUR_ROUTE_SCREEN_COMPLETE_NO_ROUTE_PROMOTED_FINAL_ARTIFACTS_UNCHANGED
+
+## Submission artifact revalidation (2026-09-01)
+
+The four final-named files were revalidated from `submission/final/` after the bounded screen:
+the introduction is one page, the project document is six pages, the video is 158.867 seconds,
+and the auxiliary ZIP is 35.54 MB with all required demo members. The machine report is
+`evidence/submission_artifact_validation_rerun_20260901.json`; `final_upload_ready=true` and no
+file-format or size blocker was found. The package bytes and hashes are unchanged; participant
+visual review, school review, platform upload, and upload/download recheck remain external.
 
 ## Bounded four-route screen reopened by the user (2026-09-01)
 

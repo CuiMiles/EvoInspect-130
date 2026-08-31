@@ -1,13 +1,13 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-09-01T02:17:17+08:00"
+last_readiness_audit_at: "2026-09-01T07:41:57+08:00"
 overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
   visibility: private
   default_branch: master
-  pushed_at: "2026-08-28T20:18:00+08:00"
-readiness_evidence: evidence/submission_artifact_validation.json
+  pushed_at: "2026-09-01T07:42:27+08:00"
+readiness_evidence: evidence/submission_artifact_validation_rerun_20260901.json
 final_route_decision: docs/20_FINAL_ROUTE_DECISION_20260829.md
 deadline_local_file: "2026-09-01T23:59:00+08:00"
 artifacts:
@@ -63,7 +63,7 @@ validation:
   constraints_passed: true
   final_upload_ready: true
   final_named_artifacts_validation_rerun: true
-  note: "All four final named files passed machine format, size, duration, page-count and package-member checks. Codex also rendered all PDF pages, decoded all 4766 video frames and reviewed representative video frames; participant review and platform upload remain external actions."
+  note: "All four final named files passed the 2026-09-01 machine format, size, duration, page-count and package-member rerun. Codex also rendered all PDF pages, decoded all 4766 video frames and reviewed representative video frames; participant review and platform upload remain external actions."
 metadata_blockers: []
 metadata_completed:
   source: submission/metadata.yaml
@@ -106,6 +106,7 @@ completed_closure_evidence:
   heterocal_130_negative_result: evidence/heterocal_130_evaluation_20260830.json
   final_clean_reproduction_v2: evidence/final_clean_reproduction_20260830.json
   final_artifact_visual_review: evidence/final_artifact_visual_review_20260831.json
+  final_named_artifacts_validation_rerun: evidence/submission_artifact_validation_rerun_20260901.json
   edgefusion_negative_result: reports/experiments/edgefusion-20260901/summary.json
   guarded_adapt_pareto_negative_result: reports/experiments/guarded-adapt-pareto-20260901/report.json
   anomalydino_negative_result: reports/experiments/final-sprint-20260901/anomalydino-summary.json
