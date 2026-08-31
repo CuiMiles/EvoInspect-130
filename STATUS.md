@@ -1,7 +1,7 @@
 # STATUS
 
-updated_at: 2026-09-01T02:01:03+08:00
-current_phase: BOUNDED_FOUR_ROUTE_SCREEN_EDGEFUSION_AND_PARETO_COMPLETED_DINO_QUEUED
+updated_at: 2026-09-01T02:07:24+08:00
+current_phase: BOUNDED_FOUR_ROUTE_SCREEN_EDGEFUSION_PARETO_ANOMALYDINO_COMPLETED_DINOMALY_QUEUED
 overall_status: FINAL_ARTIFACTS_FROZEN_EXPLORATORY_SCREEN_RUNNING_WHEN_SAFE_GPU_RELEASES
 
 ## Bounded four-route screen reopened by the user (2026-09-01)
@@ -32,6 +32,12 @@ remaining DINO routes are queued behind a conservative GPU supervisor.
   six-category gate is intentionally `passed=false`). It is not a model-selection result.
 - A one-step CPU smoke test for the fixed Dinomaly entry passed (map shape `224x224`, finite
   score, inference path callable); this is only an implementation check, not a category result.
+- The five remaining AnomalyDINO categories were then completed on CPU with the same fixed
+  configuration and merged with cable. The six-category aggregate is Overall F1 `0.846819`,
+  eligible Unseen F1 `0.823517`, Image AUROC `0.937040`, six successful categories and zero
+  leakage; all three quality gates fail, so AnomalyDINO is stopped and not promoted. Evidence:
+  `reports/experiments/final-sprint-20260901/anomalydino-summary.json`. The timings are CPU-only
+  diagnostics and are not a GTX2060 claim.
 - `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
   half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
   never kills processes. It will launch at most one route per safe GPU, retry an abnormal child
