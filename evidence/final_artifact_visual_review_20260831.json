@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-31T09:01:05+08:00",
+  "git_commit_before_review": "ef06136",
+  "scope": "local_render_visual_review_and_full_video_decode",
+  "artifacts": {
+    "entry_summary": {
+      "path": "submission/final/Cuisine_智检演化130_参赛作品简介.pdf",
+      "pages": 1,
+      "rendered_pages_reviewed": 1,
+      "visible_duplicate_text": false,
+      "clean_text_layer": true,
+      "source_chinese_characters": 92,
+      "source_non_whitespace_characters": 254,
+      "sha256": "e2483eb2e2a0eab89d6c0af139142283e6ef22c71db45b25e5476fb0cb806fcd"
+    },
+    "project_document": {
+      "path": "submission/final/Cuisine_智检演化130_项目文档.pdf",
+      "pages": 6,
+      "rendered_pages_reviewed": 6,
+      "visible_clipping_or_blank_pages": false,
+      "sha256": "d3b0e68f03c0aad65b95ad059e551370b5c10e80e8ca2428cbdb58e500d6a187"
+    },
+    "project_video": {
+      "path": "submission/final/Cuisine_智检演化130_项目视频.mp4",
+      "expected_frames": 4766,
+      "decoded_frames": 4766,
+      "fps": 30.0,
+      "width": 1280,
+      "height": 720,
+      "duration_seconds": 158.86666666666667,
+      "representative_frames_visually_reviewed": 7,
+      "full_decode_complete": true,
+      "sha256": "82cdc6b4bc3c7630c73e1ac169b40fca5f285e79c661ef4ffcc9469d42a91e4f"
+    },
+    "auxiliary_material": {
+      "path": "submission/final/Cuisine_智检演化130_其他.zip",
+      "members": 38,
+      "zip_integrity_passed": true,
+      "required_members_present": true,
+      "sha256": "aebb6aabf756fd7b5d940fd1bf58bd5cb7f9ed990d3f32b45335dec3c86d151e"
+    }
+  },
+  "machine_validation": {
+    "path": "evidence/submission_artifact_validation.json",
+    "constraints_passed": true,
+    "final_upload_ready": true,
+    "blockers": []
+  },
+  "limitations": [
+    "This is an internal Codex render/decode review, not the participant's own final review.",
+    "Official platform upload and post-download verification have not been performed."
+  ]
+}

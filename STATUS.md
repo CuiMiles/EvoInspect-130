@@ -1,13 +1,14 @@
 # STATUS
 
-updated_at: 2026-08-31T06:45:00+08:00
-current_phase: EXPLORATORY_S384_TRAINING_SCREEN_COMPLETED_FINAL_FALLBACK_PRESERVED
-overall_status: S384_TRAINING_SCREEN_COMPLETED_NEGATIVE_FINAL_DELIVERABLES_PRESERVED
+updated_at: 2026-08-31T09:01:05+08:00
+current_phase: ALL_REGISTERED_EXPERIMENTS_COMPLETED_FINAL_ARTIFACT_REVIEW_COMPLETE
+overall_status: FINAL_MACHINE_AND_INTERNAL_VISUAL_VALIDATION_PASSED_PLATFORM_UPLOAD_PENDING
 
 ## User-requested parallel screening (2026-08-31)
 
-The previously machine-validated `submission/final/` package remains the immutable fallback. A
-new, explicitly exploratory screen was started from `configs/experiments/parallel_screening_20260831.yaml`
+The previously machine-validated `submission/final/` package was held as the immutable fallback
+during experimental screening; no exploratory metric was allowed to rewrite its claims. A new,
+explicitly exploratory screen was started from `configs/experiments/parallel_screening_20260831.yaml`
 after the user requested a six-route/parallel sprint. The implemented first screen is deliberately
 limited to three train-free EfficientAD-S variants on six categories (`cable`, `capsule`, `screw`,
 `carpet`, `transistor`, `wood`) at seed 143: S-384, S-512, and fixed non-overlapping 2x2 tile-S.
@@ -61,8 +62,9 @@ S384 therefore improved F1 (+4.54 percentage points) and Unseen F1 (+3.23 points
 Image AUROC (-0.36 points), with weak per-category generalization (cable Unseen F1 `0.095238`).
 It does not pass the frozen quality gates and does not beat the comparison on all registered
 dimensions; it is recorded as a mixed/negative exploration and is not promoted. No further
-EfficientAD resolution training is started under the preregistered stop rule, and
-`submission/final/` remains unchanged. The machine-readable aggregate is
+EfficientAD resolution training is started under the preregistered stop rule, and the experiment
+does not change final claims. A later introduction-PDF text-layer repair is separately recorded as
+submission-only maintenance. The machine-readable aggregate is
 `reports/experiments/efficientad-s384-screen-20260831/s384-summary.json`.
 
 ## One-sentence truth
@@ -276,10 +278,12 @@ support类型留一选择，零测试标签泄漏，总门`passed=false`。按12
 当前无本项目GPU训练、评测或远端计算进程。HeteroCal-130已完成并按失败门硬停止；不得调参、
 导出或上2060。四件正式命名文件已重建到`submission/final/`并完成机器验收，
 `evidence/submission_artifact_validation.json`记录`constraints_passed=true`和
-`final_upload_ready=true`。全仓pytest 72/72、ruff、mypy 22个源码文件、pip check和全部shell
-语法通过。评委版辅助Demo已在一次性本地ONNX Runtime 1.22.0 CPU环境实跑，代表输入输出
+`final_upload_ready=true`。2026-08-31进一步完成全部6页项目PDF和1页简介的渲染审查、项目
+视频4766/4766帧完整解码及7个代表时间点抽帧审查、辅助ZIP完整性检查；简介PDF重新生成了
+干净文本层，修复旧PDF文本抽取重复和标题缺失问题。全仓pytest 72/72、ruff、mypy 22个源码
+文件、pip check和全部shell语法通过。评委版辅助Demo已在一次性本地ONNX Runtime 1.22.0 CPU环境实跑，代表输入输出
 normal、score=0.188335，模型哈希与2060证据一致；远端2060实例当前端口拒绝连接，不影响已
-完成的硬件证据。尚需人工播放视频/审阅PDF并在官方平台上传。
+完成的硬件证据。尚需参赛者本人播放视频、审阅PDF并在官方平台上传。
 
 从commit `e9733ad`的全新clone和全新Python 3.11 venv再次按README完成最终复现：pytest
 72/72、ruff、mypy 22个源码文件、pip check、全部shell语法和四件正式命名文件验收均通过；
@@ -290,7 +294,8 @@ normal、score=0.188335，模型哈希与2060证据一致；远端2060实例当�
 - EfficientAD-M和S均已完成且质量门失败；目前没有通过冻结质量门的Edge Engine。
 - GTX2060实机基准已完成；允许精确报告ONNX FP16速度过线，但不得称M/S质量合格或已形成
   合格Edge Engine。
-- 尚未由参赛者完成人工逐页/逐帧审阅、学校审核、官方平台上传和上传后回下载校验。
+- Codex已完成PDF逐页渲染、视频全帧解码和代表帧审查；尚未由参赛者本人完成最终审阅、
+  学校审核、官方平台上传和上传后回下载校验。
 - 项目视频当前为无旁白画面版；机器格式合格，但是否补录讲解音轨需参赛者人工决定。
 
 ## Existing verified metrics (unchanged)
@@ -333,7 +338,8 @@ normal、score=0.188335，模型哈希与2060证据一致；远端2060实例当�
 - RCBR 已经提升 AUPRO/F1、已经实时、优于 PatchCore、满足 200ms 或可作为最终模型。
 - EfficientAD-M/S已通过质量门、合格Edge Engine已冻结、CPU<2s或原生2500精度。
 - 真实视频工业准确率/泛化；GuardedAdapt生产准确率提高或完全阻断有害更新。
-- 四件材料已完成正式元数据、命名、人工审校并可直接上传。
+- 四件材料已经通过机器和内部渲染/解码审查，但不得声称已完成参赛者本人审校、学校审核、
+  官方平台上传或上传后回下载校验。
 - “首次”“首创”“SOTA”“国际领先”“全面超越”或任何获奖保证。
 
 ## Blockers / remaining work

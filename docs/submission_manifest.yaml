@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-31T01:02:00+08:00"
+last_readiness_audit_at: "2026-08-31T09:01:05+08:00"
 overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -23,8 +23,8 @@ artifacts:
     pages: 1
     chinese_characters: 92
     non_whitespace_characters: 254
-    size_bytes: 36651
-    sha256: 57f01e979d59fa11a52b27e759d8f7c365dec3c9cadf53d6896ddd0e19db9821
+    size_bytes: 3656
+    sha256: e2483eb2e2a0eab89d6c0af139142283e6ef22c71db45b25e5476fb0cb806fcd
   - id: project_document
     format: pdf
     template_required: true
@@ -63,7 +63,7 @@ validation:
   constraints_passed: true
   final_upload_ready: true
   final_named_artifacts_validation_rerun: true
-  note: "All four final named files passed machine format, size, duration, page-count and package-member checks; human visual review and platform upload remain external actions."
+  note: "All four final named files passed machine format, size, duration, page-count and package-member checks. Codex also rendered all PDF pages, decoded all 4766 video frames and reviewed representative video frames; participant review and platform upload remain external actions."
 metadata_blockers: []
 metadata_completed:
   source: submission/metadata.yaml
@@ -82,8 +82,8 @@ technical_limitations_not_upload_blockers:
   - gtx2060_speed_pass_does_not_override_failed_edge_quality_gate
   - heterocal_130_failed_preregistered_quality_gate
 exploratory_screening:
-  status: s384_training_screen_completed_negative_final_package_unchanged
-  final_package_unchanged: true
+  status: s384_training_screen_completed_negative_final_claims_unchanged
+  final_claims_unchanged_by_exploration: true
   parallel_screening_summary: reports/experiments/parallel-screening-20260831/screening-summary.json
   heteroresidual_summary: reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json
   s384_training_batch: reports/experiments/efficientad-s384-screen-20260831
@@ -101,6 +101,7 @@ completed_closure_evidence:
   video_event_gt_evaluation: evidence/video_event_evaluation_20260830.json
   heterocal_130_negative_result: evidence/heterocal_130_evaluation_20260830.json
   final_clean_reproduction_v2: evidence/final_clean_reproduction_20260830.json
+  final_artifact_visual_review: evidence/final_artifact_visual_review_20260831.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement

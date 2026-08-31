@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "created_at": "2026-08-30T15:22:17+00:00",
+  "created_at": "2026-08-31T01:03:11+00:00",
   "constraints_passed": true,
   "final_upload_ready": true,
   "final_upload_blockers": [],
@@ -25,8 +25,8 @@
   "artifacts": {
     "entry_summary": {
       "path": "submission/final/Cuisine_智检演化130_参赛作品简介.pdf",
-      "size_bytes": 36651,
-      "sha256": "57f01e979d59fa11a52b27e759d8f7c365dec3c9cadf53d6896ddd0e19db9821",
+      "size_bytes": 3656,
+      "sha256": "e2483eb2e2a0eab89d6c0af139142283e6ef22c71db45b25e5476fb0cb806fcd",
       "pages": 1,
       "valid_pdf": true,
       "source_path": "submission/works_intro.txt",

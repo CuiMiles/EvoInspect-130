@@ -6,10 +6,14 @@ drafts="${repo_root}/submission/drafts"
 temporary="$(mktemp -d /tmp/evoinspect-pdf-build-XXXXXX)"
 trap 'rm -rf "${temporary}"' EXIT
 
+"${EVOINSPECT_SYSTEM_PYTHON:-/usr/bin/python3}" \
+  "${repo_root}/scripts/build_submission_intro_pdf.py" \
+  --intro "${repo_root}/submission/works_intro.txt" \
+  --metadata "${repo_root}/submission/metadata.yaml" \
+  --output "${temporary}/works_intro.pdf"
 libreoffice --headless --convert-to pdf --outdir "${temporary}" \
-  "${repo_root}/submission/works_intro.html" \
   "${repo_root}/submission/project_document.html" >/dev/null
-for name in works_intro project_document; do
+for name in project_document; do
   [[ -s "${temporary}/${name}.pdf" ]] || { printf 'missing generated %s.pdf\n' "${name}" >&2; exit 2; }
   # LibreOffice 6 inserts a blank leading page when importing these HTML files. Remove it
   # deterministically, but only after verifying that the first page contains no text.
@@ -24,5 +28,6 @@ for name in works_intro project_document; do
   fi
   mv "${temporary}/${name}.pdf" "${drafts}/${name}.pdf"
 done
+mv "${temporary}/works_intro.pdf" "${drafts}/works_intro.pdf"
 pdfinfo "${drafts}/works_intro.pdf" | grep -q '^Pages:[[:space:]]*1$'
 printf 'Generated %s and %s\n' "${drafts}/works_intro.pdf" "${drafts}/project_document.pdf"
