@@ -1,8 +1,26 @@
 # STATUS
 
-updated_at: 2026-08-31T09:01:05+08:00
-current_phase: ALL_REGISTERED_EXPERIMENTS_COMPLETED_FINAL_ARTIFACT_REVIEW_COMPLETE
-overall_status: FINAL_MACHINE_AND_INTERNAL_VISUAL_VALIDATION_PASSED_PLATFORM_UPLOAD_PENDING
+updated_at: 2026-08-31T12:31:12+08:00
+current_phase: SIX_ROUTE_SCREEN_COMPLETED_FINAL_ARTIFACTS_STILL_FROZEN
+overall_status: ALL_EXPERIMENTS_CLOSED_PLATFORM_UPLOAD_PENDING
+
+## Additional three-route completion (2026-08-31)
+
+The three previously unexecuted branches of the user-requested six-route screen are now complete
+under `docs/26_ADDITIONAL_ROUTES_SCREEN_20260831_PREREGISTRATION.md`. DefectAdapter-130, the
+official SuperSimpleNet architecture with a strict-manifest adapter, and the official DRA base
+route each completed six categories at seed 143. All 18 runs wrote predictions before opening test
+truth, recorded `dirty=false`, and have zero test-label leakage.
+
+- DefectAdapter: Overall F1 `0.841964`, eligible Unseen F1 `0.727339`, Image AUROC `0.949546`.
+- SuperSimpleNet: Overall F1 `0.578926`, eligible Unseen F1 `0.380210`, Image AUROC `0.849865`.
+- DRA: Overall F1 `0.591371`, eligible Unseen F1 `0.360305`, Image AUROC `0.791648`.
+
+All three fail the fixed `0.905/0.84/0.97` screen. Because DRA did not pass, the full AHL feature
+generation and meta-learning pipeline is not unlocked under the preregistered stop rule. No route
+is promoted, no additional seed or parameter search is allowed, and `submission/final` remains
+unchanged. Machine-readable evidence is
+`reports/experiments/additional-routes-screen-20260831/additional-routes-summary.json`.
 
 ## User-requested parallel screening (2026-08-31)
 
