@@ -224,12 +224,14 @@ def train_dra(
                 target = normal_target if index == 0 else anomaly_target
                 if index == 1:
                     keep = labels != 2
-                    prediction = prediction[keep]
                     target = anomaly_target[keep]
                 elif index == 2:
                     keep = labels != 1
-                    prediction = prediction[keep]
                     target = anomaly_target[keep]
+                if prediction.shape != target.shape:
+                    raise RuntimeError(
+                        f"DRA head {index} shape mismatch: {prediction.shape} != {target.shape}"
+                    )
                 losses.append(F.binary_cross_entropy_with_logits(prediction, target))
             loss = sum(losses)
             optimizer.zero_grad(set_to_none=True)
