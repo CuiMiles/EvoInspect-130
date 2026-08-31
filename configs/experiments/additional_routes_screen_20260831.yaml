@@ -1,0 +1,32 @@
+schema_version: 1
+status: preregistered
+purpose: bounded completion of the three previously unexecuted six-route screening branches
+categories: [cable, capsule, screw, carpet, transistor, wood]
+seed: 143
+input_resolution: [256, 256]
+protocol: strict_100_normal_30_anomaly_support_only
+routes:
+  defectadapter:
+    epochs: 20
+    batch_size: 8
+    learning_rate: 0.0001
+    anchor_weight: 10.0
+    rank: 8
+  supersimplenet:
+    upstream_commit: 98ab4d5fbdcdef528fafbc42e4b5ee15f08f5a7d
+    epochs: 60
+    batch_size: 16
+    learning_rate_scale: 1.0
+  dra:
+    upstream_commit: 3fb0e9cce9bee3c23072caa30c889b905c4830ed
+    epochs: 30
+    steps_per_epoch: 20
+    batch_size: 24
+    n_ref: 5
+    topk: 0.1
+quality_screen:
+  overall_f1_min: 0.905
+  unseen_f1_min: 0.84
+  image_auroc_min: 0.97
+stop_rule: six categories and seed 143 only; no parameter changes after test truth is opened
+
