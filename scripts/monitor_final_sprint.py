@@ -24,6 +24,7 @@ from typing import Any
 POLL_SECONDS = 30
 MIN_FREE_MIB = 8 * 1024
 MAX_UTILIZATION = 5
+MAX_SHARED_UTILIZATION = 60
 
 
 def utc_now() -> str:
@@ -96,16 +97,17 @@ def query_compute_uuids() -> set[str]:
     return uuids
 
 
-def safe_gpus() -> tuple[list[int], list[dict[str, Any]]]:
+def safe_gpus(allow_shared: bool = False) -> tuple[list[int], list[dict[str, Any]]]:
     gpus = query_gpus()
     compute_uuids = query_compute_uuids()
     safe: list[int] = []
     for gpu in gpus:
         gpu["compute_process_present"] = gpu["uuid"] in compute_uuids
         gpu["startable"] = (
-            not gpu["compute_process_present"]
-            and gpu["memory_free_mib"] >= MIN_FREE_MIB
-            and gpu["utilization_gpu"] <= MAX_UTILIZATION
+            gpu["memory_free_mib"] >= MIN_FREE_MIB
+            and gpu["utilization_gpu"]
+            <= (MAX_SHARED_UTILIZATION if allow_shared else MAX_UTILIZATION)
+            and (allow_shared or not gpu["compute_process_present"])
         )
         if gpu["startable"]:
             safe.append(int(gpu["index"]))
@@ -200,6 +202,11 @@ def main() -> int:
         default=Path("reports/experiments/final-sprint-20260901"),
     )
     parser.add_argument("--max-attempts", type=int, default=2)
+    parser.add_argument(
+        "--allow-shared-gpu",
+        action="store_true",
+        help="Share only low-utilization GPUs with existing processes; never terminate them.",
+    )
     parser.add_argument("--log", type=Path, default=None)
     args = parser.parse_args()
     repo = args.repo.resolve()
@@ -230,6 +237,11 @@ def main() -> int:
     signal.signal(signal.SIGINT, stop_handler)
 
     while queue or running:
+        # A CPU fallback or an externally completed task may materialize its
+        # metrics after the supervisor initialized the queue.  Reconcile the
+        # queue on every poll so completed work is never reported as pending
+        # and is never relaunched when a GPU becomes available later.
+        queue = [task for task in queue if not task_completed(task)]
         finished: list[str] = []
         for key, item in running.items():
             code = item.process.poll()
@@ -253,7 +265,7 @@ def main() -> int:
                     failed[key] = {"exit_code": code, "attempts": attempts.get(key, 1)}
         for key in finished:
             running.pop(key, None)
-        safe, gpu_rows = safe_gpus()
+        safe, gpu_rows = safe_gpus(args.allow_shared_gpu)
         occupied_by_supervisor = {item.gpu for item in running.values()}
         available = [gpu for gpu in safe if gpu not in occupied_by_supervisor]
         launched: list[str] = []
@@ -272,6 +284,8 @@ def main() -> int:
             "poll_seconds": POLL_SECONDS,
             "min_free_mib": MIN_FREE_MIB,
             "max_utilization": MAX_UTILIZATION,
+            "allow_shared_gpu": args.allow_shared_gpu,
+            "max_shared_utilization": MAX_SHARED_UTILIZATION,
             "stopping": stopping,
             "queue": [task.key for task in queue],
             "failed": failed,
@@ -295,6 +309,29 @@ def main() -> int:
         if not queue and not running:
             break
         time.sleep(POLL_SECONDS)
+    # Also persist a final empty-queue snapshot when all tasks were already
+    # complete at startup.  This keeps the machine-readable audit current
+    # instead of leaving a stale snapshot from a previous polling cycle.
+    safe, gpu_rows = safe_gpus(args.allow_shared_gpu)
+    final_payload = {
+        "timestamp": utc_now(),
+        "poll_seconds": POLL_SECONDS,
+        "min_free_mib": MIN_FREE_MIB,
+        "max_utilization": MAX_UTILIZATION,
+        "allow_shared_gpu": args.allow_shared_gpu,
+        "max_shared_utilization": MAX_SHARED_UTILIZATION,
+        "stopping": stopping,
+        "queue": [],
+        "failed": failed,
+        "attempts": attempts,
+        "running": {},
+        "safe_gpu_indices": safe,
+        "launched_this_poll": [],
+        "gpus": gpu_rows,
+    }
+    write_snapshot(snapshot_path, final_payload)
+    with log_path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(final_payload, sort_keys=True) + "\n")
     with log_path.open("a", encoding="utf-8") as stream:
         stream.write(
             f"[{utc_now()}] supervisor complete; remaining_failed={len(failed)}\n"

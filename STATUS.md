@@ -1,15 +1,16 @@
 # STATUS
 
-updated_at: 2026-09-01T02:07:24+08:00
-current_phase: BOUNDED_FOUR_ROUTE_SCREEN_EDGEFUSION_PARETO_ANOMALYDINO_COMPLETED_DINOMALY_QUEUED
-overall_status: FINAL_ARTIFACTS_FROZEN_EXPLORATORY_SCREEN_RUNNING_WHEN_SAFE_GPU_RELEASES
+updated_at: 2026-09-01T02:17:17+08:00
+current_phase: BOUNDED_FOUR_ROUTE_SCREEN_COMPLETED_ALL_CPU_DIAGNOSTICS
+overall_status: FOUR_ROUTE_SCREEN_COMPLETE_NO_ROUTE_PROMOTED_FINAL_ARTIFACTS_UNCHANGED
 
 ## Bounded four-route screen reopened by the user (2026-09-01)
 
 The immutable `submission/final` package remains unchanged. A new, explicitly bounded screen
 was registered from the supplied final-sprint decision: EfficientAD-S+M EdgeFusion, AnomalyDINO,
-Dinomaly, and GuardedAdapt-Pareto. The two completed CPU-side routes are recorded below; the
-remaining DINO routes are queued behind a conservative GPU supervisor.
+Dinomaly, and GuardedAdapt-Pareto. All four routes are now complete; the visual routes were
+completed as CPU diagnostics because no GPU met the conservative no-other-compute-process gate.
+No route passed its preregistered promotion gate and no route changed the final package.
 
 - EfficientAD-S+M EdgeFusion finished all 15 categories from existing strict-v2.1 maps without
   retraining. Fixed alpha=0.5 and support-derived normalization produced Overall F1 `0.917409`,
@@ -22,28 +23,27 @@ remaining DINO routes are queued behind a conservative GPU supervisor.
   stricter points dropped acceptance below 50%. The report is a negative result with zero leakage,
   and no audit policy was selected. Evidence:
   `reports/experiments/guarded-adapt-pareto-20260901/report.json`.
-- AnomalyDINO and Dinomaly are now registered as six-category seed-143 screens, with all output
-  written outside `submission/final`. DINOv2-Small weights are available locally. AnomalyDINO
-  cable completed on CPU as an entry-point smoke/evaluation run (F1 `0.870370`, AUROC
-  `0.933190`); the remaining five AnomalyDINO categories and all six Dinomaly categories await a
-  GPU with no compute process. No GPU is considered free merely because utilization is low.
-- The partial AnomalyDINO aggregate is available at
-  `reports/experiments/final-sprint-20260901/anomalydino-summary.json` (1/6 complete, so the
-  six-category gate is intentionally `passed=false`). It is not a model-selection result.
+- AnomalyDINO and Dinomaly are registered as six-category seed-143 screens, with all output
+  written outside `submission/final`. DINOv2-Small weights are available locally. All six
+  AnomalyDINO categories were completed on CPU under the fixed protocol; its aggregate is
+  Overall F1 `0.846819`, eligible Unseen F1 `0.823517`, Image AUROC `0.937040`, six successful
+  categories and zero leakage. All three gates fail, so AnomalyDINO is stopped and not promoted.
+- The AnomalyDINO aggregate is available at
+  `reports/experiments/final-sprint-20260901/anomalydino-summary.json`; timings are CPU-only
+  diagnostics and are not a GTX2060 claim.
 - A one-step CPU smoke test for the fixed Dinomaly entry passed (map shape `224x224`, finite
   score, inference path callable); this is only an implementation check, not a category result.
-- The five remaining AnomalyDINO categories were then completed on CPU with the same fixed
-  configuration and merged with cable. The six-category aggregate is Overall F1 `0.846819`,
-  eligible Unseen F1 `0.823517`, Image AUROC `0.937040`, six successful categories and zero
-  leakage; all three quality gates fail, so AnomalyDINO is stopped and not promoted. Evidence:
-  `reports/experiments/final-sprint-20260901/anomalydino-summary.json`. The timings are CPU-only
-  diagnostics and are not a GTX2060 claim.
-- `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
-  half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
-  never kills processes. It will launch at most one route per safe GPU, retry an abnormal child
-  exit at most once, and then continue the queue. The monitor was restarted after this retry fix;
-  current PID is recorded by the live process, and the latest snapshot still has all eight GPUs
-  occupied by other-user compute processes with no project GPU task started.
+- Dinomaly then completed all six fixed categories as an independent CPU backup using the
+  registered 80-normal training plus 20-normal/30-anomaly threshold protocol. Its aggregate is
+  Overall F1 `0.898988`, eligible Unseen F1 `0.832237`, Image AUROC `0.938324`, six successful
+  categories and zero leakage. All three gates fail, so Dinomaly is stopped and not promoted.
+  Evidence: `reports/experiments/final-sprint-20260901/dinomaly-summary.json`; timings are
+  CPU-only diagnostics and are not a GTX2060 claim.
+- `scripts/monitor_final_sprint.py` recorded 30-second GPU polls (more frequent than the required
+  half-hour audit), never killed a process, and launched no project GPU task because every sampled
+  GPU had another user's compute PID. The supervisor was stopped after all CPU outputs and
+  aggregates were durable; its stale queue entries reflected initialization before the CPU backup
+  outputs appeared, not unfinished experiments.
 
 ## Additional three-route completion (2026-08-31)
 

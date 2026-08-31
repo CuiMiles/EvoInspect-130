@@ -1,6 +1,6 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-08-31T09:01:05+08:00"
+last_readiness_audit_at: "2026-09-01T02:17:17+08:00"
 overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
@@ -82,13 +82,17 @@ technical_limitations_not_upload_blockers:
   - gtx2060_speed_pass_does_not_override_failed_edge_quality_gate
   - heterocal_130_failed_preregistered_quality_gate
 exploratory_screening:
-  status: s384_training_screen_completed_negative_final_claims_unchanged
+  status: bounded_four_route_screen_completed_negative_final_claims_unchanged
   final_claims_unchanged_by_exploration: true
   parallel_screening_summary: reports/experiments/parallel-screening-20260831/screening-summary.json
   heteroresidual_summary: reports/experiments/heteroresidual-screen-20260831/heteroresidual-summary.json
   s384_training_batch: reports/experiments/efficientad-s384-screen-20260831
   s384_summary: reports/experiments/efficientad-s384-screen-20260831/s384-summary.json
-  note: "S384 six-category training screen completed 6/6 with zero leakage; F1 improved over the frozen S-256 six-category mean but AUROC decreased and quality gates were not met. Exploratory only; the machine-validated submission/final package is unchanged and no further resolution training is started."
+  edgefusion_summary: reports/experiments/edgefusion-20260901/summary.json
+  guarded_adapt_pareto_report: reports/experiments/guarded-adapt-pareto-20260901/report.json
+  anomalydino_summary: reports/experiments/final-sprint-20260901/anomalydino-summary.json
+  dinomaly_summary: reports/experiments/final-sprint-20260901/dinomaly-summary.json
+  note: "S384 training and the bounded four-route screen are complete with zero leakage. EdgeFusion, GuardedAdapt-Pareto, AnomalyDINO and Dinomaly all failed their preregistered promotion gates; the two visual screens were CPU diagnostics because no GPU passed the no-other-compute-process gate. Exploratory only; the machine-validated submission/final package is unchanged and no route is promoted."
 completed_closure_evidence:
   clean_directory_environment_reproduction: evidence/clean_reproduction_20260828.json
   final_freeze_clean_reproduction: evidence/final_clean_reproduction_20260829.json
@@ -102,6 +106,10 @@ completed_closure_evidence:
   heterocal_130_negative_result: evidence/heterocal_130_evaluation_20260830.json
   final_clean_reproduction_v2: evidence/final_clean_reproduction_20260830.json
   final_artifact_visual_review: evidence/final_artifact_visual_review_20260831.json
+  edgefusion_negative_result: reports/experiments/edgefusion-20260901/summary.json
+  guarded_adapt_pareto_negative_result: reports/experiments/guarded-adapt-pareto-20260901/report.json
+  anomalydino_negative_result: reports/experiments/final-sprint-20260901/anomalydino-summary.json
+  dinomaly_negative_result: reports/experiments/final-sprint-20260901/dinomaly-summary.json
 unknowns:
   - upload_total_size_limit
   - anonymity_requirement
