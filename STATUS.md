@@ -34,9 +34,10 @@ remaining DINO routes are queued behind a conservative GPU supervisor.
   score, inference path callable); this is only an implementation check, not a category result.
 - `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
   half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
-  never kills processes. It will launch at most one route per safe GPU and then continue the queue.
-  Current snapshot at this update: all eight GPUs have other-user compute processes; no project
-  GPU process has been started.
+  never kills processes. It will launch at most one route per safe GPU, retry an abnormal child
+  exit at most once, and then continue the queue. The monitor was restarted after this retry fix;
+  current PID is recorded by the live process, and the latest snapshot still has all eight GPUs
+  occupied by other-user compute processes with no project GPU task started.
 
 ## Additional three-route completion (2026-08-31)
 
