@@ -1,0 +1,25 @@
+schema_version: 1
+experiment_id: dinomaly_screen_20260901
+status: preregistered_exploratory
+purpose: "Six-category bounded Dinomaly screen under the frozen 100+30 manifests."
+source_batch: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3/runs
+categories: [cable, capsule, screw, carpet, transistor, wood]
+seed: 143
+normal_train_count: 80
+normal_calibration_policy: remaining_support_normals
+anomaly_calibration_policy: all_support_anomalies
+model:
+  encoder_name: dinov2_vit_small_14
+  decoder_depth: 8
+  image_size: [224, 224]
+  max_steps: 500
+  learning_rate: 0.002
+  weight_decay: 0.0001
+  gradient_clip_norm: 0.1
+quality_gate:
+  overall_f1_min: 0.925
+  unseen_f1_min: 0.88
+  image_auroc_min: 0.985
+  test_label_leakage_max: 0
+  all_categories_complete: true
+stop_rule: "If the six-category mean fails any gate, do not extend to 15 categories or tune parameters."

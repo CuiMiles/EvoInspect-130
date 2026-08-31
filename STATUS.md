@@ -1,8 +1,37 @@
 # STATUS
 
-updated_at: 2026-08-31T12:31:12+08:00
-current_phase: SIX_ROUTE_SCREEN_COMPLETED_FINAL_ARTIFACTS_STILL_FROZEN
-overall_status: ALL_EXPERIMENTS_CLOSED_PLATFORM_UPLOAD_PENDING
+updated_at: 2026-09-01T01:54:03+08:00
+current_phase: BOUNDED_FOUR_ROUTE_SCREEN_EDGEFUSION_AND_PARETO_COMPLETED_DINO_QUEUED
+overall_status: FINAL_ARTIFACTS_FROZEN_EXPLORATORY_SCREEN_RUNNING_WHEN_SAFE_GPU_RELEASES
+
+## Bounded four-route screen reopened by the user (2026-09-01)
+
+The immutable `submission/final` package remains unchanged. A new, explicitly bounded screen
+was registered from the supplied final-sprint decision: EfficientAD-S+M EdgeFusion, AnomalyDINO,
+Dinomaly, and GuardedAdapt-Pareto. The two completed CPU-side routes are recorded below; the
+remaining DINO routes are queued behind a conservative GPU supervisor.
+
+- EfficientAD-S+M EdgeFusion finished all 15 categories from existing strict-v2.1 maps without
+  retraining. Fixed alpha=0.5 and support-derived normalization produced Overall F1 `0.917409`,
+  eligible Unseen F1 `0.842150`, and Image AUROC `0.969500`; 15/15 coverage and zero leakage. It
+  narrowly failed the preregistered AUROC gate (`0.970000`) and is not promoted or benchmarked on
+  the 2060. Evidence: `reports/experiments/edgefusion-20260901/summary.json`.
+- GuardedAdapt-Pareto evaluated 30 fixed development policies over 50 development replays and
+  held out 25 audit replays. No policy met all development requirements simultaneously: the
+  best-acceptance points retained harmful rates above 2% or blocked only 50% of harmful candidates;
+  stricter points dropped acceptance below 50%. The report is a negative result with zero leakage,
+  and no audit policy was selected. Evidence:
+  `reports/experiments/guarded-adapt-pareto-20260901/report.json`.
+- AnomalyDINO and Dinomaly are now registered as six-category seed-143 screens, with all output
+  written outside `submission/final`. DINOv2-Small weights are available locally. AnomalyDINO
+  cable completed on CPU as an entry-point smoke/evaluation run (F1 `0.870370`, AUROC
+  `0.933190`); the remaining five AnomalyDINO categories and all six Dinomaly categories await a
+  GPU with no compute process. No GPU is considered free merely because utilization is low.
+- `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
+  half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
+  never kills processes. It will launch at most one route per safe GPU and then continue the queue.
+  Current snapshot at this update: all eight GPUs have other-user compute processes; no project
+  GPU process has been started.
 
 ## Additional three-route completion (2026-08-31)
 

@@ -1,0 +1,28 @@
+schema_version: 1
+experiment_id: guarded_adapt_pareto_20260901
+status: preregistered_exploratory
+purpose: "Select one feedback-gate operating point on ten development categories and audit it on five held-out categories."
+source_report: reports/experiments/guarded-adapt-replay-20260827T194500-cpu/report.json
+strategies: [NoUpdate, NaiveUpdate, ThresholdUpdate, GuardedAdapt-v1, GuardedAdapt-Pareto]
+development_categories: [bottle, carpet, grid, hazelnut, leather, metal_nut, pill, screw, tile, toothbrush]
+audit_categories: [cable, capsule, transistor, wood, zipper]
+candidate_source_strategy: ThresholdUpdate
+grid:
+  min_feedback_gain: [0.0, 0.005, 0.01, 0.02, 0.04, 0.06]
+  max_gate_anchor_regression: [0.0, 0.005, 0.01, 0.02, 0.05]
+selection:
+  development_only: true
+  objective: maximize_accepted_target_gain_subject_to_safety
+  accepted_rate_min: 0.50
+  harmful_rate_max: 0.02
+  harmful_candidate_block_rate_min: 0.80
+  target_gain_min: 0.0
+  rollback_success_rate: 1.0
+  tie_break: lower_harmful_rate_then_higher_accepted_rate_then_lower_min_gain
+quality_gate:
+  audit_accepted_rate_min: 0.50
+  audit_harmful_rate_max: 0.02
+  audit_harmful_candidate_block_rate_min: 0.80
+  audit_target_gain_min: 0.0
+  audit_rollback_success_rate: 1.0
+  leakage_events_max: 0

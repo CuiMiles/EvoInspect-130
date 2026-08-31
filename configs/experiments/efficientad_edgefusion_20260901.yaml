@@ -1,0 +1,33 @@
+schema_version: 1
+experiment_id: efficientad_edgefusion_20260901
+status: preregistered_exploratory
+purpose: "Fixed-weight fusion of the already completed strict EfficientAD-S and EfficientAD-M predictions."
+source_protocol: strict_100_30_evaluator_v2_1
+m_batch: reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23
+s_batch: reports/experiments/efficientad-s-frozen-20260830T004009Z-seed143-gpu0-3
+seed: 143
+categories: [bottle, cable, capsule, carpet, grid, hazelnut, leather, metal_nut, pill, screw, tile, toothbrush, transistor, wood, zipper]
+fusion:
+  alpha_m: 0.5
+  alpha_s: 0.5
+  normalization: divide_each_map_by_its_support_threshold
+  score: amax_of_fused_map
+  threshold: 1.0
+selection:
+  weights_fixed_before_test_truth: true
+  no_test_driven_selection: true
+  no_checkpoint_selection: true
+  no_retraining: true
+quality_gate:
+  overall_f1_min: 0.905
+  unseen_f1_min: 0.84
+  image_auroc_min: 0.97
+  expected_runs: 15
+  required_categories: 15
+  test_label_leakage_max: 0
+speed_diagnostic:
+  model_only_p95_ms_max: 35.0
+  end_to_end_p95_ms_max: 200.0
+  hardware: GTX2060
+  input_resolution: [2500, 2500]
+  batch_size: 1
