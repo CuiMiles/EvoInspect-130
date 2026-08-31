@@ -1,6 +1,6 @@
 # STATUS
 
-updated_at: 2026-09-01T01:54:03+08:00
+updated_at: 2026-09-01T02:01:03+08:00
 current_phase: BOUNDED_FOUR_ROUTE_SCREEN_EDGEFUSION_AND_PARETO_COMPLETED_DINO_QUEUED
 overall_status: FINAL_ARTIFACTS_FROZEN_EXPLORATORY_SCREEN_RUNNING_WHEN_SAFE_GPU_RELEASES
 
@@ -27,6 +27,9 @@ remaining DINO routes are queued behind a conservative GPU supervisor.
   cable completed on CPU as an entry-point smoke/evaluation run (F1 `0.870370`, AUROC
   `0.933190`); the remaining five AnomalyDINO categories and all six Dinomaly categories await a
   GPU with no compute process. No GPU is considered free merely because utilization is low.
+- The partial AnomalyDINO aggregate is available at
+  `reports/experiments/final-sprint-20260901/anomalydino-summary.json` (1/6 complete, so the
+  six-category gate is intentionally `passed=false`). It is not a model-selection result.
 - `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
   half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
   never kills processes. It will launch at most one route per safe GPU and then continue the queue.
