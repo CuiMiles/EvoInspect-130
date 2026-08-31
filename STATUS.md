@@ -30,6 +30,8 @@ remaining DINO routes are queued behind a conservative GPU supervisor.
 - The partial AnomalyDINO aggregate is available at
   `reports/experiments/final-sprint-20260901/anomalydino-summary.json` (1/6 complete, so the
   six-category gate is intentionally `passed=false`). It is not a model-selection result.
+- A one-step CPU smoke test for the fixed Dinomaly entry passed (map shape `224x224`, finite
+  score, inference path callable); this is only an implementation check, not a category result.
 - `scripts/monitor_final_sprint.py` polls every 30 seconds (therefore providing at least a
   half-hourly audit trail), requires no compute-app PID, >=8 GiB free, and <=5% utilization, and
   never kills processes. It will launch at most one route per safe GPU and then continue the queue.
