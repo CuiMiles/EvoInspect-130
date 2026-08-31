@@ -199,6 +199,7 @@ def main() -> int:
         type=Path,
         default=Path("reports/experiments/final-sprint-20260901"),
     )
+    parser.add_argument("--max-attempts", type=int, default=2)
     parser.add_argument("--log", type=Path, default=None)
     args = parser.parse_args()
     repo = args.repo.resolve()
@@ -213,6 +214,8 @@ def main() -> int:
     tasks = build_tasks(repo, output_root)
     queue = [task for task in tasks if not task_completed(task)]
     running: dict[str, Running] = {}
+    attempts: dict[str, int] = {}
+    failed: dict[str, dict[str, Any]] = {}
     stopping = False
 
     def stop_handler(signum: int, _frame: Any) -> None:
@@ -236,6 +239,18 @@ def main() -> int:
                     stream.write(
                         f"[{utc_now()}] finished {key} gpu={item.gpu} exit={code}\n"
                     )
+                if not task_completed(item.task) and code != 0:
+                    attempt = attempts.get(key, 1)
+                    if attempt < max(1, args.max_attempts):
+                        queue.append(item.task)
+                        with log_path.open("a", encoding="utf-8") as stream:
+                            stream.write(
+                                f"[{utc_now()}] retrying {key} attempt={attempt + 1}\n"
+                            )
+                    else:
+                        failed[key] = {"exit_code": code, "attempts": attempt}
+                elif not task_completed(item.task):
+                    failed[key] = {"exit_code": code, "attempts": attempts.get(key, 1)}
         for key in finished:
             running.pop(key, None)
         safe, gpu_rows = safe_gpus()
@@ -248,6 +263,7 @@ def main() -> int:
                 if task_completed(task):
                     continue
                 gpu = available.pop(0)
+                attempts[task.key] = attempts.get(task.key, 0) + 1
                 item = launch(task, gpu, repo, log_path.parent / "tasks")
                 running[task.key] = item
                 launched.append(task.key)
@@ -258,6 +274,8 @@ def main() -> int:
             "max_utilization": MAX_UTILIZATION,
             "stopping": stopping,
             "queue": [task.key for task in queue],
+            "failed": failed,
+            "attempts": attempts,
             "running": {
                 key: {
                     "gpu": item.gpu,
@@ -278,8 +296,10 @@ def main() -> int:
             break
         time.sleep(POLL_SECONDS)
     with log_path.open("a", encoding="utf-8") as stream:
-        stream.write(f"[{utc_now()}] supervisor complete; all queued tasks exited\n")
-    return 0
+        stream.write(
+            f"[{utc_now()}] supervisor complete; remaining_failed={len(failed)}\n"
+        )
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
