@@ -1,13 +1,13 @@
 schema_version: 1
 verified_from_local_official_files_at: "2026-08-23"
-last_readiness_audit_at: "2026-09-01T07:41:57+08:00"
+last_readiness_audit_at: "2026-09-01T23:52:40+08:00"
 overall_status: final_machine_validation_passed_human_review_and_upload_pending
 source_repository:
   url: https://github.com/CuiMiles/EvoInspect-130
   visibility: private
   default_branch: master
   pushed_at: "2026-09-01T07:42:27+08:00"
-readiness_evidence: evidence/submission_artifact_validation_rerun_20260901.json
+readiness_evidence: evidence/submission_artifact_validation_videos_20260901.json
 final_route_decision: docs/20_FINAL_ROUTE_DECISION_20260829.md
 deadline_local_file: "2026-09-01T23:59:00+08:00"
 artifacts:
@@ -55,15 +55,23 @@ artifacts:
     path: submission/final/Cuisine_智检演化130_其他.zip
     final_path: submission/final/Cuisine_智检演化130_其他.zip
     size_status: validated_under_200_mib
-    size_bytes: 35541909
-    sha256: aebb6aabf756fd7b5d940fd1bf58bd5cb7f9ed990d3f32b45335dec3c86d151e
+    size_bytes: 58922225
+    sha256: 35b8531d8924509bd8d0b89f443831f60d361644f89607b1fcb67141b7db91aa
     required_demo_members_present: true
+    video_directory: videos/
+    video_members: 5
+    video_filenames:
+      - videos/01_normal_cup_bottle_mouse.mp4
+      - videos/02_order_violation_bottle_before_cup.mp4
+      - videos/03_missing_mouse.mp4
+      - videos/04_bottle_repeated.mp4
+      - videos/05_rework_then_correct_sequence.mp4
 validation:
-  path: evidence/submission_artifact_validation_rerun_20260901.json
+  path: evidence/submission_artifact_validation_videos_20260901.json
   constraints_passed: true
   final_upload_ready: true
   final_named_artifacts_validation_rerun: true
-  note: "All four final named files passed the 2026-09-01 machine format, size, duration, page-count and package-member rerun. Codex also rendered all PDF pages, decoded all 4766 video frames and reviewed representative video frames; participant review and platform upload remain external actions."
+  note: "All four final named files passed the 2026-09-01 machine format, size, duration, page-count and package-member rerun. The auxiliary ZIP now also contains five named annotated video clips in videos/. Codex also rendered all PDF pages, decoded all 4766 project-video frames and reviewed representative video frames; participant review and platform upload remain external actions."
 presentation_polish_candidate:
   created_at: "2026-09-01T16:29:42+08:00"
   verified_at: "2026-09-01T16:32:55+08:00"

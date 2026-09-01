@@ -10,3 +10,5 @@ EfficientAD-M FP16异常图。脚本默认优先CUDA，若不可用则回退CPU�
 结果字段：`score`、`threshold`、`decision`、`input_resolution`、`model_input_resolution`、
 `provider`、`latency_ms`和`model_sha256`。该入口是代表类别功能演示，不是15类通用模型。
 
+五段视频演示位于`videos/`目录；它们是带可读标题的固定机位FSM功能验证素材，事件级指标见
+`evidence_summary/video_event_metrics.json`。

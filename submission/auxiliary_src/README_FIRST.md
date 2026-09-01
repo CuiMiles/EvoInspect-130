@@ -27,3 +27,10 @@ ONNX FP16文件，用于展示离线推理接口；公开主结果是15类聚合
 - `appendix/research_boundaries.md`：负结果和适用边界。
 
 完整源码位于`src/`，最终实时配置位于`configs/final_realtime.yaml`。
+
+## 五段视频功能验证素材
+
+`videos/`目录包含五段固定机位桌面装配演示视频，文件名直接标明场景：正常流程、错序、缺少
+mouse、bottle重复和返工后继续正确顺序。视频为当前FSM的带标题标注派生结果，便于评委复核；
+它们只用于功能验证，不外推为工业benchmark。对应的事件级GT和评测结果见
+`evidence_summary/video_event_metrics.json`。

@@ -1,12 +1,24 @@
 # STATUS
 
-updated_at: 2026-09-01T16:32:55+08:00
-current_phase: SUBMISSION_POLISH_CANDIDATE_MACHINE_VALIDATED_AUDIO_PENDING
-overall_status: FINAL_FALLBACK_MACHINE_VALIDATED_POLISH_CANDIDATE_READY_EXTERNAL_REVIEW_UPLOAD_PENDING
+updated_at: 2026-09-01T23:52:40+08:00
+current_phase: SUBMISSION_CODE_VIDEO_PACKAGE_MACHINE_VALIDATED_UPLOAD_PENDING
+overall_status: FINAL_CODE_AND_VIDEO_PACKAGE_MACHINE_VALIDATED_EXTERNAL_UPLOAD_PENDING
+
+## Final code and five-video package (2026-09-01)
+
+应用户要求，正式 `submission/final/Cuisine_智检演化130_其他.zip` 已重新构建为代码与视频交付包。
+包内 `videos/` 目录包含五段带可读标题的固定机位 FSM 功能验证视频：正常流程、错序、缺少
+mouse、bottle 重复、返工后继续正确顺序。视频为评测流程生成的派生标注版本，不是工业
+benchmark；事件GT和指标仍以 `evidence/video_event_evaluation_20260830.json` 为准。
+
+新包机器验收证据为 `evidence/submission_artifact_validation_videos_20260901.json`：
+`constraints_passed=true`、`final_upload_ready=true`，ZIP 45项、58,922,225字节，包含全部
+五个 `videos/*.mp4`。简介PDF、项目PDF和项目展示MP4未修改；官方平台上传和上传后下载回验仍
+需要参赛者完成。
 
 ## Presentation polish candidate (2026-09-01)
 
-Algorithm R&D remains stopped. The immutable `submission/final/` fallback was not modified. A
+Algorithm R&D remains stopped. At that stage, the immutable `submission/final/` fallback was not modified. A
 separate candidate was built in `submission/drafts/` with only the approved presentation edits:
 the introduction now names GuardedAdapt's anchor gate/version rollback as the core innovation;
 the project document removes the cover disclaimer, labels the core innovation, replaces the
