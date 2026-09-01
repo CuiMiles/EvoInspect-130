@@ -10,7 +10,7 @@ h2{color:#0f7486;font-size:12pt;margin:3mm 0 1.5mm}p{margin:1.2mm 0}table{border
 <table class="kpi"><tr><td><div class="num">0.9224</div>PatchCore Overall F1<br><span class="small">精度模式</span></td><td><div class="num">166.2 ms</div>GTX2060 端到端 p95<br><span class="small">实时模式</span></td></tr>
 <tr><td><div class="num">2.67%</div>GuardedAdapt 有害更新率</td><td><div class="num">0.9474</div>实拍视频事件 F1</td></tr></table>
 <p style="font-size:12pt;margin-top:12mm">团队：Cuisine　队长：崔明浩</p><p>西安交通大学　单人团队，全部工作由崔明浩独立完成</p>
-<p class="small" style="margin-top:12mm">公开数据结果、真实硬件时延、反馈回放和视频GT均有机器可读证据；不作奖项保证。</p><div class="footer">项目文档 · 2026.08.30 · 1 / 6</div></div>
+<p class="small" style="margin-top:12mm">公开数据结果、真实硬件时延、反馈回放和视频GT均有机器可读证据。</p><div class="footer">项目文档 · 2026.08.30 · 1 / 6</div></div>
 
 <div class="page"><h1 style="page-break-before:always">1 工业痛点与赛题约束</h1><h2>1.1 少样本新产品为什么难</h2>
 <p>工业新产品上线时，正常样本易获得，缺陷类型却稀缺且持续变化。传统规则AOI需要反复开发；直接在线更新又可能因误标破坏历史能力。EvoInspect-130把外观检测、装配逻辑、实时部署与反馈安全纳入同一离线系统。</p>
@@ -28,8 +28,8 @@ h2{color:#0f7486;font-size:12pt;margin:3mm 0 1.5mm}p{margin:1.2mm 0}table{border
 <tr><td><b>Video</b></td><td>OpenCV组件检测 + 确定性FSM</td><td>step、skip、repeat、reorder、missing、unknown区间</td></tr>
 <tr><td><b>Feedback</b></td><td>GuardedAdapt候选生成、锚点门禁和回滚</td><td>接受/拒绝原因、版本、变更记录和恢复点</td></tr></table>
 <h2>2.2 统一在线流程</h2><table><tr><th>输入</th><th>显式路由</th><th>本地推理</th><th>结构化输出</th><th>安全反馈</th></tr><tr><td>2500图像/视频</td><td>Accuracy或Realtime</td><td>不依赖远程API</td><td>分数·区域·事件·版本·时延</td><td>候选→门禁→发布/回滚</td></tr></table>
-<h2>2.3 三项系统贡献</h2><ul><li><b>精度—速度双模：</b>同一接口按场景显式切换高精度记忆方法与2060实时学生模型，禁止静默fallback。</li>
-<li><b>安全反馈机制：</b>把“收到反馈就更新”改造成可拒绝、可审计、可恢复的候选发布决策。</li><li><b>图像—视频闭环：</b>外观区域与装配步骤事件使用同一版本化结果结构。</li></ul>
+<h2>2.3 核心创新与系统贡献</h2><ul><li><b>核心创新——可信反馈发布：</b>将操作员反馈转化为候选更新，通过反馈收益和历史锚点双门禁决定发布或回滚，使自学习过程可拒绝、可审计、可恢复。</li>
+<li><b>精度—速度双模：</b>同一接口按场景显式切换高精度记忆方法与2060实时学生模型，禁止静默fallback。</li><li><b>图像—视频闭环：</b>外观区域与装配步骤事件使用同一版本化结果结构。</li></ul>
 <h2>2.4 工程边界</h2><p>最终推理完全离线，不运行大语言模型或扩散模型；模型、配置、数据来源和时延口径可追溯。Accuracy/Realtime由调用方明确选择，避免失败模式被隐藏。</p><div class="footer">智检演化130 · 系统架构 · 3 / 6</div></div>
 
 <div class="page"><h1 style="page-break-before:always">3 精度—速度主结果</h1><h2>3.1 MVTec AD 100+30式隔离评测</h2>
@@ -40,7 +40,7 @@ h2{color:#0f7486;font-size:12pt;margin:3mm 0 1.5mm}p{margin:1.2mm 0}table{border
 <tr><td><b>EfficientAD-M ONNX FP16</b></td><td>19.4ms</td><td class="good">166.2ms</td><td>达到200ms目标</td></tr><tr><td>EfficientAD-S ONNX FP16</td><td>8.2ms</td><td class="good">151.3ms</td><td>更快，质量较低</td></tr>
 <tr><td>EfficientAD-M PyTorch FP32</td><td>62.9ms</td><td>331.3ms</td><td>说明部署优化必要</td></tr></table>
 <p>口径包含解码、预处理/传输、模型、后处理和序列化；100次预热、1000次重复；设备为真实6GB GTX2060。</p>
-<div class="accent"><b>精度—速度折中：</b>实时模式实现Overall F1 0.9036与166.2ms。Image AUROC未达到项目自设0.97研究目标，但该内部目标不是官方淘汰线；精度优先场景使用PatchCore。</div>
+<div class="accent"><b>精度—速度折中：</b>实时模式在真实GTX2060上实现端到端p95 166.2ms和Overall F1 0.9036；对高风险、高精度工位可显式切换PatchCore，形成可审计的质量—节拍选择。</div>
 <h2>3.3 可复现性</h2><p>数据分割、配置、checkpoint、预测和硬件报告均留存机器证据；已在全新目录和Python 3.11环境完成一次README复现。EfficientAD固定Anomalib 2.3.0及对应上游提交。</p><div class="footer">智检演化130 · 精度与速度 · 4 / 6</div></div>
 
 <div class="page"><h1 style="page-break-before:always">4 GuardedAdapt：反馈更新安全门</h1><h2>4.1 候选发布，而非直接改写线上模型</h2>
@@ -51,7 +51,7 @@ h2{color:#0f7486;font-size:12pt;margin:3mm 0 1.5mm}p{margin:1.2mm 0}table{border
 <tr><td><b>GuardedAdapt</b></td><td class="good">2.67%</td><td class="good">85.33%</td><td>兼顾更新与历史保护</td></tr></table>
 <table class="kpi"><tr><td><div class="num">71.4%</div>相对NaiveUpdate减少有害更新</td><td><div class="num">100%</div>11/11拒绝更新回滚成功</td></tr></table>
 <h2>4.3 证据边界</h2><p>实验使用MVTec固定PatchCore真实预测分数和确定性反馈切片，是离线回放而非生产用户研究；结论是降低有害更新概率和保护历史能力，不宣称生产准确率提升。</p>
-<p class="small">边界实验：更严格的GuardedAdapt-Risk在219次回放中阻断50/50有害候选，但接受率为0，说明过严风险门会退化为“永不学习”，因此只保留在附录。</p><div class="footer">智检演化130 · GuardedAdapt · 5 / 6</div></div>
+<div class="footer">智检演化130 · GuardedAdapt · 5 / 6</div></div>
 
 <div class="page"><h1 style="page-break-before:always">5 实拍闭环、落地价值与边界</h1><h2>5.1 五段桌面装配视频</h2>
 <table><tr><th>场景</th><th>目标事件</th><th>事件F1</th></tr><tr><td>正常：cup→bottle→mouse</td><td>3个step_completed</td><td>1.000</td></tr><tr><td>次序颠倒</td><td>reorder + 正常收尾</td><td>1.000</td></tr>

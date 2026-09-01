@@ -17,7 +17,7 @@ artifacts:
     template_required: false
     filename_pattern: "{team}_{project}_参赛作品简介.pdf"
     status: final_named_file_machine_validated
-    path: submission/drafts/works_intro.pdf
+    path: submission/final/Cuisine_智检演化130_参赛作品简介.pdf
     final_path: submission/final/Cuisine_智检演化130_参赛作品简介.pdf
     source: submission/works_intro.txt
     pages: 1
@@ -30,7 +30,7 @@ artifacts:
     template_required: true
     filename_pattern: "{team}_{project}_项目文档.pdf"
     status: final_named_file_machine_validated
-    path: submission/drafts/project_document.pdf
+    path: submission/final/Cuisine_智检演化130_项目文档.pdf
     final_path: submission/final/Cuisine_智检演化130_项目文档.pdf
     source: submission/project_document.html
     pages: 6
@@ -42,7 +42,7 @@ artifacts:
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_项目视频.mp4"
     status: final_named_file_machine_validated
-    path: submission/drafts/project_video.mp4
+    path: submission/final/Cuisine_智检演化130_项目视频.mp4
     final_path: submission/final/Cuisine_智检演化130_项目视频.mp4
     duration_seconds: 158.86666666666667
     size_bytes: 33226608
@@ -52,18 +52,41 @@ artifacts:
     max_size_bytes: 209715200
     filename_pattern: "{team}_{project}_其他.zip"
     status: final_named_file_machine_validated
-    path: submission/drafts/auxiliary_material.zip
+    path: submission/final/Cuisine_智检演化130_其他.zip
     final_path: submission/final/Cuisine_智检演化130_其他.zip
     size_status: validated_under_200_mib
     size_bytes: 35541909
     sha256: aebb6aabf756fd7b5d940fd1bf58bd5cb7f9ed990d3f32b45335dec3c86d151e
     required_demo_members_present: true
 validation:
-  path: evidence/submission_artifact_validation.json
+  path: evidence/submission_artifact_validation_rerun_20260901.json
   constraints_passed: true
   final_upload_ready: true
   final_named_artifacts_validation_rerun: true
   note: "All four final named files passed the 2026-09-01 machine format, size, duration, page-count and package-member rerun. Codex also rendered all PDF pages, decoded all 4766 video frames and reviewed representative video frames; participant review and platform upload remain external actions."
+presentation_polish_candidate:
+  created_at: "2026-09-01T16:29:42+08:00"
+  verified_at: "2026-09-01T16:32:55+08:00"
+  status: machine_validated_draft_audio_pending
+  source_changes:
+    - submission/works_intro.txt
+    - submission/works_intro.html
+    - submission/project_document.html
+    - submission/auxiliary_src/README_FIRST.md
+    - submission/auxiliary_src/README_FIRST.html
+    - scripts/build_submission_pdfs.sh
+    - scripts/build_auxiliary_zip.sh
+  narration_script: submission/narration_script_zh.md
+  validation: evidence/submission_artifact_validation_polished_candidate_20260901.json
+  constraints_passed: true
+  final_upload_ready: false
+  final_upload_ready_note: "Draft validation intentionally uses placeholder filenames; this is not a blocker for the separately validated final-named fallback."
+  artifacts:
+    entry_summary_sha256: 898f8540af706fc13abf4a414aab777ca7f6ed9633e4f68e441b4d5a6aa5a5e8
+    project_document_sha256: ae32a01f11c52be4cbc16cabd4723ad0ed16ea135d8a662c4b0dd8f534a76bb0
+    project_video_sha256: 82cdc6b4bc3c7630c73e1ac169b40fca5f285e79c661ef4ffcc9469d42a91e4f
+    auxiliary_material_sha256: 205e0731fe2160fd85266dd35e0cdcac48435b4993f1ee73de39bf670ef5719e
+  note: "This candidate changes presentation text and the ZIP entry only; submission/final remains the immutable fallback until participant review and any optional narration are accepted."
 metadata_blockers: []
 metadata_completed:
   source: submission/metadata.yaml

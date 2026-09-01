@@ -1,8 +1,34 @@
 # STATUS
 
-updated_at: 2026-09-01T07:41:57+08:00
-current_phase: BOUNDED_FOUR_ROUTE_SCREEN_COMPLETED_ALL_CPU_DIAGNOSTICS
-overall_status: FOUR_ROUTE_SCREEN_COMPLETE_NO_ROUTE_PROMOTED_FINAL_ARTIFACTS_UNCHANGED
+updated_at: 2026-09-01T16:32:55+08:00
+current_phase: SUBMISSION_POLISH_CANDIDATE_MACHINE_VALIDATED_AUDIO_PENDING
+overall_status: FINAL_FALLBACK_MACHINE_VALIDATED_POLISH_CANDIDATE_READY_EXTERNAL_REVIEW_UPLOAD_PENDING
+
+## Presentation polish candidate (2026-09-01)
+
+Algorithm R&D remains stopped. The immutable `submission/final/` fallback was not modified. A
+separate candidate was built in `submission/drafts/` with only the approved presentation edits:
+the introduction now names GuardedAdapt's anchor gate/version rollback as the core innovation;
+the project document removes the cover disclaimer, labels the core innovation, replaces the
+repeated internal AUROC warning on the main-results page with the quality--throughput tradeoff,
+and removes the GuardedAdapt-Risk negative-result note from the main page. The auxiliary README
+now leads with the four verified headline numbers. No metrics, experiment protocol, model, or
+final claim was changed.
+
+Candidate machine validation is
+`evidence/submission_artifact_validation_polished_candidate_20260901.json`: constraints pass,
+one-page introduction, six-page project document, 158.867-second video, and a valid 38-member
+ZIP under the size limits. `final_upload_ready=false` in that candidate report only because the
+candidate uses draft filenames; the already named fallback remains machine-validated with
+`final_upload_ready=true` in `evidence/submission_artifact_validation_rerun_20260901.json`.
+
+The timed Chinese narration is prepared at `submission/narration_script_zh.md`. No audio was
+invented and no narrated MP4 was produced: a participant-provided recording and human listening
+check are still required. The four final-named fallback bytes and hashes remain unchanged.
+
+Post-build checks at 16:32 CST passed: `pytest` 72/72, `ruff check scripts src tests`, shell syntax
+checks for the two PDF/ZIP builders, YAML/CSV parsing, candidate artifact validation, and an
+independent comparison of all four fallback SHA256 values against the rerun evidence.
 
 ## Submission artifact revalidation (2026-09-01)
 

@@ -7,6 +7,7 @@ temporary="$(mktemp -d /tmp/evoinspect-auxiliary-XXXXXX)"
 trap 'rm -r "${temporary}"' EXIT
 package_root="${temporary}/Cuisine_智检演化130_其他"
 mkdir -p "${package_root}/models" "${package_root}/src" "${package_root}/evidence_summary"
+mkdir -p "${temporary}/lo-profile"
 
 cp -a "${repo_root}/submission/auxiliary_src/." "${package_root}/"
 mkdir -p "${package_root}/src/evoinspect"
@@ -27,7 +28,8 @@ PYTHONPATH="${repo_root}" /home/CuiMinghao/envs/evoinspect-efficientad/bin/pytho
   --run-dir "${repo_root}/reports/experiments/efficientad-m-frozen-20260828T095200Z-shared23/runs/efficientad-m-bottle-s143-20260828T095200Z-shared23" \
   --output-dir "${package_root}/demo"
 
-libreoffice --headless --convert-to pdf --outdir "${package_root}" \
+timeout 120s libreoffice --headless --nologo --nodefault --nolockcheck --norestore \
+  -env:UserInstallation="file://${temporary}/lo-profile" --convert-to pdf --outdir "${package_root}" \
   "${package_root}/README_FIRST.html" >/dev/null
 chmod +x "${package_root}/run_demo.sh" "${package_root}/run_demo.py"
 (
